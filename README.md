@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Navdeep Bhanderi — Portfolio
 
-## Getting Started
+A premium, single-page portfolio built to feel like a polished technology product
+(Linear / Stripe / Vercel / Raycast inspired). Black-and-white system, glassmorphism,
+scroll-driven motion, and a signature **Ask Navdeep AI** assistant powered by a local,
+zero-cost knowledge base.
 
-First, run the development server:
+## Tech
+
+- **Next.js 15** (App Router) · **TypeScript** (strict)
+- **Tailwind CSS 3.4** · shadcn-style UI primitives
+- **Framer Motion** (reveals, magnetic buttons, micro-interactions)
+- **GSAP + ScrollTrigger** (scroll-drawn timeline)
+- **Lenis** (smooth scroll, synced to GSAP)
+- **Geist** + **Geist Mono** fonts
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
+npm run build    # production build
+npm run start    # serve the production build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ⚠️ Add your photo
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The hero portrait loads from `public/navdeep.webp`. **Save the headshot to:**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+public/navdeep.webp
+```
 
-## Learn More
+Until that file exists, the hero gracefully shows an "NB" monogram instead — nothing breaks.
 
-To learn more about Next.js, take a look at the following resources:
+## Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+src/
+  app/            layout (metadata + JSON-LD), page, globals.css, sitemap, robots, opengraph-image
+  components/
+    layout/       Navbar, Footer, SmoothScroll, CustomCursor, ScrollProgress
+    sections/     Hero, Expertise, Projects, Timeline, Skills, AskAI, Contact
+    ui/           Button, GlassCard, Magnetic, BlurReveal, TextReveal, SectionHeading, Spotlight, ProfileImage
+    icons/        GitHub / LinkedIn / X brand icons
+  lib/            profile (source of truth), ai/ (knowledge + matching engine), utils, motion
+  data/           projects, skills, timeline, expertise, socials
+  hooks/          use-media-query, use-mounted, use-magnetic
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Editing content
 
-## Deploy on Vercel
+Everything is data-driven — edit these and the UI updates:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Profile / bio / availability** → `src/lib/profile.ts`
+- **Projects** → `src/data/projects.ts`
+- **Skills & expertise** → `src/data/skills.ts`, `src/data/expertise.ts`
+- **Education timeline** → `src/data/timeline.ts`
+- **Social links / email** → `src/data/socials.ts`
+- **Ask Navdeep AI answers** → `src/lib/ai/knowledge.ts`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deploy
+
+Push to GitHub and import into **Vercel** (zero config). Update `SITE_URL` in
+`src/app/layout.tsx`, `src/app/sitemap.ts`, and `src/app/robots.ts` to your final domain.

@@ -1,42 +1,177 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+    /* Monochrome system — HSL channel values (used with hsl(var(--x))) */
+    --background: 240 6% 4%;
+    --foreground: 0 0% 98%;
 
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
+    --muted: 240 4% 12%;
+    --muted-foreground: 240 5% 58%;
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+    --border: 240 5% 16%;
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
+    /* Restrained cool accent — used sparingly for focus / glow */
+    --accent: 230 60% 66%;
+    --accent-foreground: 0 0% 98%;
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
+    --radius: 0.75rem;
 
-@media (prefers-color-scheme: dark) {
-  html {
+    --font-sans: var(--font-geist-sans);
+    --font-mono: var(--font-geist-mono);
+
     color-scheme: dark;
   }
+
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+    /* Always reserve scrollbar space so locking scroll (mobile menu / chat)
+       never shifts fixed, right-anchored elements. */
+    scrollbar-gutter: stable;
+  }
+
+  /* Lenis controls scroll; disable native smooth when JS smooth-scroll is active */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: clip;
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: var(--font-sans), system-ui, sans-serif;
+    overflow-x: hidden;
+    font-feature-settings: "ss01", "cv01", "cv03";
+  }
+
+  ::selection {
+    background-color: hsl(var(--foreground));
+    color: hsl(var(--background));
+  }
+
+  :focus-visible {
+    outline: 2px solid hsl(var(--accent));
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Thin, premium scrollbar */
+  ::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.6);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .glass {
+    background-color: hsl(0 0% 100% / 0.03);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border: 1px solid hsl(0 0% 100% / 0.08);
+  }
+
+  .glass-strong {
+    background-color: hsl(240 6% 8% / 0.7);
+    backdrop-filter: blur(24px) saturate(160%);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    border: 1px solid hsl(0 0% 100% / 0.08);
+  }
+
+  .container-px {
+    @apply mx-auto w-full max-w-container px-6 lg:px-8;
+  }
+
+  .text-gradient {
+    background: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(0 0% 100% / 0.66) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Classy tinted name gradient — white fading into a soft cool silver.
+     Use on a single, non-animated element (no per-letter transforms) so the
+     background-clip stays intact. */
+  .text-name-gradient {
+    background: linear-gradient(170deg, hsl(0 0% 100%) 0%, hsl(225 28% 70%) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+@layer utilities {
+  .bg-grid {
+    background-image: radial-gradient(hsl(0 0% 100% / 0.05) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  .bg-grid-lines {
+    background-image: linear-gradient(hsl(0 0% 100% / 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(0 0% 100% / 0.035) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+
+  .mask-x {
+    -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+  }
+
+  .mask-b {
+    -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent);
+    mask-image: linear-gradient(to bottom, black 70%, transparent);
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Film grain overlay */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.022;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
