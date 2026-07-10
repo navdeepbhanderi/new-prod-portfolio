@@ -42,6 +42,6 @@ export const EXPERTISE: ExpertiseCategory[] = [
     label: "Tools",
     blurb: "The everyday tools that keep delivery sharp.",
     icon: Wrench,
-    technologies: ["Git", "GitHub", "ESLint", "TailwindCSS"],
+    technologies: ["Git", "GitHub", "TailwindCSS"],
   },
 ];

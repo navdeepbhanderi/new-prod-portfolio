@@ -39,6 +39,7 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
         else target.scrollIntoView({ behavior: "smooth", block: "start" });
       });
     } else if (instance) {
+      // If target is null (or hash like #hero/#top on inner pages), start cleanly at top
       instance.scrollTo(0, { immediate: true });
     } else {
       window.scrollTo(0, 0);
@@ -76,11 +77,19 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       const target = (e.target as HTMLElement)?.closest("a[href^='#']");
       if (!target) return;
       const id = target.getAttribute("href");
-      if (!id || id === "#") return;
+      if (!id) return;
+      if (id === "#" || id === "#top") {
+        e.preventDefault();
+        instance.scrollTo(0, { duration: 1.2 });
+        return;
+      }
       const el = document.querySelector(id);
       if (el) {
         e.preventDefault();
         instance.scrollTo(el as HTMLElement, { offset: -88 });
+      } else if (id === "#hero" || id === "#main") {
+        e.preventDefault();
+        instance.scrollTo(0, { duration: 1.2 });
       }
     };
     document.addEventListener("click", handleAnchorClick);

@@ -13,6 +13,8 @@ import { Starfield } from "@/components/ui/Starfield";
 import { HorizonGlow } from "@/components/ui/HorizonGlow";
 import { useMounted } from "@/hooks/use-mounted";
 import { usePrefersReducedMotion } from "@/hooks/use-media-query";
+import { usePathname } from "next/navigation";
+import { useLenis } from "@/components/layout/SmoothScroll";
 
 const NAME = PROFILE.firstName.toUpperCase();
 
@@ -52,6 +54,17 @@ function LocalTime() {
 export function Footer() {
   const innerRef = useRef<HTMLDivElement>(null);
   const reduced = usePrefersReducedMotion();
+  const pathname = usePathname();
+  const lenis = useLenis();
+
+  const scrollToTop = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (lenis) {
+      lenis.scrollTo(0, { duration: 1.2 });
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
 
   useEffect(() => {
     const inner = innerRef.current;
@@ -95,8 +108,9 @@ export function Footer() {
             {PROFILE.headline}
           </span>
           <Link
-            href="#hero"
+            href={pathname === "/" ? "#hero" : "#top"}
             scroll={false}
+            onClick={scrollToTop}
             aria-label={`${PROFILE.name} — back to top`}
             className="group flex select-none"
           >
@@ -135,8 +149,9 @@ export function Footer() {
           <LocalTime />
           <Magnetic>
             <Link
-              href="#hero"
+              href={pathname === "/" ? "#hero" : "#top"}
               scroll={false}
+              onClick={scrollToTop}
               className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
             >
               Back to top <ArrowUp className="h-3.5 w-3.5" />

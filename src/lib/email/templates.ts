@@ -20,18 +20,20 @@ function eyebrow(text: string): string {
   return `<p style="margin:0 0 14px;font-family:${mono};font-size:11px;letter-spacing:3px;text-transform:uppercase;color:${muted};">${text}</p>`;
 }
 
-function shell(content: string): string {
+function shell(content: string, preheader: string): string {
   return `<!DOCTYPE html>
 <html lang="en">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark"></head>
-<body style="margin:0;padding:0;background:${bg};">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${bg};padding:32px 16px;">
+<body style="margin:0;padding:0;background:${bg};color:${fg};">
+<!-- Preheader text for inbox preview and lower SpamAssassin score -->
+<div style="display:none;font-size:1px;color:#222222;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;">${preheader}</div>
+<table role="presentation" border="0" width="100%" cellpadding="0" cellspacing="0" style="background:${bg};padding:32px 16px;">
 <tr><td align="center">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+<table role="presentation" border="0" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
 
   <!-- Header -->
   <tr><td style="padding:0 8px 20px;">
-    <table role="presentation" cellpadding="0" cellspacing="0"><tr>
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr>
       <td style="width:36px;height:36px;border:1px solid ${border};border-radius:10px;text-align:center;vertical-align:middle;font-family:${mono};font-size:14px;font-weight:600;color:${fg};">NB</td>
       <td style="padding-left:12px;font-family:${font};font-size:14px;font-weight:600;color:${fg};">${PROFILE.name}</td>
     </tr></table>
@@ -58,7 +60,7 @@ function shell(content: string): string {
 }
 
 function messageQuote(message: string): string {
-  return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:18px 0 0;">
+  return `<table role="presentation" border="0" width="100%" cellpadding="0" cellspacing="0" style="margin:18px 0 0;">
   <tr>
     <td style="width:3px;background:${fg};border-radius:99px;"></td>
     <td style="padding:14px 18px;background:#0d0d0f;border:1px solid ${border};border-left:0;border-radius:0 14px 14px 0;font-family:${font};font-size:14px;line-height:1.7;color:#d6d6dc;white-space:pre-wrap;">${message}</td>
@@ -92,7 +94,7 @@ export function ownerNotificationEmail(input: {
     ${eyebrow("New inquiry — portfolio")}
     <h1 style="margin:0;font-family:${font};font-size:24px;font-weight:700;letter-spacing:-0.5px;color:${fg};">New message from ${name}</h1>
 
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:24px 0 0;">
+    <table role="presentation" border="0" width="100%" cellpadding="0" cellspacing="0" style="margin:24px 0 0;">
       <tr>
         <td style="padding:10px 0;border-top:1px solid ${border};font-family:${mono};font-size:11px;letter-spacing:2px;text-transform:uppercase;color:${muted};width:90px;">From</td>
         <td style="padding:10px 0;border-top:1px solid ${border};font-family:${font};font-size:14px;color:${fg};">${name}</td>
@@ -110,12 +112,12 @@ export function ownerNotificationEmail(input: {
     ${eyebrow("Message").replace("margin:0 0 14px", "margin:26px 0 0")}
     ${messageQuote(message)}
 
-    <table role="presentation" cellpadding="0" cellspacing="0" style="margin:28px 0 0;"><tr>
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin:28px 0 0;"><tr>
       <td style="border-radius:999px;background:${fg};">
         <a href="mailto:${email}?subject=Re:%20Your%20message%20via%20navdeepbhanderi.dev" style="display:inline-block;padding:12px 26px;font-family:${font};font-size:14px;font-weight:600;color:#0a0a0b;text-decoration:none;">Reply to ${name.split(" ")[0]}</a>
       </td>
     </tr></table>
-  `);
+  `, `New inquiry from ${name} (${email}): "${input.message.slice(0, 85).replace(/"/g, "")}..."`);
 
   return {
     subject: `Portfolio inquiry — ${input.name}`,
@@ -147,7 +149,7 @@ export function autoReplyEmail(input: {
       In the meantime, feel free to explore my work.
     </p>
 
-    <table role="presentation" cellpadding="0" cellspacing="0" style="margin:20px 0 0;"><tr>
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin:20px 0 0;"><tr>
       <td style="border:1px solid ${border};border-radius:999px;">
         <a href="${SITE_URL}/#projects" style="display:inline-block;padding:12px 26px;font-family:${font};font-size:14px;font-weight:600;color:${fg};text-decoration:none;">View projects &#8599;</a>
       </td>
@@ -157,7 +159,7 @@ export function autoReplyEmail(input: {
       &mdash; ${PROFILE.name}<br>
       <span style="font-family:${mono};font-size:12px;letter-spacing:1px;color:${muted};">Software Engineer</span>
     </p>
-  `);
+  `, `Hi ${firstName}, your message landed safely in my inbox. I read every note personally and will get back to you within 24 hours.`);
 
   return {
     subject: "Your message is in — I'll reply within 24 hours",
