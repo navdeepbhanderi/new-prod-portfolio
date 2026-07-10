@@ -6,8 +6,10 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { TIMELINE } from "@/data/timeline";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { ParallaxNumeral } from "@/components/ui/ParallaxNumeral";
 import { cn } from "@/lib/utils";
 import { EASE_OUT } from "@/lib/motion";
+import { usePrefersReducedMotion } from "@/hooks/use-media-query";
 
 const statusStyles: Record<string, string> = {
   past: "border-border bg-muted text-muted-foreground",
@@ -18,11 +20,12 @@ const statusStyles: Record<string, string> = {
 export function Timeline() {
   const containerRef = useRef<HTMLDivElement>(null);
   const lineRef = useRef<HTMLDivElement>(null);
+  const reduced = usePrefersReducedMotion();
 
   useEffect(() => {
     const el = containerRef.current;
     const line = lineRef.current;
-    if (!el || !line) return;
+    if (!el || !line || reduced) return;
 
     gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
@@ -40,13 +43,31 @@ export function Timeline() {
           },
         }
       );
+
+      // Nodes pop as the drawn line reaches them.
+      gsap.utils.toArray<HTMLElement>(".tl-node").forEach((node) => {
+        gsap.fromTo(
+          node,
+          { scale: 0 },
+          {
+            scale: 1,
+            duration: 0.55,
+            ease: "back.out(2.2)",
+            scrollTrigger: { trigger: node, start: "top 72%" },
+          }
+        );
+      });
     }, el);
 
     return () => ctx.revert();
-  }, []);
+  }, [reduced]);
 
   return (
-    <section id="journey" className="relative scroll-mt-24 py-24 sm:py-32">
+    <section
+      id="journey"
+      className="relative scroll-mt-24 overflow-hidden py-24 sm:py-32"
+    >
+      <ParallaxNumeral value="03" className="right-2 top-10" />
       <div className="container-px">
         <SectionHeading
           eyebrow="Journey"
@@ -76,7 +97,7 @@ export function Timeline() {
                 {/* node */}
                 <span
                   className={cn(
-                    "absolute left-0 top-0 z-10 grid h-10 w-10 place-items-center rounded-full border font-mono text-[10px] sm:h-[3.4rem] sm:w-[3.4rem] sm:text-xs",
+                    "tl-node absolute left-0 top-0 z-10 grid h-10 w-10 place-items-center rounded-full border font-mono text-[10px] sm:h-[3.4rem] sm:w-[3.4rem] sm:text-xs",
                     statusStyles[item.status]
                   )}
                 >

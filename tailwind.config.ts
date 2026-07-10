@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import tailwindcssAnimate from "tailwindcss-animate";
 
 const config: Config = {
   darkMode: "class",
@@ -49,50 +50,12 @@ const config: Config = {
         "fluid-h3": "clamp(1.5rem, 3vw, 2.25rem)",
         "fluid-lead": "clamp(1.05rem, 2vw, 1.375rem)",
       },
-      keyframes: {
-        "fade-in": {
-          from: { opacity: "0" },
-          to: { opacity: "1" },
-        },
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
-        },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
-        marquee: {
-          from: { transform: "translateX(0)" },
-          to: { transform: "translateX(-50%)" },
-        },
-        "marquee-reverse": {
-          from: { transform: "translateX(-50%)" },
-          to: { transform: "translateX(0)" },
-        },
-        shimmer: {
-          "100%": { transform: "translateX(100%)" },
-        },
-        "pulse-glow": {
-          "0%, 100%": { opacity: "0.4" },
-          "50%": { opacity: "1" },
-        },
-        float: {
-          "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-8px)" },
-        },
-      },
-      animation: {
-        "fade-in": "fade-in 0.5s ease-out forwards",
-        marquee: "marquee var(--marquee-duration, 40s) linear infinite",
-        "marquee-reverse": "marquee-reverse var(--marquee-duration, 40s) linear infinite",
-        shimmer: "shimmer 2s infinite",
-        "pulse-glow": "pulse-glow 4s ease-in-out infinite",
-        float: "float 6s ease-in-out infinite",
+      transitionTimingFunction: {
+        "out-quart": "cubic-bezier(0.22, 1, 0.36, 1)",
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [tailwindcssAnimate],
 };
 
 export default config;

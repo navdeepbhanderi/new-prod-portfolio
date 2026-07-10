@@ -3,14 +3,16 @@ import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
+import { MotionProvider } from "@/components/layout/MotionProvider";
+import { Preloader } from "@/components/layout/Preloader";
+import { CommandPalette } from "@/components/layout/CommandPalette";
 import { CustomCursor } from "@/components/layout/CustomCursor";
 import { ScrollProgress } from "@/components/layout/ScrollProgress";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { ChatWidget } from "@/components/ai/ChatWidget";
-import { PERSON_JSON_LD } from "@/lib/profile";
-
-const SITE_URL = "https://navdeepbhanderi.vercel.app";
+import { ChatWidgetLazy } from "@/components/ai/ChatWidgetLazy";
+import { SITE_JSON_LD } from "@/lib/profile";
+import { SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -35,6 +37,10 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Navdeep Bhanderi", url: SITE_URL }],
   creator: "Navdeep Bhanderi",
+  publisher: "Navdeep Bhanderi",
+  applicationName: "Navdeep Bhanderi — Portfolio",
+  category: "technology",
+  formatDetection: { telephone: false },
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
@@ -50,7 +56,7 @@ export const metadata: Metadata = {
     title: "Navdeep Bhanderi — Software Engineer",
     description:
       "Building AI-powered products, modern web applications, and scalable digital experiences.",
-    creator: "@navdeepbhanderi",
+    creator: "@NavdeepBhanderi",
   },
   robots: {
     index: true,
@@ -68,11 +74,25 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
+    <html
+      lang="en"
+      className={`${GeistSans.variable} ${GeistMono.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        {/* Pre-paint gate: kill the preloader before first paint on repeat
+            visits (sessionStorage). Attribute lives on <html>, which React
+            does not reconcile — no hydration mismatch. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(sessionStorage.getItem("nv-intro-done"))document.documentElement.setAttribute("data-intro","done")}catch(e){}`,
+          }}
+        />
+      </head>
       <body className="grain antialiased">
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(PERSON_JSON_LD) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(SITE_JSON_LD) }}
         />
         <a
           href="#main"
@@ -81,12 +101,21 @@ export default function RootLayout({
           Skip to content
         </a>
         <SmoothScroll>
-          <CustomCursor />
-          <ScrollProgress />
-          <Navbar />
-          <main id="main">{children}</main>
-          <Footer />
-          <ChatWidget />
+          <MotionProvider>
+            <Preloader />
+            <CommandPalette />
+            <CustomCursor />
+            <ScrollProgress />
+            <Navbar />
+            <main
+              id="main"
+              className="relative z-10 rounded-b-[2.5rem] bg-background shadow-[0_30px_60px_-15px_rgba(0,0,0,0.9)]"
+            >
+              {children}
+            </main>
+            <Footer />
+            <ChatWidgetLazy />
+          </MotionProvider>
         </SmoothScroll>
       </body>
     </html>

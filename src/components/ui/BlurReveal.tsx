@@ -1,8 +1,8 @@
 "use client";
 
-import { motion, type Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { EASE_OUT } from "@/lib/motion";
+import { fadeUpBlur } from "@/lib/motion";
 
 type BlurRevealProps = {
   children: React.ReactNode;
@@ -11,16 +11,6 @@ type BlurRevealProps = {
   y?: number;
   once?: boolean;
   as?: "div" | "section" | "li" | "span";
-};
-
-const variants: Variants = {
-  hidden: { opacity: 0, y: 24, filter: "blur(12px)" },
-  visible: {
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    transition: { duration: 0.7, ease: EASE_OUT },
-  },
 };
 
 export function BlurReveal({
@@ -38,19 +28,9 @@ export function BlurReveal({
       initial="hidden"
       whileInView="visible"
       viewport={{ once, margin: "-80px" }}
-      variants={{
-        hidden: { opacity: 0, y, filter: "blur(12px)" },
-        visible: {
-          opacity: 1,
-          y: 0,
-          filter: "blur(0px)",
-          transition: { duration: 0.7, ease: EASE_OUT, delay },
-        },
-      }}
+      variants={fadeUpBlur(delay, y)}
     >
       {children}
     </MotionTag>
   );
 }
-
-export { variants as blurRevealVariants };

@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 
-const SITE_URL = "https://navdeepbhanderi.vercel.app";
+import { SITE_URL } from "@/lib/site";
+import { PROJECTS } from "@/data/projects";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
@@ -10,5 +11,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 1,
     },
+    ...PROJECTS.map((p) => ({
+      url: `${SITE_URL}/projects/${p.id}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    })),
   ];
 }

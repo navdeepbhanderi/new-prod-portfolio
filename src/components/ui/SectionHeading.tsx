@@ -31,11 +31,13 @@ export function SectionHeading({
           {eyebrow}
         </span>
       </BlurReveal>
-      <TextReveal
-        as="h2"
-        text={title}
-        className="max-w-3xl text-fluid-h2 font-semibold leading-[1.05] tracking-tight text-foreground"
-      />
+      <div data-cursor="invert">
+        <TextReveal
+          as="h2"
+          text={title}
+          className="max-w-3xl text-fluid-h2 font-semibold leading-[1.05] tracking-tight text-foreground"
+        />
+      </div>
       {description && (
         <BlurReveal delay={0.1}>
           <p

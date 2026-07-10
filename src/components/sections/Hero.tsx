@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useTransform } from "framer-motion";
 import { ArrowDown, ArrowUpRight, MapPin } from "lucide-react";
 import { PROFILE } from "@/lib/profile";
 import { SOCIALS } from "@/data/socials";
@@ -9,26 +9,39 @@ import { BRAND_ICONS } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Magnetic } from "@/components/ui/MagneticButton";
 import { ProfileImage } from "@/components/ui/ProfileImage";
-import { EASE_OUT } from "@/lib/motion";
-
-const fade = {
-  hidden: { opacity: 0, y: 16, filter: "blur(8px)" },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    transition: { duration: 0.7, ease: EASE_OUT, delay: 0.2 + i * 0.1 },
-  }),
-};
+import { CharReveal } from "@/components/ui/CharReveal";
+import { SwapText } from "@/components/ui/SwapText";
+import { fadeUpBlur } from "@/lib/motion";
+import { useIntroDone } from "@/lib/intro";
+import { useMouseParallax } from "@/hooks/use-mouse-parallax";
 
 export function Hero() {
+  const done = useIntroDone();
+  const state = done ? "visible" : "hidden";
+
+  const pointer = useMouseParallax();
+  // Three depths: background drifts opposite the cursor, copy barely,
+  // portrait the most — parallax reads as depth, not decoration.
+  const bgX = useTransform(pointer.x, (v) => v * -36);
+  const bgY = useTransform(pointer.y, (v) => v * -26);
+  const copyX = useTransform(pointer.x, (v) => v * 12);
+  const copyY = useTransform(pointer.y, (v) => v * 8);
+  const portraitX = useTransform(pointer.x, (v) => v * 22);
+  const portraitY = useTransform(pointer.y, (v) => v * 16);
+  const portraitRotateY = useTransform(pointer.x, (v) => v * 5);
+  const portraitRotateX = useTransform(pointer.y, (v) => v * -5);
+
   return (
     <section
       id="hero"
       className="relative flex min-h-[100svh] items-center overflow-hidden pt-28 pb-16"
     >
       {/* Background layers */}
-      <div aria-hidden className="absolute inset-0 -z-10">
+      <motion.div
+        aria-hidden
+        style={{ x: bgX, y: bgY }}
+        className="absolute -inset-10 -z-10"
+      >
         <div className="absolute inset-0 bg-grid-lines mask-b opacity-60" />
         <div className="absolute left-1/2 top-0 h-[600px] w-[900px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,hsl(230_60%_50%/0.12),transparent_60%)] blur-2xl" />
         <motion.div
@@ -41,16 +54,18 @@ export function Hero() {
           animate={{ y: [0, -25, 0] }}
           transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
         />
-      </div>
+      </motion.div>
 
       <div className="container-px grid grid-cols-1 items-center gap-12 lg:grid-cols-[1.4fr_1fr]">
         {/* Left: copy */}
-        <div className="flex flex-col items-start">
+        <motion.div
+          style={{ x: copyX, y: copyY }}
+          className="flex flex-col items-start"
+        >
           <motion.div
-            custom={0}
-            variants={fade}
+            variants={fadeUpBlur(0.5, 16)}
             initial="hidden"
-            animate="visible"
+            animate={state}
             className="mb-7 inline-flex items-center gap-2 rounded-full border border-border bg-foreground/5 px-3.5 py-1.5 text-xs text-muted-foreground"
           >
             <span className="relative flex h-2 w-2">
@@ -63,21 +78,23 @@ export function Hero() {
             India
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20, filter: "blur(12px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            transition={{ duration: 0.9, ease: EASE_OUT, delay: 0.15 }}
-          >
-            <h1 className="text-name-gradient text-[clamp(3rem,7vw,5rem)] font-semibold leading-[0.95] tracking-tight">
-              Navdeep
-            </h1>
-          </motion.div>
+          <div data-cursor="invert">
+            <CharReveal
+              as="h1"
+              text="Navdeep"
+              label="Navdeep Bhanderi — Software Engineer"
+              trigger="manual"
+              play={done}
+              stagger={0.045}
+              charClassName="text-name-gradient"
+              className="text-[clamp(3.5rem,11vw,8.5rem)] font-semibold leading-[0.95] tracking-tight"
+            />
+          </div>
 
           <motion.p
-            custom={3}
-            variants={fade}
+            variants={fadeUpBlur(0.65, 16)}
             initial="hidden"
-            animate="visible"
+            animate={state}
             className="mt-7 max-w-xl text-fluid-lead leading-relaxed text-muted-foreground"
           >
             {PROFILE.tagline}{" "}
@@ -87,35 +104,33 @@ export function Hero() {
           </motion.p>
 
           <motion.div
-            custom={4}
-            variants={fade}
+            variants={fadeUpBlur(0.8, 16)}
             initial="hidden"
-            animate="visible"
+            animate={state}
             className="mt-9 flex flex-wrap items-center gap-3"
           >
             <Magnetic>
               <Button asChild size="lg">
                 <Link href="#projects" scroll={false}>
-                  View Projects
-                  <ArrowDown className="h-4 w-4" />
+                  <SwapText>View Projects</SwapText>
+                  <ArrowDown className="h-4 w-4 transition-transform duration-300 group-hover/btn:translate-y-0.5" />
                 </Link>
               </Button>
             </Magnetic>
             <Magnetic>
               <Button asChild size="lg" variant="outline">
                 <Link href="#contact" scroll={false}>
-                  Contact Me
-                  <ArrowUpRight className="h-4 w-4" />
+                  <SwapText>Contact Me</SwapText>
+                  <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5" />
                 </Link>
               </Button>
             </Magnetic>
           </motion.div>
 
           <motion.div
-            custom={5}
-            variants={fade}
+            variants={fadeUpBlur(0.95, 16)}
             initial="hidden"
-            animate="visible"
+            animate={state}
             className="mt-10 flex items-center gap-4"
           >
             <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
@@ -140,36 +155,54 @@ export function Hero() {
               })}
             </div>
           </motion.div>
-        </div>
+        </motion.div>
 
         {/* Right: portrait */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.96, filter: "blur(12px)" }}
-          animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-          transition={{ duration: 0.9, ease: EASE_OUT, delay: 0.4 }}
+          variants={{
+            hidden: { opacity: 0, scale: 0.96, filter: "blur(12px)" },
+            visible: {
+              opacity: 1,
+              scale: 1,
+              filter: "blur(0px)",
+              transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.95 },
+            },
+          }}
+          initial="hidden"
+          animate={state}
           className="relative mx-auto hidden w-full max-w-sm lg:block"
         >
-          <div className="absolute -inset-4 -z-10 rounded-[2rem] bg-[radial-gradient(circle_at_50%_30%,hsl(230_60%_50%/0.15),transparent_70%)] blur-xl" />
-          <div className="glass relative aspect-[4/5] overflow-hidden rounded-[1.75rem] p-1.5">
-            <div className="relative h-full w-full overflow-hidden rounded-[1.4rem]">
-              <ProfileImage priority />
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
+          <motion.div
+            style={{
+              x: portraitX,
+              y: portraitY,
+              rotateX: portraitRotateX,
+              rotateY: portraitRotateY,
+              transformPerspective: 1000,
+            }}
+          >
+            <div className="absolute -inset-4 -z-10 rounded-[2rem] bg-[radial-gradient(circle_at_50%_30%,hsl(230_60%_50%/0.15),transparent_70%)] blur-xl" />
+            <div className="glass relative aspect-[4/5] overflow-hidden rounded-[1.75rem] p-1.5">
+              <div className="relative h-full w-full overflow-hidden rounded-[1.4rem]">
+                <ProfileImage priority />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
+              </div>
             </div>
-          </div>
-          <div className="glass absolute -bottom-4 -left-4 rounded-2xl px-4 py-3">
-            <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-              Focus
-            </p>
-            <p className="text-sm font-medium">Full-stack development</p>
-          </div>
+            <div className="glass absolute -bottom-4 -left-4 rounded-2xl px-4 py-3">
+              <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                Focus
+              </p>
+              <p className="text-sm font-medium">Full-stack development</p>
+            </div>
+          </motion.div>
         </motion.div>
       </div>
 
       {/* Scroll hint */}
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.4 }}
+        animate={{ opacity: done ? 1 : 0 }}
+        transition={{ delay: 1.6 }}
         className="absolute bottom-7 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-muted-foreground md:flex"
       >
         <span className="font-mono text-[10px] uppercase tracking-[0.3em]">Scroll</span>

@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 /**
- * Renders Navdeep's portrait from /navdeep.jpg.
- * If the file is missing, it gracefully falls back to an "NB" monogram so the
- * layout never breaks (and no image-optimizer errors are logged). Place the
- * photo at /public/navdeep.webp to use it.
+ * Renders Navdeep's portrait from /navdeep.webp via next/image (AVIF/WebP,
+ * responsive sizes, preloaded when priority — the hero portrait is an LCP
+ * candidate). If the file is missing, it gracefully falls back to an "NB"
+ * monogram so the layout never breaks.
  */
 export function ProfileImage({
   className,
@@ -34,14 +35,14 @@ export function ProfileImage({
   }
 
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
+    <Image
       src="/navdeep.webp"
-      alt="Navdeep Bhanderi"
-      loading={priority ? "eager" : "lazy"}
-      fetchPriority={priority ? "high" : "auto"}
+      alt="Portrait of Navdeep Bhanderi, software engineer"
+      fill
+      sizes="(min-width: 1024px) 24rem, 90vw"
+      priority={priority}
       onError={() => setFailed(true)}
-      className={cn("h-full w-full object-cover object-center", className)}
+      className={cn("object-cover object-center", className)}
     />
   );
 }

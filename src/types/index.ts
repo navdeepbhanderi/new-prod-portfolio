@@ -19,6 +19,14 @@ export type Project = {
   highlights: string[];
   stack: string[];
   accent: string; // gradient classes for the visual
+  /** Optional proof links — buttons render only when provided. */
+  links?: { live?: string; repo?: string };
+  /** Long-form content for the /projects/[slug] case study page. */
+  caseStudy: {
+    problem: string;
+    approach: { title: string; detail: string }[];
+    outcome: string;
+  };
 };
 
 export type TimelineItem = {
