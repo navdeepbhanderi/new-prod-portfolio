@@ -178,6 +178,24 @@
     color: transparent;
     -webkit-text-stroke: 1px hsl(var(--foreground) / 0.45);
   }
+  /* Hero surname — outlined display type with a faint silver fill so the
+     letters are visible even if -webkit-text-stroke rendering varies. Applied
+     per-character via CharReveal's charClassName prop. */
+  .hero-surname-char {
+    color: transparent;
+    -webkit-text-stroke: 1.5px hsl(var(--foreground) / 0.7);
+    background: linear-gradient(
+      to top,
+      hsl(225 30% 80% / 0.3) 0%,
+      hsl(0 0% 100% / 0.08) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    transition: -webkit-text-stroke-color 0.4s ease;
+  }
+  .hero-surname-char:hover {
+    -webkit-text-stroke-color: hsl(var(--foreground) / 0.9);
+  }
 
   /* Outlined display type lit from below — pairs with the horizon glow. */
   .text-horizon-lit {

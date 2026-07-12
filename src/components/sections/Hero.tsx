@@ -10,8 +10,9 @@ import { Button } from "@/components/ui/button";
 import { Magnetic } from "@/components/ui/MagneticButton";
 import { ProfileImage } from "@/components/ui/ProfileImage";
 import { CharReveal } from "@/components/ui/CharReveal";
+import { BlurReveal } from "@/components/ui/BlurReveal";
 import { SwapText } from "@/components/ui/SwapText";
-import { fadeUpBlur } from "@/lib/motion";
+import { fadeUpBlur, EASE_IN_OUT, EASE_OUT } from "@/lib/motion";
 import { useIntroDone } from "@/lib/intro";
 import { useMouseParallax } from "@/hooks/use-mouse-parallax";
 
@@ -28,8 +29,8 @@ export function Hero() {
   const copyY = useTransform(pointer.y, (v) => v * 8);
   const portraitX = useTransform(pointer.x, (v) => v * 22);
   const portraitY = useTransform(pointer.y, (v) => v * 16);
-  const portraitRotateY = useTransform(pointer.x, (v) => v * 5);
-  const portraitRotateX = useTransform(pointer.y, (v) => v * -5);
+  const portraitRotateY = useTransform(pointer.x, (v) => v * 4);
+  const portraitRotateX = useTransform(pointer.y, (v) => v * -4);
 
   return (
     <section
@@ -43,16 +44,16 @@ export function Hero() {
         className="absolute -inset-10 -z-10"
       >
         <div className="absolute inset-0 bg-grid-lines mask-b opacity-60" />
-        <div className="absolute left-1/2 top-0 h-[600px] w-[900px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,hsl(230_60%_50%/0.12),transparent_60%)] blur-2xl" />
+        <div className="absolute left-1/2 top-0 h-[600px] w-[900px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,hsl(var(--accent)/0.12),transparent_60%)] blur-2xl" />
         <motion.div
           className="absolute -left-20 top-1/3 h-72 w-72 rounded-full bg-foreground/[0.04] blur-3xl"
           animate={{ y: [0, 30, 0], x: [0, 20, 0] }}
-          transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 14, repeat: Infinity, ease: EASE_IN_OUT }}
         />
         <motion.div
           className="absolute -right-10 bottom-1/4 h-80 w-80 rounded-full bg-accent/[0.05] blur-3xl"
           animate={{ y: [0, -25, 0] }}
-          transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 11, repeat: Infinity, ease: EASE_IN_OUT }}
         />
       </motion.div>
 
@@ -89,6 +90,16 @@ export function Hero() {
               charClassName="text-name-gradient"
               className="text-[clamp(3.5rem,11vw,8.5rem)] font-semibold leading-[0.95] tracking-tight"
             />
+            {/* <CharReveal
+              as="p"
+              text="Bhanderi"
+              trigger="manual"
+              play={done}
+              delay={0.35}
+              stagger={0.035}
+              charClassName="text-name-gradient"
+              className="text-[clamp(3.5rem,11vw,8.5rem)] font-semibold leading-[0.95] tracking-tight"
+            /> */}
           </div>
 
           <motion.p
@@ -97,10 +108,7 @@ export function Hero() {
             animate={state}
             className="mt-7 max-w-xl text-fluid-lead leading-relaxed text-muted-foreground"
           >
-            {PROFILE.tagline}{" "}
-            <span className="text-foreground/90">
-              Software Engineer based in India.
-            </span>
+            {PROFILE.tagline}
           </motion.p>
 
           <motion.div
@@ -165,7 +173,7 @@ export function Hero() {
               opacity: 1,
               scale: 1,
               filter: "blur(0px)",
-              transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.95 },
+              transition: { duration: 0.9, ease: EASE_OUT, delay: 0.95 },
             },
           }}
           initial="hidden"
@@ -181,34 +189,34 @@ export function Hero() {
               transformPerspective: 1000,
             }}
           >
-            <div className="absolute -inset-4 -z-10 rounded-[2rem] bg-[radial-gradient(circle_at_50%_30%,hsl(230_60%_50%/0.15),transparent_70%)] blur-xl" />
+            <div className="absolute -inset-4 -z-10 rounded-[2rem] bg-[radial-gradient(circle_at_50%_30%,hsl(var(--accent)/0.15),transparent_70%)] blur-xl" />
             <div className="glass relative aspect-[4/5] overflow-hidden rounded-[1.75rem] p-1.5">
               <div className="relative h-full w-full overflow-hidden rounded-[1.4rem]">
                 <ProfileImage priority />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
               </div>
             </div>
-            <div className="glass absolute -bottom-4 -left-4 rounded-2xl px-4 py-3">
-              <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                Focus
-              </p>
-              <p className="text-sm font-medium">Full-stack development</p>
-            </div>
-          </motion.div>
+                          {/* <div className="glass absolute -bottom-4 -left-4 rounded-2xl px-4 py-3">
+                <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                  Focus
+                </p>
+                <p className="text-sm font-medium">Full-stack development</p>
+              </div> */}
+                      </motion.div>
         </motion.div>
       </div>
 
-      {/* Scroll hint */}
+      {/* Scroll hint — visible on all viewports, smaller on mobile */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: done ? 1 : 0 }}
         transition={{ delay: 1.6 }}
-        className="absolute bottom-7 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-muted-foreground md:flex"
+        className="absolute bottom-7 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 text-muted-foreground"
       >
         <span className="font-mono text-[10px] uppercase tracking-[0.3em]">Scroll</span>
         <motion.span
           animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: EASE_IN_OUT }}
           className="h-8 w-px bg-gradient-to-b from-foreground/50 to-transparent"
         />
       </motion.div>

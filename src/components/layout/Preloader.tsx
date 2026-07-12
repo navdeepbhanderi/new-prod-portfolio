@@ -56,9 +56,10 @@ export function Preloader() {
 
     gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
-      gsap.set(".pl-name", { yPercent: 60, opacity: 0 });
-      gsap.set(".pl-fill", { clipPath: "inset(0 100% 0 0)" });
-      gsap.set(".pl-eyebrow", { opacity: 0, y: 10 });
+      // Initial hidden states are now baked into inline styles on the JSX
+      // elements (opacity: 0, transform, clipPath) so the very first server
+      // + client paint never flashes the fully-visible text. The gsap.set()
+      // calls that used to live here ran *after* paint, causing a 1-frame FOUC.
 
       const counter = { value: 0 };
       const tl = gsap.timeline({
@@ -154,15 +155,24 @@ export function Preloader() {
         <HorizonGlow className="opacity-90" />
 
         <div className="relative flex flex-1 flex-col items-center justify-center gap-6 px-6">
-          <span className="pl-eyebrow font-mono text-[11px] uppercase tracking-[0.5em] text-muted-foreground">
+          <span
+            className="pl-eyebrow font-mono text-[11px] uppercase tracking-[0.5em] text-muted-foreground"
+            style={{ opacity: 0, transform: "translateY(10px)" }}
+          >
             Portfolio — {new Date().getFullYear()}
           </span>
 
-          <div className="pl-name relative select-none whitespace-nowrap text-[clamp(2.5rem,8.5vw,7rem)] font-semibold leading-none tracking-tight">
+          <div
+            className="pl-name relative select-none whitespace-nowrap text-[clamp(2.5rem,8.5vw,7rem)] font-semibold leading-none tracking-tight"
+            style={{ opacity: 0, transform: "translateY(60%)" }}
+          >
             {/* Outline layer */}
             <span className="text-stroke-strong block">{NAME}</span>
             {/* Fill layer — swept open in sync with the counter */}
-            <span className="pl-fill text-name-gradient absolute inset-0 block">
+            <span
+              className="pl-fill text-name-gradient absolute inset-0 block"
+              style={{ clipPath: "inset(0 100% 0 0)" }}
+            >
               {NAME}
             </span>
           </div>
