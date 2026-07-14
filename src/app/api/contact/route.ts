@@ -107,11 +107,12 @@ export async function POST(req: Request) {
   const notification = ownerNotificationEmail(data);
   const autoReply = autoReplyEmail(data);
 
-  const domain = to.split("@")[1] ?? "navdeepbhanderi.dev";
   const timestamp = Date.now();
 
   try {
     // The notification to Navdeep must succeed; it carries the lead.
+    // No custom Message-ID / priority headers — Gmail's own Message-ID keeps
+    // the mail aligned with the authenticated sender (spam-filter safe).
     await transporter.sendMail({
       from: { name: `${PROFILE.name} — Portfolio`, address: user },
       to,
@@ -119,11 +120,9 @@ export async function POST(req: Request) {
       subject: notification.subject,
       html: notification.html,
       text: notification.text,
-      messageId: `<contact-${timestamp}-owner@${domain}>`,
       headers: {
+        // Unique per-submission so Gmail never threads separate inquiries.
         "X-Entity-Ref-ID": `portfolio-inquiry-${timestamp}`,
-        "X-Contact-Form-Submission": "navdeepbhanderi.dev",
-        Importance: "high",
       },
     });
   } catch (err) {
@@ -146,12 +145,11 @@ export async function POST(req: Request) {
       subject: autoReply.subject,
       html: autoReply.html,
       text: autoReply.text,
-      messageId: `<contact-${timestamp}-reply@${domain}>`,
       headers: {
-        // Essential headers to stop automated replies from landing in visitor spam folders:
+        // RFC 3834 loop prevention — marks this as an automated response
+        // without the bulk-mail signals that Precedence/Importance carry.
         "X-Auto-Response-Suppress": "OOF, DR, RN, NRN, AutoReply",
         "Auto-Submitted": "auto-replied",
-        Precedence: "auto_reply",
         "X-Entity-Ref-ID": `portfolio-reply-${timestamp}`,
       },
     });
