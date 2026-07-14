@@ -117,7 +117,7 @@ export function ownerNotificationEmail(input: {
         <a href="mailto:${email}?subject=Re:%20Your%20message%20via%20navdeepbhanderi.dev" style="display:inline-block;padding:12px 26px;font-family:${font};font-size:14px;font-weight:600;color:#0a0a0b;text-decoration:none;">Reply to ${name.split(" ")[0]}</a>
       </td>
     </tr></table>
-  `, `New inquiry from ${name} (${email}): "${input.message.slice(0, 85).replace(/"/g, "")}..."`);
+  `, `New inquiry from ${name} (${email}): "${escapeHtml(input.message.slice(0, 85))}..."`);
 
   return {
     subject: `Portfolio inquiry — ${input.name}`,
