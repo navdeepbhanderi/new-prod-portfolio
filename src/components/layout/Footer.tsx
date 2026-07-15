@@ -59,6 +59,7 @@ function LocalTime() {
  * normal footer without JS; only the inner "settle" drift is scripted.
  */
 export function Footer() {
+  const footerRef = useRef<HTMLElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
   const reduced = usePrefersReducedMotion();
   const pathname = usePathname();
@@ -73,37 +74,55 @@ export function Footer() {
     }
   };
 
+  // Finale choreography, scrubbed over the last stretch of scroll: the earth
+  // rim rises into place, the content settles, and the giant name brightens
+  // last — the sunrise happens because the visitor scrolled.
   useEffect(() => {
+    const root = footerRef.current;
     const inner = innerRef.current;
-    if (!inner || reduced) return;
+    if (!root || !inner || reduced) return;
 
     gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        inner,
-        { yPercent: -10, opacity: 0.55 },
-        {
-          yPercent: 0,
-          opacity: 1,
-          ease: "none",
-          scrollTrigger: {
-            start: () => ScrollTrigger.maxScroll(window) - window.innerHeight * 0.7,
-            end: "max",
-            scrub: 0.4,
-          },
-        }
-      );
-    }, inner);
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          start: () => ScrollTrigger.maxScroll(window) - window.innerHeight * 0.7,
+          end: "max",
+          scrub: 0.4,
+        },
+      });
+      tl.fromTo(
+        ".footer-horizon",
+        { yPercent: 22 },
+        { yPercent: 0, ease: "none", duration: 1 },
+        0
+      )
+        .fromTo(
+          inner,
+          { yPercent: -10, opacity: 0.55 },
+          { yPercent: 0, opacity: 1, ease: "none", duration: 1 },
+          0
+        )
+        .fromTo(
+          ".footer-name",
+          { opacity: 0.3 },
+          { opacity: 1, ease: "none", duration: 0.7 },
+          0.3
+        );
+    }, root);
 
     return () => ctx.revert();
   }, [reduced]);
 
   return (
-    <footer className="sticky bottom-0 z-0 overflow-hidden md:h-[78svh]">
-      {/* Deep-space backdrop: twinkling stars over an event-horizon arc. */}
+    <footer ref={footerRef} className="sticky bottom-0 z-0 overflow-hidden md:h-[78svh]">
+      {/* Deep-space backdrop: twinkling stars over an event-horizon arc.
+          The horizon wrapper is translated by the finale scrub. */}
       <div aria-hidden className="absolute inset-0">
         <Starfield density={0.00012} />
-        <HorizonGlow />
+        <div className="footer-horizon absolute inset-0">
+          <HorizonGlow />
+        </div>
       </div>
 
       <div
@@ -119,7 +138,7 @@ export function Footer() {
             scroll={false}
             onClick={scrollToTop}
             aria-label={`${PROFILE.name} — back to top`}
-            className="group flex select-none"
+            className="footer-name group flex select-none"
           >
             {Array.from(NAME).map((char, i) => (
               <span

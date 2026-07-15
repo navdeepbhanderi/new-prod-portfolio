@@ -83,7 +83,11 @@ Rules:
 - Parallax: framer `useScroll` + `useTransform`, ±6–18% translation max. Oversized section
   numerals (`ParallaxNumeral`, indices 01–04) drift `yPercent 18→-18` behind headings.
 - Scroll-velocity effects (`VelocityMarquee`): targets are pushed by Lenis velocity and decay
-  back in a `gsap.ticker` loop — effects must always settle to rest on their own.
+  back in a `gsap.ticker` loop — effects must always settle to rest on their own. Hover slows
+  the row to a readable crawl (timeScale →0.12, hover-capable pointers only).
+- Case studies get a **reading rail** (`ReadingRail`, fixed right, `xl+` only): one dot per
+  narrative block (`#cs-*` ids on `Block`), active dot stretches to a labelled bar via
+  IntersectionObserver (`useActiveSection`), click = `lenis.scrollTo(el, { offset: -110 })`.
 - **Route transitions:** `next-view-transitions` wraps the root layout; a project's visual
   carries `view-transition-name: project-<id>` on both the deck card link and the case-study
   hero so the card morphs into the page. Case-study navigations must use that package's
@@ -120,6 +124,9 @@ Rules:
 2. **Hero:** char-reveal first name (gradient) over outlined surname (`.hero-surname-char`),
    3-depth pointer parallax (bg ×-36 inverted, copy ×12, portrait ×22 + ≤2.5° rotate);
    below `lg` the portrait becomes a small glass-ringed circle above the badge.
+   **Exit choreography:** scrubbed to scroll-out — copy drifts −70px, portrait −130px
+   (deeper layer exits faster), both fading; framer motion values on wrapper layers
+   OUTSIDE the pointer-parallax wrappers, gated by `usePrefersReducedMotion`.
 3. **Projects deck:** sticky stacking cards + terminal "MORE → GitHub" archive card. Inside
    each card the mock and index numeral parallax in opposite directions; card hover plays the
    mock's micro-story (itinerary days cascade + destination pings / last roster dot checks in).
@@ -129,7 +136,10 @@ Rules:
    hover, never cached.
 5. **Footer finale:** sticky-bottom uncover (`<main>` is opaque z-10 and lifts away; footer
    `sticky bottom-0 z-0` — z must stay ≥0 or it becomes unclickable), starfield with rare
-   shooting stars (~every 9–18s, thin gradient streak, none under reduced motion) + `HorizonGlow`
+   shooting stars (~every 9–18s, thin gradient streak, none under reduced motion) + `HorizonGlow`.
+   **Finale scrub** (one GSAP timeline over the last 0.7 viewport): `.footer-horizon`
+   rises (yPercent 22→0), the inner content settles, and `.footer-name` brightens last
+   (opacity 0.3→1 starting at t=0.3) — the sunrise happens because the visitor scrolled.
    (earth rim, apex must stay inside its masked container; mask prevents bloom seams),
    `.text-horizon-lit` giant name, live IST clock.
 

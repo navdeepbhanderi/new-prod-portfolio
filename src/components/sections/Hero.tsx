@@ -1,7 +1,8 @@
 "use client";
 
+import { useRef } from "react";
 import Link from "next/link";
-import { motion, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowDown, ArrowUpRight, FileText, MapPin } from "lucide-react";
 import { PROFILE } from "@/lib/profile";
 import { SOCIALS } from "@/data/socials";
@@ -14,10 +15,12 @@ import { SwapText } from "@/components/ui/SwapText";
 import { fadeUpBlur, EASE_IN_OUT, EASE_OUT } from "@/lib/motion";
 import { useIntroDone } from "@/lib/intro";
 import { useMouseParallax } from "@/hooks/use-mouse-parallax";
+import { usePrefersReducedMotion } from "@/hooks/use-media-query";
 
 export function Hero() {
   const done = useIntroDone();
   const state = done ? "visible" : "hidden";
+  const reduced = usePrefersReducedMotion();
 
   const pointer = useMouseParallax();
   // Three depths: background drifts opposite the cursor, copy barely,
@@ -31,8 +34,22 @@ export function Hero() {
   const portraitRotateY = useTransform(pointer.x, (v) => v * 4);
   const portraitRotateX = useTransform(pointer.y, (v) => v * -4);
 
+  // Exit choreography: as the hero scrolls out, copy and portrait drift up
+  // at different rates while fading — the inverse of the preloader handoff,
+  // so hero → About reads as one continuous camera move.
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const copyExitY = useTransform(scrollYProgress, [0, 1], [0, -70]);
+  const copyExitOpacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
+  const portraitExitY = useTransform(scrollYProgress, [0, 1], [0, -130]);
+  const portraitExitOpacity = useTransform(scrollYProgress, [0.05, 0.85], [1, 0]);
+
   return (
     <section
+      ref={sectionRef}
       id="hero"
       className="relative flex min-h-[100svh] items-center overflow-hidden pt-28 pb-16"
     >
@@ -57,7 +74,8 @@ export function Hero() {
       </motion.div>
 
       <div className="container-px grid grid-cols-1 items-center gap-12 lg:grid-cols-[1.4fr_1fr]">
-        {/* Left: copy */}
+        {/* Left: copy — outer layer scrubs the exit, inner keeps pointer parallax */}
+        <motion.div style={reduced ? undefined : { y: copyExitY, opacity: copyExitOpacity }}>
         <motion.div
           style={{ x: copyX, y: copyY }}
           className="flex flex-col items-start"
@@ -190,8 +208,9 @@ export function Hero() {
             </div>
           </motion.div>
         </motion.div>
+        </motion.div>
 
-        {/* Right: portrait */}
+        {/* Right: portrait — exits faster than the copy (deeper layer) */}
         <motion.div
           variants={{
             hidden: { opacity: 0, scale: 0.96, filter: "blur(12px)" },
@@ -206,6 +225,9 @@ export function Hero() {
           animate={state}
           className="relative mx-auto hidden w-full max-w-sm lg:block xl:max-w-md"
         >
+          <motion.div
+            style={reduced ? undefined : { y: portraitExitY, opacity: portraitExitOpacity }}
+          >
           <motion.div
             style={{
               x: portraitX,
@@ -222,6 +244,7 @@ export function Hero() {
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
               </div>
             </div>
+          </motion.div>
           </motion.div>
         </motion.div>
       </div>

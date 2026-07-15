@@ -47,13 +47,16 @@ export function VelocityMarquee({
 
     // Velocity spikes push the targets up; the ticker eases toward them and
     // decays them back to rest, so the marquee always settles on its own.
+    // Hovering slows the row to a readable crawl (desktop pointers only).
     let speed = 1;
     let speedTarget = 1;
     let skew = 0;
     let skewTarget = 0;
+    let hovered = false;
 
     const onTick = () => {
-      speed += (speedTarget - speed) * 0.1;
+      const target = hovered ? 0.12 : speedTarget;
+      speed += (target - speed) * 0.1;
       skew += (skewTarget - skew) * 0.1;
       speedTarget += (1 - speedTarget) * 0.04;
       skewTarget -= skewTarget * 0.04;
@@ -68,10 +71,24 @@ export function VelocityMarquee({
     };
     lenis?.on("scroll", onScroll);
 
+    const canHover = window.matchMedia("(hover: hover)").matches;
+    const onEnter = () => {
+      hovered = true;
+    };
+    const onLeave = () => {
+      hovered = false;
+    };
+    if (canHover) {
+      row.addEventListener("pointerenter", onEnter, { passive: true });
+      row.addEventListener("pointerleave", onLeave, { passive: true });
+    }
+
     return () => {
       lenis?.off("scroll", onScroll);
       gsap.ticker.remove(onTick);
       tween.kill();
+      row.removeEventListener("pointerenter", onEnter);
+      row.removeEventListener("pointerleave", onLeave);
       gsap.set(row, { skewX: 0, clearProps: "transform" });
     };
   }, [reduced, reverse, lenis]);

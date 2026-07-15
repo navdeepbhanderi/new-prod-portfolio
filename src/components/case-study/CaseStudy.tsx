@@ -11,6 +11,7 @@ import { BlurReveal } from "@/components/ui/BlurReveal";
 import { CharReveal } from "@/components/ui/CharReveal";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { ProductMock } from "@/components/ui/ProductMock";
+import { ReadingRail } from "@/components/case-study/ReadingRail";
 import { cn } from "@/lib/utils";
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
@@ -23,14 +24,17 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 }
 
 function Block({
+  id,
   eyebrow,
   children,
 }: {
+  /** Anchor for the reading rail. */
+  id: string;
   eyebrow: string;
   children: React.ReactNode;
 }) {
   return (
-    <div className="border-t border-border/60 pt-10">
+    <div id={id} className="scroll-mt-28 border-t border-border/60 pt-10">
       <BlurReveal>
         <Eyebrow>{eyebrow}</Eyebrow>
       </BlurReveal>
@@ -85,6 +89,7 @@ export function CaseStudy({
 
   return (
     <article className="relative">
+      <ReadingRail />
       {/* ---------- Hero ---------- */}
       <header className="container-px pt-32 sm:pt-36">
         <BlurReveal>
@@ -199,7 +204,7 @@ export function CaseStudy({
 
         {/* Narrative */}
         <div className="flex min-w-0 flex-col gap-14">
-          <Block eyebrow="Overview">
+          <Block id="cs-overview" eyebrow="Overview">
             <BlurReveal delay={0.05}>
               <p className="max-w-3xl text-[clamp(1.15rem,1.8vw,1.45rem)] font-medium leading-relaxed text-foreground/90">
                 {project.description}
@@ -207,7 +212,7 @@ export function CaseStudy({
             </BlurReveal>
           </Block>
 
-          <Block eyebrow="The problem">
+          <Block id="cs-problem" eyebrow="The problem">
             <BlurReveal delay={0.05}>
               <p className="max-w-3xl leading-relaxed text-muted-foreground">
                 {caseStudy.problem}
@@ -215,7 +220,7 @@ export function CaseStudy({
             </BlurReveal>
           </Block>
 
-          <Block eyebrow="The approach">
+          <Block id="cs-approach" eyebrow="The approach">
             <div className="flex flex-col">
               {caseStudy.approach.map((step, i) => (
                 <BlurReveal key={step.title} delay={i * 0.06}>
@@ -242,7 +247,7 @@ export function CaseStudy({
             </div>
           </Block>
 
-          <Block eyebrow="Key features">
+          <Block id="cs-features" eyebrow="Key features">
             <ul className="grid gap-3 sm:grid-cols-2">
               {project.highlights.map((h, i) => (
                 <BlurReveal key={h} delay={i * 0.05} as="li">
@@ -257,7 +262,7 @@ export function CaseStudy({
             </ul>
           </Block>
 
-          <Block eyebrow="The outcome">
+          <Block id="cs-outcome" eyebrow="The outcome">
             <BlurReveal delay={0.05}>
               <div className="relative max-w-3xl rounded-2xl border border-border bg-foreground/[0.02] p-6 sm:p-8">
                 <span

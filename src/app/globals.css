@@ -256,7 +256,12 @@
 
 /* Shared-element route transitions (next-view-transitions): the project deck
    visual morphs into the case-study hero via matching view-transition-name.
-   Keep the crossfade brisk; the morphing pair uses the browser default. */
+   Groups (the morphing pair) use the site's expo ease; the root crossfade
+   stays brisk. */
+::view-transition-group(*) {
+  animation-duration: 0.45s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1); /* EASE_OUT_EXPO */
+}
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation-duration: 0.3s;
