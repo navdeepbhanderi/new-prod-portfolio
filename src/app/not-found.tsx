@@ -3,7 +3,6 @@ import Link from "next/link";
 import { ArrowLeft, FolderKanban } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Starfield } from "@/components/ui/Starfield";
-import { HorizonGlow } from "@/components/ui/HorizonGlow";
 
 export const metadata: Metadata = {
   title: "404 — Page not found",
@@ -13,10 +12,11 @@ export const metadata: Metadata = {
 export default function NotFound() {
   return (
     <section className="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden px-6 py-32 text-center">
-      {/* Lost in space — same sky as the preloader and footer. */}
+      {/* Lost in space — stars only; the global footer right below this
+          section already carries the horizon, so a second earth here would
+          stack two rims on screen. */}
       <div aria-hidden className="absolute inset-0 -z-10">
         <Starfield density={0.0001} className="opacity-80" />
-        <HorizonGlow className="opacity-70" />
       </div>
 
       <p className="font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground">
