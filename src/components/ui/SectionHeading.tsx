@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { BlurReveal } from "./BlurReveal";
 import { TextReveal } from "./TextReveal";
+import { ScrambleText } from "./ScrambleText";
 
 type SectionHeadingProps = {
   eyebrow: string;
@@ -28,7 +29,7 @@ export function SectionHeading({
       <BlurReveal>
         <span className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.25em] text-muted-foreground">
           <span className="h-px w-6 bg-foreground/30" aria-hidden />
-          {eyebrow}
+          <ScrambleText text={eyebrow} />
         </span>
       </BlurReveal>
       <div data-cursor="invert">

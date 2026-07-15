@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import { ownerNotificationEmail, autoReplyEmail } from "@/lib/email/templates";
 import { PROFILE } from "@/lib/profile";
+import { createRateLimiter, clientIp } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -42,20 +43,8 @@ function validate(body: Record<string, unknown>): {
   return { errors, data: { name, email, message } };
 }
 
-// Best-effort in-memory rate limit (per serverless instance): 5 / hour / IP.
-const WINDOW_MS = 60 * 60 * 1000;
-const MAX_PER_WINDOW = 5;
-const hits = new Map<string, number[]>();
-
-function rateLimited(ip: string): boolean {
-  const now = Date.now();
-  const recent = (hits.get(ip) ?? []).filter((t) => now - t < WINDOW_MS);
-  if (recent.length >= MAX_PER_WINDOW) return true;
-  recent.push(now);
-  hits.set(ip, recent);
-  if (hits.size > 5000) hits.clear(); // memory backstop
-  return false;
-}
+// 5 messages / hour / IP.
+const rateLimited = createRateLimiter({ windowMs: 60 * 60 * 1000, max: 5 });
 
 export async function POST(req: Request) {
   let body: Record<string, unknown>;
@@ -75,9 +64,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, errors }, { status: 400 });
   }
 
-  const ip =
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
-  if (rateLimited(ip)) {
+  if (rateLimited(clientIp(req))) {
     return NextResponse.json(
       { ok: false, error: "Too many messages — please try again in a while." },
       { status: 429 }

@@ -17,8 +17,9 @@ pipeline — live at **[navdeepbhanderi.dev](https://navdeepbhanderi.dev)**.
   with hide-on-scroll, 3D tilt cards, text-swap buttons, ⌘K command palette.
 - **Case studies** — `/projects/[slug]` pages (problem → approach → features →
   outcome) with per-page SEO and JSON-LD.
-- **Ask Navdeep AI** — chat assistant (Gemini when configured, local knowledge
-  base fallback), lazy-loaded on idle.
+- **Nova (Ask AI)** — chat assistant (streamed Gemini replies when configured,
+  local knowledge base fallback) with tappable action buttons, lazy-loaded on
+  idle, rate-limited.
 - **Contact pipeline** — validated form with honeypot + rate limiting; sends an
   owner notification **and** a themed auto-reply via Gmail SMTP.
 - **SEO** — Person/WebSite/ProfilePage JSON-LD graph, manifest + full favicon
@@ -65,8 +66,8 @@ npm run build && npm start   # production build (stop `dev` first — shared .ne
 
 - [ ] **Add the Gmail App Password** to env (`GMAIL_APP_PASSWORD`) and send a
       test message through the form — both emails should arrive styled.
-- [ ] **Add `GEMINI_API_KEY`** so Ask Navdeep AI gives real answers
-      (`source: "gemini"` in the `/api/chat` response confirms it).
+- [ ] **Add `GEMINI_API_KEY`** so Nova gives real answers
+      (the `x-chat-source: gemini` response header on `/api/chat` confirms it).
 - [ ] Deploy to Vercel, attach **navdeepbhanderi.dev**, set all env vars.
 - [ ] Validate the share card at [opengraph.xyz](https://www.opengraph.xyz) and
       run [Rich Results Test](https://search.google.com/test/rich-results).
@@ -100,7 +101,9 @@ PWA/offline, i18n, and more animation — the current density is the sweet spot.
 
 ## Verification habits
 
-- `npm run lint` + `npm run build` must stay clean.
+- `npm run lint` + `npm run build` must stay clean — CI
+  (`.github/workflows/ci.yml`) enforces lint, typecheck, and build on every
+  push and PR.
 - Never run `npm run build` while `next dev` is running — they share `.next`.
 - Walk the site after visual changes: preloader (fresh session), hero, deck,
   case studies, footer horizon, ⌘K palette, contact form states — desktop + mobile.

@@ -3,11 +3,12 @@
 import { MapPin, Sparkles, BadgeCheck } from "lucide-react";
 import { PROFILE } from "@/lib/profile";
 import { BlurReveal } from "@/components/ui/BlurReveal";
-import { TextReveal } from "@/components/ui/TextReveal";
+import { KineticText } from "@/components/ui/KineticText";
+import { ScrambleText } from "@/components/ui/ScrambleText";
 
 const FACTS = [
   { icon: MapPin, label: "Based in", value: PROFILE.location },
-  { icon: Sparkles, label: "Focus", value: "Full-stack · AI · Web3" },
+  { icon: Sparkles, label: "Focus", value: "Full-stack · Applied AI" },
   { icon: BadgeCheck, label: "Status", value: "Open to opportunities" },
 ] as const;
 
@@ -23,15 +24,14 @@ export function About() {
         <BlurReveal>
           <span className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.25em] text-muted-foreground">
             <span className="h-px w-6 bg-foreground/30" aria-hidden />
-            About
+            <ScrambleText text="About" />
           </span>
         </BlurReveal>
 
         <div>
-          <TextReveal
-            as="p"
+          {/* Kinetic manifesto — each word brightens as it scrolls past. */}
+          <KineticText
             text={PROFILE.summary}
-            stagger={0.012}
             className="max-w-4xl text-[clamp(1.35rem,2.6vw,2.1rem)] font-medium leading-snug tracking-tight text-foreground/90"
           />
 

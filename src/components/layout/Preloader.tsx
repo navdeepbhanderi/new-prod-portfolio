@@ -107,12 +107,32 @@ export function Preloader() {
         0.3
       );
 
-      // Exit: name lifts away, meta fades, curtains follow.
-      tl.to(
-        ".pl-name",
-        { yPercent: -70, opacity: 0, duration: 0.5, ease: "power2.in" },
-        1.75
-      );
+      // Exit: the name *leans* toward the hero name's position while it
+      // dissolves — direction says "handoff", but the travel is capped so it
+      // never reads as darting to a corner. The hero's own char reveal rises
+      // underneath as it fades (intro.complete at 2.05).
+      tl.add(() => {
+        const nameEl = rootRef.current?.querySelector<HTMLElement>(".pl-name");
+        const target = document.getElementById("hero-name");
+        if (!nameEl || !target) {
+          // Fallback: plain lift-away exit.
+          gsap.to(".pl-name", { yPercent: -70, opacity: 0, duration: 0.5, ease: "power2.in" });
+          return;
+        }
+        const a = nameEl.getBoundingClientRect();
+        const b = target.getBoundingClientRect();
+        const dx = (b.left + b.width / 2 - (a.left + a.width / 2)) * 0.22;
+        const dy = (b.top + b.height / 2 - (a.top + a.height / 2)) * 0.3;
+        gsap.to(nameEl, {
+          x: gsap.utils.clamp(-110, 110, dx),
+          y: gsap.utils.clamp(-90, 90, dy),
+          scale: 0.94,
+          opacity: 0,
+          transformOrigin: "50% 50%",
+          duration: 0.55,
+          ease: "power2.inOut",
+        });
+      }, 1.75);
       tl.to(
         [".pl-meta", ".pl-eyebrow"],
         { opacity: 0, duration: 0.3, ease: "power1.out" },

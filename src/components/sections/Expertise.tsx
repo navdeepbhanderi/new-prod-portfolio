@@ -1,5 +1,7 @@
 "use client";
 
+import { useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { EXPERTISE } from "@/data/expertise";
 import { SKILL_MARQUEE } from "@/data/skills";
 import type { ExpertiseCategory } from "@/types";
@@ -8,6 +10,10 @@ import { GlassCard } from "@/components/ui/GlassCard";
 import { BlurReveal } from "@/components/ui/BlurReveal";
 import { VelocityMarquee } from "@/components/ui/VelocityMarquee";
 import { ParallaxNumeral } from "@/components/ui/ParallaxNumeral";
+import { DUR, EASE_OUT } from "@/lib/motion";
+import { useIsTouch, usePrefersReducedMotion } from "@/hooks/use-media-query";
+
+type ConstellationLine = { x1: number; y1: number; x2: number; y2: number };
 
 function DomainCard({
   category,
@@ -22,7 +28,10 @@ function DomainCard({
     <GlassCard className="h-full rounded-3xl p-6 sm:p-7">
       <div className="flex h-full flex-col">
         <div className="flex items-start justify-between">
-          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-border bg-foreground/5 text-foreground/70 transition-colors duration-300 group-hover:border-foreground/20 group-hover:bg-foreground group-hover:text-background">
+          <span
+            data-node={category.id}
+            className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-border bg-foreground/5 text-foreground/70 transition-colors duration-300 group-hover:border-foreground/20 group-hover:bg-foreground group-hover:text-background"
+          >
             <Icon className="h-5 w-5" />
           </span>
           <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
@@ -55,6 +64,40 @@ function DomainCard({
 }
 
 export function Expertise() {
+  const gridRef = useRef<HTMLDivElement>(null);
+  const [lines, setLines] = useState<ConstellationLine[]>([]);
+  const isTouch = useIsTouch();
+  const reduced = usePrefersReducedMotion();
+  const constellation = !isTouch && !reduced;
+
+  // "A connected ecosystem" — literally: hovering a domain draws hairlines
+  // from its icon to every other domain's icon. Positions are measured on
+  // hover (6 rects, cheap) so resize/layout changes never go stale.
+  const connect = (id: string) => {
+    const root = gridRef.current;
+    if (!constellation || !root) return;
+    const rootRect = root.getBoundingClientRect();
+    const nodes = Array.from(root.querySelectorAll<HTMLElement>("[data-node]"));
+    const from = nodes.find((n) => n.dataset.node === id);
+    if (!from) return;
+    const center = (el: HTMLElement) => {
+      const r = el.getBoundingClientRect();
+      return {
+        x: r.left + r.width / 2 - rootRect.left,
+        y: r.top + r.height / 2 - rootRect.top,
+      };
+    };
+    const f = center(from);
+    setLines(
+      nodes
+        .filter((n) => n !== from)
+        .map((n) => {
+          const t = center(n);
+          return { x1: f.x, y1: f.y, x2: t.x, y2: t.y };
+        })
+    );
+  };
+
   return (
     <section
       id="expertise"
@@ -68,12 +111,48 @@ export function Expertise() {
           description="Every domain and the technologies behind it — visible at a glance, no digging required."
         />
 
-        <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
+        <div
+          ref={gridRef}
+          onMouseLeave={() => setLines([])}
+          className="relative mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5"
+        >
           {EXPERTISE.map((cat, i) => (
             <BlurReveal key={cat.id} delay={i * 0.07} className="h-full">
-              <DomainCard category={cat} index={i} />
+              <div onMouseEnter={() => connect(cat.id)} className="h-full">
+                <DomainCard category={cat} index={i} />
+              </div>
             </BlurReveal>
           ))}
+
+          {constellation && (
+            <svg
+              aria-hidden
+              className="pointer-events-none absolute inset-0 z-10 h-full w-full"
+            >
+              <AnimatePresence>
+                {lines.map((l, i) => (
+                  <motion.line
+                    key={`${l.x2}-${l.y2}`}
+                    x1={l.x1}
+                    y1={l.y1}
+                    x2={l.x2}
+                    y2={l.y2}
+                    stroke="hsl(0 0% 98% / 0.16)"
+                    strokeWidth={1}
+                    initial={{ pathLength: 0, opacity: 0 }}
+                    animate={{ pathLength: 1, opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{
+                      duration: DUR.base,
+                      ease: EASE_OUT,
+                      delay: i * 0.045,
+                      opacity: { duration: DUR.fast },
+                    }}
+                  />
+                ))}
+              </AnimatePresence>
+            </svg>
+          )}
         </div>
       </div>
 

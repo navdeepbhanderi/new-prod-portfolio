@@ -36,7 +36,9 @@ const config: Config = {
         mono: ["var(--font-mono)", "ui-monospace", "monospace"],
       },
       maxWidth: {
-        container: "1200px",
+        // Wide enough that 1920px screens don't feel like a centered column;
+        // container-px padding still protects laptops.
+        container: "1400px",
       },
       borderRadius: {
         xl: "calc(var(--radius) + 4px)",

@@ -128,11 +128,17 @@
     color: transparent;
   }
 
-  /* Classy tinted name gradient — white fading into a soft cool silver.
-     Use on a single, non-animated element (no per-letter transforms) so the
-     background-clip stays intact. */
+  /* Classy tinted name gradient — solid white holding through most of the
+     glyph, easing into a soft cool silver only at the baseline so the name
+     reads bright, not washed out. Apply per-character when chars are
+     transformed (background-clip breaks across transformed children). */
   .text-name-gradient {
-    background: linear-gradient(170deg, hsl(0 0% 100%) 0%, hsl(225 28% 70%) 100%);
+    background: linear-gradient(
+      180deg,
+      hsl(0 0% 100%) 0%,
+      hsl(0 0% 100%) 48%,
+      hsl(228 24% 82%) 100%
+    );
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -178,23 +184,20 @@
     color: transparent;
     -webkit-text-stroke: 1px hsl(var(--foreground) / 0.45);
   }
-  /* Hero surname — outlined display type with a faint silver fill so the
-     letters are visible even if -webkit-text-stroke rendering varies. Applied
-     per-character via CharReveal's charClassName prop. */
+  /* Hero surname — a crisp hairline outline with a faint bottom-lit fill.
+     1px keeps the stroke sharp; the fill fades out by mid-glyph so the
+     letters stay airy instead of flat gray. Applied per-character via
+     CharReveal's charClassName prop. */
   .hero-surname-char {
     color: transparent;
-    -webkit-text-stroke: 1.5px hsl(var(--foreground) / 0.7);
-    background: linear-gradient(
-      to top,
-      hsl(225 30% 80% / 0.3) 0%,
-      hsl(0 0% 100% / 0.08) 100%
-    );
+    -webkit-text-stroke: 1px hsl(var(--foreground) / 0.5);
+    background: linear-gradient(to top, hsl(228 30% 82% / 0.22) 0%, transparent 62%);
     -webkit-background-clip: text;
     background-clip: text;
     transition: -webkit-text-stroke-color 0.4s ease;
   }
   .hero-surname-char:hover {
-    -webkit-text-stroke-color: hsl(var(--foreground) / 0.9);
+    -webkit-text-stroke-color: hsl(var(--foreground) / 0.85);
   }
 
   /* Outlined display type lit from below — pairs with the horizon glow. */
@@ -223,6 +226,20 @@
   }
 }
 
+/* Chat streaming: each newly revealed word materializes instead of popping.
+   Killed by the global reduced-motion query (words appear instantly). */
+@keyframes chat-word-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.chat-word-in {
+  animation: chat-word-in 0.35s ease-out both;
+}
+
 /* Event-horizon glow breathing (see ui/HorizonGlow.tsx) */
 @keyframes horizon-breathe {
   0%,
@@ -235,6 +252,22 @@
 }
 .animate-horizon {
   animation: horizon-breathe 7s ease-in-out infinite;
+}
+
+/* Shared-element route transitions (next-view-transitions): the project deck
+   visual morphs into the case-study hero via matching view-transition-name.
+   Keep the crossfade brisk; the morphing pair uses the browser default. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.3s;
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-image-pair(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
 }
 
 /* Film grain overlay */

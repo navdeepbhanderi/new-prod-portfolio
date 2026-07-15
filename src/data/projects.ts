@@ -18,6 +18,7 @@ export const PROJECTS: Project[] = [
     ],
     stack: ["Next.js", "TypeScript", "Node.js", "Generative AI", "TailwindCSS"],
     accent: "from-sky-500/25 via-indigo-500/15 to-transparent",
+    visual: "itinerary",
     caseStudy: {
       problem:
         "Planning a real trip means hours of tab-juggling — comparing flights, cross-checking hotels, stitching activities into a schedule that actually works. Generic packages ignore budget, dates, and taste; fully manual planning doesn't scale past a weekend getaway. The gap: turning one plain-language request into a complete, bookable plan.",
@@ -64,6 +65,7 @@ export const PROJECTS: Project[] = [
     ],
     stack: ["React", "Node.js", "Express.js", "Real-time", "TailwindCSS"],
     accent: "from-emerald-500/25 via-teal-500/15 to-transparent",
+    visual: "roster",
     caseStudy: {
       problem:
         "Proxy attendance is the open secret of every campus: one student signs in for three, and manual roll calls burn lecture time while still producing unreliable records. Institutions needed attendance they could trust without adding friction for honest students — or new hardware.",

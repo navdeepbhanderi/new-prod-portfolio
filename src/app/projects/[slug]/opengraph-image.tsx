@@ -1,10 +1,26 @@
 import { ImageResponse } from "next/og";
+import { PROJECTS } from "@/data/projects";
+import { PROFILE } from "@/lib/profile";
 
-export const alt = "Navdeep Bhanderi — Software Engineer";
+export const alt = "Case study — Navdeep Bhanderi";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-export default function OGImage() {
+export function generateStaticParams() {
+  return PROJECTS.map((p) => ({ slug: p.id }));
+}
+
+export default async function OGImage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const project = PROJECTS.find((p) => p.id === slug);
+  const title = project?.title ?? PROFILE.name;
+  const tagline = project?.tagline ?? PROFILE.headline;
+  const stack = project?.stack ?? [];
+
   return new ImageResponse(
     (
       <div
@@ -44,20 +60,18 @@ export default function OGImage() {
           >
             NB
           </div>
-          navdeepbhanderi
+          Case study
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          <div style={{ fontSize: 84, fontWeight: 700, letterSpacing: -2, lineHeight: 1 }}>
-            Navdeep Bhanderi
+          <div style={{ fontSize: 72, fontWeight: 700, letterSpacing: -2, lineHeight: 1.05 }}>
+            {title}
           </div>
-          <div style={{ fontSize: 36, color: "#a1a1aa", maxWidth: 900 }}>
-            Building AI-powered products and modern web applications.
-          </div>
+          <div style={{ fontSize: 34, color: "#a1a1aa", maxWidth: 940 }}>{tagline}</div>
         </div>
 
         <div style={{ display: "flex", gap: 12, fontSize: 24, color: "#71717a" }}>
-          {["Next.js", "React", "Node.js", "TypeScript", "Generative AI"].map((t) => (
+          {stack.slice(0, 5).map((t) => (
             <div
               key={t}
               style={{

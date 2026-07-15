@@ -13,9 +13,11 @@ import { cn } from "@/lib/utils";
 export function ProfileImage({
   className,
   priority = false,
+  sizes = "(min-width: 1280px) 28rem, (min-width: 1024px) 24rem, 90vw",
 }: {
   className?: string;
   priority?: boolean;
+  sizes?: string;
 }) {
   const [failed, setFailed] = useState(false);
 
@@ -39,7 +41,7 @@ export function ProfileImage({
       src="/navdeep.webp"
       alt="Portrait of Navdeep Bhanderi, software engineer"
       fill
-      sizes="(min-width: 1024px) 24rem, 90vw"
+      sizes={sizes}
       priority={priority}
       onError={() => setFailed(true)}
       className={cn("object-cover object-center", className)}

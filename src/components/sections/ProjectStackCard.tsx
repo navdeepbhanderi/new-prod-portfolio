@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import {
   motion,
   useScroll,
@@ -11,6 +11,7 @@ import {
 import { ArrowUpRight, Check, Code2 } from "lucide-react";
 import type { Project } from "@/types";
 import { GlassCard } from "@/components/ui/GlassCard";
+import { ProductMock } from "@/components/ui/ProductMock";
 import { Tilt } from "@/components/ui/Tilt";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -23,6 +24,8 @@ function ProjectVisual({ project }: { project: Project }) {
     offset: ["start end", "end start"],
   });
   const y = useTransform(scrollYProgress, [0, 1], ["-6%", "6%"]);
+  // Numeral drifts opposite the mock — two depths inside one card.
+  const numeralY = useTransform(scrollYProgress, [0, 1], ["10%", "-10%"]);
 
   return (
     <Link
@@ -32,36 +35,21 @@ function ProjectVisual({ project }: { project: Project }) {
       className="relative z-20 block"
       data-cursor="view"
       data-cursor-label="Open"
+      // Shared element: morphs into the case-study hero visual on navigation.
+      style={{ viewTransitionName: `project-${project.id}` }}
     >
       <Tilt max={5} className="rounded-2xl">
         <GlassCard className="aspect-[4/3] p-0">
         <div className={cn("absolute inset-0 bg-gradient-to-br", project.accent)} />
         <motion.div style={{ y }} className="absolute inset-0 flex items-center justify-center p-8">
-          {/* Stylised product mock */}
-          <div className="glass-strong w-full max-w-md rounded-xl p-3 shadow-2xl shadow-black/40">
-            <div className="mb-3 flex items-center gap-1.5">
-              <span className="h-2.5 w-2.5 rounded-full bg-foreground/20" />
-              <span className="h-2.5 w-2.5 rounded-full bg-foreground/20" />
-              <span className="h-2.5 w-2.5 rounded-full bg-foreground/20" />
-              <span className="ml-2 font-mono text-[10px] text-muted-foreground">
-                {project.id}.app
-              </span>
-            </div>
-            <div className="space-y-2.5">
-              <div className="h-3 w-2/3 rounded-full bg-foreground/15" />
-              <div className="h-3 w-full rounded-full bg-foreground/10" />
-              <div className="grid grid-cols-3 gap-2 pt-1">
-                <div className="h-12 rounded-lg bg-foreground/10" />
-                <div className="h-12 rounded-lg bg-foreground/[0.07]" />
-                <div className="h-12 rounded-lg bg-foreground/10" />
-              </div>
-              <div className="h-3 w-1/2 rounded-full bg-foreground/10" />
-            </div>
-          </div>
+          <ProductMock project={project} size="sm" />
         </motion.div>
-        <span className="absolute right-5 top-4 font-mono text-7xl font-bold text-foreground/[0.06]">
+        <motion.span
+          style={{ y: numeralY }}
+          className="absolute right-5 top-4 font-mono text-7xl font-bold text-foreground/[0.06]"
+        >
           {project.index}
-        </span>
+        </motion.span>
         </GlassCard>
       </Tilt>
     </Link>

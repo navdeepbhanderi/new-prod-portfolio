@@ -2,7 +2,7 @@ import type { Intent } from "@/types";
 import { PROFILE } from "@/lib/profile";
 
 /**
- * Local knowledge base for "Ask Navdeep AI".
+ * Local knowledge base for "Nova", the portfolio's AI assistant.
  * Each intent is matched by keyword/synonym overlap in engine.ts — no API, no cost,
  * deterministic answers grounded in Navdeep's real profile.
  */
@@ -43,6 +43,7 @@ export const INTENTS: Intent[] = [
     answer:
       "Navdeep specializes in modern full-stack development. On the frontend: Angular, React, Next.js, TypeScript, JavaScript, and TailwindCSS. On the backend: Node.js, NestJS, Express.js, and PHP. He also works with Generative AI and LLM tooling, and explores Blockchain, Web3, and smart contracts. Core languages include TypeScript, JavaScript, Java, and C++.",
     related: ["Tell me about his AI experience.", "What projects has he built?"],
+    actions: ["github"],
   },
   {
     id: "ai",
@@ -61,6 +62,7 @@ export const INTENTS: Intent[] = [
     answer:
       "AI is central to how Navdeep builds. He works with Generative AI and LLM tools to design AI workflows and bring intelligence into real products — most notably an AI-powered travel platform that generates complete, personalized travel packages (flights, hotels, activities, transfers, and itineraries) from a single prompt. He's focused on building practical, production-ready AI features.",
     related: ["Tell me about the AI travel app.", "What technologies does he use?"],
+    actions: ["case-ai-travel"],
   },
   {
     id: "projects",
@@ -82,6 +84,7 @@ export const INTENTS: Intent[] = [
     answer:
       "Two featured projects: (1) AI-Powered Travel App — an AI platform that generates personalized travel packages including flights, hotels, activities, transfers, and itineraries, with dynamic recommendations and a polished, responsive UX. (2) Remote-Based Student Attendance System — a hackathon project that validates attendance through college WiFi, with real-time live-lecture tracking, student/teacher/timetable management, and an admin dashboard.",
     related: ["Tell me about his AI experience.", "How can I contact him?"],
+    actions: ["case-ai-travel", "case-attendance"],
   },
   {
     id: "education",
@@ -120,6 +123,7 @@ export const INTENTS: Intent[] = [
     answer:
       "Hire Navdeep if you want an engineer who blends product thinking with technical depth. He ships scalable, user-friendly applications across the full stack (Next.js, React, Angular, Node.js), brings AI capabilities into real features, and learns fast — already extending into AI and blockchain. He cares about quality, clean architecture, and great user experience, and he's pragmatic about delivering results.",
     related: ["What's his experience with AI?", "How can I contact him?"],
+    actions: ["email", "contact"],
   },
   {
     id: "contact",
@@ -141,6 +145,7 @@ export const INTENTS: Intent[] = [
     ],
     answer: `The fastest way to reach Navdeep is email: ${PROFILE.email}. You can also connect on LinkedIn (in/navdeepbhanderi), GitHub (@navdeepbhanderi), or X (@navdeepbhanderi). He's open to full-time opportunities, freelance projects, startup collaborations, and product engineering roles.`,
     related: ["Why should I hire him?", "What does he specialize in?"],
+    actions: ["email", "linkedin"],
   },
   {
     id: "location",
@@ -187,4 +192,7 @@ export const SUGGESTED_QUESTIONS: string[] = [
   "How can I contact him?",
 ];
 
-export const GREETING_MESSAGE = `Hi — I'm ${PROFILE.firstName}'s AI assistant. Ask me anything about his work, skills, or how to reach him.`;
+/** The assistant's name — referenced everywhere, change it here only. */
+export const ASSISTANT_NAME = "Nova";
+
+export const GREETING_MESSAGE = `Hi — I'm ${ASSISTANT_NAME}, ${PROFILE.firstName}'s AI assistant. Ask me anything about his work, skills, or how to reach him.`;

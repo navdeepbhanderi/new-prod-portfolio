@@ -27,6 +27,7 @@ projects → journey → contact → earth-horizon footer.
 | `--muted` / `--muted-foreground` | `240 4% 12%` / `240 5% 58%` | Surfaces / secondary text |
 | `--border` | `240 5% 16%` | All hairlines |
 | `--accent` | `230 60% 66%` | Focus, glow, atmosphere only |
+| status green | Tailwind `emerald-400` | Live/availability dots ONLY — semantic signal, never decorative |
 
 Surfaces: `.glass` (blur 16px, white 3%) and `.glass-strong` (blur 24px, dark 70%) —
 never invent new surface styles. Film grain overlay (`.grain`) sits at z-60 over everything.
@@ -63,6 +64,10 @@ Rules:
 - Blur is **entrance-only**. Never animate `filter` in scrubbed/hover/looping animations (kills FPS).
 - Entrances: `BlurReveal` (block) / `TextReveal` (word) / `CharReveal` (character, SSR-safe split).
   Escalate char-level only for hero + section-finale headlines.
+- `KineticText` — scroll-scrubbed word-by-word brighten (opacity 0.16→1); reserved for the
+  About manifesto. One per page.
+- `ScrambleText` — terminal decode-in for the mono eyebrow/meta layer ONLY (SectionHeading
+  eyebrows, About). Never on body copy or headings.
 - Stagger rhythm: chips 0.04s, chars 0.015–0.045s, cards 0.07s, menu items 0.05s.
 
 ## 5. Scroll choreography rules
@@ -79,6 +84,11 @@ Rules:
   numerals (`ParallaxNumeral`, indices 01–04) drift `yPercent 18→-18` behind headings.
 - Scroll-velocity effects (`VelocityMarquee`): targets are pushed by Lenis velocity and decay
   back in a `gsap.ticker` loop — effects must always settle to rest on their own.
+- **Route transitions:** `next-view-transitions` wraps the root layout; a project's visual
+  carries `view-transition-name: project-<id>` on both the deck card link and the case-study
+  hero so the card morphs into the page. Case-study navigations must use that package's
+  `Link`. Reduced motion kills all view-transition animations (globals.css). One name per
+  element per page — never reuse a `view-transition-name`.
 
 ## 6. Interaction language (micro)
 
@@ -103,12 +113,23 @@ Rules:
 
 1. **Preloader** (once per session, `nv-intro-done` in sessionStorage + pre-paint `<head>`
    script sets `data-intro="done"` on `<html>` — keep `suppressHydrationWarning` there):
-   counter 000→100 + hairline, outlined name fills with light in sync, double-curtain lift
-   (`power4.inOut`), hands off to hero via `intro.complete()` at curtain-start.
-2. **Hero:** char-reveal name, 3-depth pointer parallax (bg ×-36 inverted, copy ×12, portrait ×22 + ≤2.5° rotate).
-3. **Projects deck:** sticky stacking cards + terminal "MORE → GitHub" archive card.
-4. **Footer finale:** sticky-bottom uncover (`<main>` is opaque z-10 and lifts away; footer
-   `sticky bottom-0 z-0` — z must stay ≥0 or it becomes unclickable), starfield + `HorizonGlow`
+   counter 000→100 + hairline, outlined name fills with light in sync, then the name
+   **drifts toward `#hero-name`** (travel capped ±110/90px, scale 0.94, dissolve — a lean,
+   never a full flight) as the double curtain lifts (`power4.inOut`); `intro.complete()`
+   fires at curtain-start so the hero reveal rises underneath.
+2. **Hero:** char-reveal first name (gradient) over outlined surname (`.hero-surname-char`),
+   3-depth pointer parallax (bg ×-36 inverted, copy ×12, portrait ×22 + ≤2.5° rotate);
+   below `lg` the portrait becomes a small glass-ringed circle above the badge.
+3. **Projects deck:** sticky stacking cards + terminal "MORE → GitHub" archive card. Inside
+   each card the mock and index numeral parallax in opposite directions; card hover plays the
+   mock's micro-story (itinerary days cascade + destination pings / last roster dot checks in).
+4. **Expertise constellation:** hovering a domain card draws hairlines (`foreground/16`,
+   pathLength draw, 0.045s stagger) from its icon to the other five icons — desktop
+   hover only, gated by `useIsTouch` + reduced motion. Icon positions are measured on
+   hover, never cached.
+5. **Footer finale:** sticky-bottom uncover (`<main>` is opaque z-10 and lifts away; footer
+   `sticky bottom-0 z-0` — z must stay ≥0 or it becomes unclickable), starfield with rare
+   shooting stars (~every 9–18s, thin gradient streak, none under reduced motion) + `HorizonGlow`
    (earth rim, apex must stay inside its masked container; mask prevents bloom seams),
    `.text-horizon-lit` giant name, live IST clock.
 
