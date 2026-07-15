@@ -36,7 +36,7 @@ export function Contact() {
         <BlurReveal>
           <span className="inline-flex items-center gap-2 rounded-full border border-border bg-foreground/5 px-4 py-1.5 font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-            Available for work
+            Open to opportunities
           </span>
         </BlurReveal>
 

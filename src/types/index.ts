@@ -19,6 +19,8 @@ export type Project = {
   highlights: string[];
   stack: string[];
   accent: string; // gradient classes for the visual
+  /** Which stylised product mock to render until real screenshots exist. */
+  visual?: "itinerary" | "roster";
   /** Optional proof links — buttons render only when provided. */
   links?: { live?: string; repo?: string };
   /** Long-form content for the /projects/[slug] case study page. */
@@ -56,4 +58,6 @@ export type Intent = {
   keywords: string[];
   answer: string;
   related?: string[];
+  /** Keys into CHAT_ACTIONS — tappable buttons attached to the answer. */
+  actions?: string[];
 };

@@ -1,8 +1,10 @@
 import type { Metadata, Viewport } from "next";
+import { ViewTransitions } from "next-view-transitions";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
+import { HashScroll } from "@/components/layout/HashScroll";
 import { MotionProvider } from "@/components/layout/MotionProvider";
 import { Preloader } from "@/components/layout/Preloader";
 import { CommandPalette } from "@/components/layout/CommandPalette";
@@ -21,7 +23,7 @@ export const metadata: Metadata = {
     template: "%s — Navdeep Bhanderi",
   },
   description:
-    "Software engineer building AI-powered products, modern web applications, and scalable digital experiences with Next.js, React, Angular, and Node.js.",
+    "Software engineer building AI-powered products and modern web applications with Next.js, React, Angular, and Node.js — end to end, from idea to production.",
   keywords: [
     "Navdeep Bhanderi",
     "Software Engineer",
@@ -32,7 +34,6 @@ export const metadata: Metadata = {
     "Node.js",
     "AI",
     "Generative AI",
-    "Web3",
     "India",
   ],
   authors: [{ name: "Navdeep Bhanderi", url: SITE_URL }],
@@ -49,13 +50,13 @@ export const metadata: Metadata = {
     siteName: "Navdeep Bhanderi",
     title: "Navdeep Bhanderi — Software Engineer",
     description:
-      "Building AI-powered products, modern web applications, and scalable digital experiences with Next.js, React, Angular, and Node.js.",
+      "Building AI-powered products and modern web applications with Next.js, React, Angular, and Node.js.",
   },
   twitter: {
     card: "summary_large_image",
     title: "Navdeep Bhanderi — Software Engineer",
     description:
-      "Building AI-powered products, modern web applications, and scalable digital experiences.",
+      "Building AI-powered products and modern web applications — end to end, from idea to production.",
     creator: "@NavdeepBhanderi",
   },
   robots: {
@@ -74,6 +75,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
+    <ViewTransitions>
     <html
       lang="en"
       className={`${GeistSans.variable} ${GeistMono.variable}`}
@@ -102,6 +104,7 @@ export default function RootLayout({
         </a>
         <SmoothScroll>
           <MotionProvider>
+            <HashScroll />
             <Preloader />
             <CommandPalette />
             <CustomCursor />
@@ -119,5 +122,6 @@ export default function RootLayout({
         </SmoothScroll>
       </body>
     </html>
+    </ViewTransitions>
   );
 }

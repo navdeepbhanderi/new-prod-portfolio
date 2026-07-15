@@ -13,6 +13,7 @@ import { Starfield } from "@/components/ui/Starfield";
 import { HorizonGlow } from "@/components/ui/HorizonGlow";
 import { useMounted } from "@/hooks/use-mounted";
 import { usePrefersReducedMotion } from "@/hooks/use-media-query";
+import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { useLenis } from "@/components/layout/SmoothScroll";
 
@@ -38,10 +39,16 @@ function LocalTime() {
     return () => clearInterval(id);
   }, [mounted]);
 
-  if (!mounted || !time) return null;
+  // Render a same-width invisible placeholder until the clock is live so the
+  // justify-between row doesn't reflow when the time pops in.
   return (
-    <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
-      Junagadh, IN · {time} IST
+    <span
+      className={cn(
+        "font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground",
+        !time && "invisible"
+      )}
+    >
+      Junagadh, IN · {time || "00:00"} IST
     </span>
   );
 }
@@ -124,6 +131,8 @@ export function Footer() {
               </span>
             ))}
           </Link>
+          {/* Over the starfield the standard border/muted treatment vanishes —
+              these need a filled glass disc and brighter strokes to read. */}
           <div className="mt-2 flex items-center gap-3">
             {SOCIALS.map((social) => {
               const Icon = BRAND_ICONS[social.icon];
@@ -134,9 +143,9 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.label}
-                  className="grid h-10 w-10 place-items-center rounded-full border border-border text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground"
+                  className="grid h-11 w-11 place-items-center rounded-full border border-foreground/15 bg-foreground/[0.06] text-foreground/80 backdrop-blur-sm transition-all duration-300 hover:border-foreground/40 hover:bg-foreground/10 hover:text-foreground"
                 >
-                  <Icon className="h-4 w-4" />
+                  <Icon className="h-[1.1rem] w-[1.1rem]" />
                 </a>
               );
             })}

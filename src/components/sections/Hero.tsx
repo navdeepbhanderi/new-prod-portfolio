@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { Magnetic } from "@/components/ui/MagneticButton";
 import { ProfileImage } from "@/components/ui/ProfileImage";
 import { CharReveal } from "@/components/ui/CharReveal";
-import { BlurReveal } from "@/components/ui/BlurReveal";
 import { SwapText } from "@/components/ui/SwapText";
 import { fadeUpBlur, EASE_IN_OUT, EASE_OUT } from "@/lib/motion";
 import { useIntroDone } from "@/lib/intro";
@@ -63,6 +62,20 @@ export function Hero() {
           style={{ x: copyX, y: copyY }}
           className="flex flex-col items-start"
         >
+          {/* Mobile-only portrait — the face shouldn't disappear below lg. */}
+          <motion.div
+            variants={fadeUpBlur(0.4, 16)}
+            initial="hidden"
+            animate={state}
+            className="mb-6 lg:hidden"
+          >
+            <div className="glass relative h-24 w-24 overflow-hidden rounded-full p-1">
+              <div className="relative h-full w-full overflow-hidden rounded-full">
+                <ProfileImage priority sizes="6rem" />
+              </div>
+            </div>
+          </motion.div>
+
           <motion.div
             variants={fadeUpBlur(0.5, 16)}
             initial="hidden"
@@ -73,13 +86,15 @@ export function Hero() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/70" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
             </span>
-            Available for opportunities
+            Open to opportunities
             <span className="mx-1 h-3 w-px bg-border" />
             <MapPin className="h-3 w-3" />
             India
           </motion.div>
 
-          <div data-cursor="invert">
+          {/* id="hero-name": the preloader measures this block and flies its
+              own name into place here during the curtain lift. */}
+          <div id="hero-name" data-cursor="invert">
             <CharReveal
               as="h1"
               text="Navdeep"
@@ -90,16 +105,21 @@ export function Hero() {
               charClassName="text-name-gradient"
               className="text-[clamp(3.5rem,11vw,8.5rem)] font-semibold leading-[0.95] tracking-tight"
             />
-            {/* <CharReveal
-              as="p"
-              text="Bhanderi"
-              trigger="manual"
-              play={done}
-              delay={0.35}
-              stagger={0.035}
-              charClassName="text-name-gradient"
-              className="text-[clamp(3.5rem,11vw,8.5rem)] font-semibold leading-[0.95] tracking-tight"
-            /> */}
+            {/* Surname as outlined display type — aria-hidden, the h1 label
+                above already carries the full name for AT. Negative margin
+                pulls the two lines into one typographic unit. */}
+            <div aria-hidden>
+              <CharReveal
+                as="p"
+                text="Bhanderi"
+                trigger="manual"
+                play={done}
+                delay={0.35}
+                stagger={0.035}
+                charClassName="hero-surname-char"
+                className="-mt-[0.08em] text-[clamp(3.5rem,11vw,8.5rem)] font-semibold leading-[0.95] tracking-tight"
+              />
+            </div>
           </div>
 
           <motion.p
@@ -178,7 +198,7 @@ export function Hero() {
           }}
           initial="hidden"
           animate={state}
-          className="relative mx-auto hidden w-full max-w-sm lg:block"
+          className="relative mx-auto hidden w-full max-w-sm lg:block xl:max-w-md"
         >
           <motion.div
             style={{
@@ -196,13 +216,7 @@ export function Hero() {
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
               </div>
             </div>
-                          {/* <div className="glass absolute -bottom-4 -left-4 rounded-2xl px-4 py-3">
-                <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                  Focus
-                </p>
-                <p className="text-sm font-medium">Full-stack development</p>
-              </div> */}
-                      </motion.div>
+          </motion.div>
         </motion.div>
       </div>
 

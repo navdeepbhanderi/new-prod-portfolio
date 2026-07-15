@@ -78,7 +78,7 @@ export function VelocityMarquee({
 
   if (reduced) {
     return (
-      <div className="mask-x flex gap-3 overflow-hidden">
+      <div className="flex flex-wrap justify-center gap-3 px-6">
         {items.map((item) => (
           <Pill key={item} label={item} />
         ))}
@@ -86,11 +86,16 @@ export function VelocityMarquee({
     );
   }
 
+  // The tween loops the track by -50%, so it must be two identical halves and
+  // each half has to outspan any viewport — otherwise wide screens see the
+  // track end mid-row. Four copies per half (~32 chips) covers up to 4K.
+  const half = Array.from({ length: 4 }, () => items).flat();
+
   return (
     <div className="mask-x overflow-hidden">
       <div ref={rowRef} className={cn("flex")}>
         <div ref={trackRef} className="flex shrink-0 gap-3 pr-3">
-          {[...items, ...items].map((item, i) => (
+          {[...half, ...half].map((item, i) => (
             <Pill key={`${item}-${i}`} label={item} />
           ))}
         </div>

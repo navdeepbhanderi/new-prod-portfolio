@@ -22,19 +22,10 @@ export const TIMELINE: TimelineItem[] = [
   {
     id: "present",
     period: "Present",
-    title: "Building modern software products",
-    subtitle: "Building scalable, modern web applications",
+    title: "Building software products end to end",
+    subtitle: "Full-stack engineering · Applied AI",
     description:
-      "Designing and shipping scalable web applications while exploring AI and blockchain in production-grade work.",
+      "Designing and shipping web applications across the full stack, and putting generative AI to work inside real product features.",
     status: "present",
-  },
-  {
-    id: "future",
-    period: "Future",
-    title: "Scalable product engineering",
-    subtitle: "Scalable products · Advanced intelligent systems",
-    description:
-      "Building advanced, intelligent systems that scale gracefully — going deeper into AI and emerging technologies.",
-    status: "future",
   },
 ];

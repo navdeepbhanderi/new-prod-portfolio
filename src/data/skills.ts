@@ -46,6 +46,4 @@ export const SKILL_MARQUEE: string[] = [
   "LLM Tools",
   "Git",
   "GitHub",
-  "Web3",
-  "Blockchain",
 ];

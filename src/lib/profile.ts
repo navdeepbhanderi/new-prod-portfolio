@@ -4,14 +4,15 @@ import { SITE_URL } from "@/lib/site";
 export const PROFILE = {
   name: "Navdeep Bhanderi",
   firstName: "Navdeep",
-  title: "Software Developer",
-  headline: "Full-stack engineer building modern, scalable web applications.",
+  surname: "Bhanderi",
+  title: "Software Engineer",
+  headline: "Full-stack engineer building AI-powered products and modern web experiences.",
   location: "Junagadh, Gujarat, India",
   email: EMAIL,
   tagline:
-    "Building AI-powered products, modern web applications, and scalable digital experiences.",
+    "Building AI-powered products and modern web applications — end to end, from idea to production.",
   summary:
-    "Software developer passionate about building scalable, user-friendly applications and exploring the next wave of technologies. Core expertise in modern web development, delivering efficient, high-quality solutions with Node.js, Next.js, React, and Angular while actively expanding into Artificial Intelligence and Blockchain technologies.",
+    "Software engineer who builds products end to end — from the database to the last pixel. Core expertise across Node.js, Next.js, React, and Angular, with a focus on interfaces that feel fast and systems that hold up in production. Currently going deeper into applied AI.",
   availability: [
     "Full-time opportunities",
     "Freelance projects",
@@ -56,8 +57,6 @@ export const SITE_JSON_LD = {
         "Node.js",
         "TypeScript",
         "Generative AI",
-        "Blockchain",
-        "Web3",
       ],
     },
     {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowLeft, ArrowRight, ArrowUpRight, Check, Code2 } from "lucide-react";
 import type { Project } from "@/types";
@@ -10,6 +10,7 @@ import { Magnetic } from "@/components/ui/MagneticButton";
 import { BlurReveal } from "@/components/ui/BlurReveal";
 import { CharReveal } from "@/components/ui/CharReveal";
 import { GlassCard } from "@/components/ui/GlassCard";
+import { ProductMock } from "@/components/ui/ProductMock";
 import { cn } from "@/lib/utils";
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
@@ -48,34 +49,19 @@ function HeroVisual({ project }: { project: Project }) {
   const y = useTransform(scrollYProgress, [0, 1], ["-5%", "5%"]);
 
   return (
-    <div ref={ref} className="relative">
+    <div
+      ref={ref}
+      className="relative"
+      // Shared element: the deck card's visual morphs into this hero.
+      style={{ viewTransitionName: `project-${project.id}` }}
+    >
       <GlassCard className="aspect-[16/8] rounded-[2rem] p-0 sm:aspect-[16/7]">
         <div className={cn("absolute inset-0 bg-gradient-to-br", project.accent)} />
         <motion.div
           style={{ y }}
           className="absolute inset-0 flex items-center justify-center p-8"
         >
-          <div className="glass-strong w-full max-w-2xl rounded-2xl p-4 shadow-2xl shadow-black/40">
-            <div className="mb-4 flex items-center gap-1.5">
-              <span className="h-2.5 w-2.5 rounded-full bg-foreground/20" />
-              <span className="h-2.5 w-2.5 rounded-full bg-foreground/20" />
-              <span className="h-2.5 w-2.5 rounded-full bg-foreground/20" />
-              <span className="ml-2 font-mono text-[10px] text-muted-foreground">
-                {project.id}.app
-              </span>
-            </div>
-            <div className="space-y-3">
-              <div className="h-3.5 w-2/3 rounded-full bg-foreground/15" />
-              <div className="h-3.5 w-full rounded-full bg-foreground/10" />
-              <div className="grid grid-cols-4 gap-2.5 pt-1">
-                <div className="h-16 rounded-xl bg-foreground/10" />
-                <div className="h-16 rounded-xl bg-foreground/[0.07]" />
-                <div className="h-16 rounded-xl bg-foreground/10" />
-                <div className="h-16 rounded-xl bg-foreground/[0.07]" />
-              </div>
-              <div className="h-3.5 w-1/2 rounded-full bg-foreground/10" />
-            </div>
-          </div>
+          <ProductMock project={project} size="lg" />
         </motion.div>
         <span
           aria-hidden
