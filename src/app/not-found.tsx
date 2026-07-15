@@ -31,7 +31,7 @@ export default function NotFound() {
       </h1>
 
       <p className="mt-6 font-mono text-sm text-muted-foreground">
-        cat: page: no such file — try &ldquo;ls&rdquo;
+        cat: page: no such file or directory
       </p>
       <p className="mx-auto mt-3 max-w-md leading-relaxed text-muted-foreground">
         This page drifted off the map. Everything else is exactly where it

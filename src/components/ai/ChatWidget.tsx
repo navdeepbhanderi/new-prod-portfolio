@@ -192,7 +192,7 @@ export function ChatWidget() {
   const [loading, setLoading] = useState(false);
   const [streamingId, setStreamingId] = useState<number | null>(null);
   const [hydrated, setHydrated] = useState(false);
-  // A question handed over by another surface (e.g. the terminal's `ask`).
+  // A question handed over by another surface via the open event's detail.
   const [pendingQuestion, setPendingQuestion] = useState<string | null>(null);
   const idRef = useRef(1);
   const scrollRef = useRef<HTMLDivElement>(null);
