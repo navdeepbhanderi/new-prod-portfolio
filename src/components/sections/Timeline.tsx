@@ -70,9 +70,9 @@ export function Timeline() {
       <ParallaxNumeral value="03" className="right-2 top-10" />
       <div className="container-px">
         <SectionHeading
-          eyebrow="Journey"
-          title="From fundamentals to building products"
-          description="An education and trajectory built on shipping — and always moving toward what's next."
+          eyebrow="Experience"
+          title="From fundamentals to production"
+          description="Education and industry, side by side — a degree completed while shipping real software."
         />
 
         <div ref={containerRef} className="relative mt-16">
@@ -107,7 +107,8 @@ export function Timeline() {
                       <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-background" />
                     </span>
                   ) : (
-                    item.period.slice(0, 4)
+                    // First year in the period ("Apr 2020 — May 2023" → 2020)
+                    item.period.match(/\d{4}/)?.[0]
                   )}
                 </span>
 

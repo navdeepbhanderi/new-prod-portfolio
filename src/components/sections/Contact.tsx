@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Check, Copy, Mail } from "lucide-react";
+import { Check, Copy, FileText, Mail } from "lucide-react";
 import { PROFILE } from "@/lib/profile";
 import { EMAIL, SOCIALS } from "@/data/socials";
 import { BRAND_ICONS } from "@/components/icons";
@@ -124,6 +124,24 @@ export function Contact() {
               <p className="mt-3 max-w-xs text-sm leading-relaxed text-foreground/70">
                 {PROFILE.availability.join(" · ")}
               </p>
+              <p className="mt-2 text-xs text-muted-foreground">
+                Junagadh, India · IST · Remote-friendly
+              </p>
+            </BlurReveal>
+
+            <BlurReveal delay={0.3}>
+              <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+                Resume
+              </p>
+              <a
+                href={PROFILE.resume}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group mt-3 inline-flex items-center gap-2.5 rounded-full border border-border bg-foreground/5 px-4 py-2 text-sm font-medium text-foreground/85 transition-colors hover:border-foreground/30 hover:text-foreground"
+              >
+                <FileText className="h-4 w-4 text-foreground/60 transition-colors group-hover:text-foreground" />
+                View resume
+              </a>
             </BlurReveal>
           </div>
 

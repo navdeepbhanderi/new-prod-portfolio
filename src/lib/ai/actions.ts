@@ -21,6 +21,7 @@ export const CHAT_ACTIONS: Record<string, ChatAction> = {
       { label: `Case study: ${p.title}`, href: `/projects/${p.id}` },
     ])
   ),
+  resume: { label: "View resume", href: "/resume.pdf" },
   email: { label: "Email Navdeep", href: `mailto:${EMAIL}` },
   contact: { label: "Go to the contact form", href: "/#contact" },
   github: { label: "View GitHub", href: GITHUB },

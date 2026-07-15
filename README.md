@@ -82,12 +82,12 @@ npm run build && npm start   # production build (stop `dev` first — shared .ne
    product shots (`public/projects/…`); single biggest credibility upgrade.
 2. **Project proof links** — fill `links: { live, repo }` in
    `src/data/projects.ts`; "Live demo" / "View code" buttons render automatically.
-3. **Resume download** — drop `public/resume.pdf` and add a CTA in the hero +
-   contact section.
+3. ~~**Resume download**~~ — done; CTA in hero + contact + palette + terminal.
+   ⚠️ `public/resume.pdf` is currently a placeholder — replace with the real one.
 4. **A third real case study** — the "MORE → GitHub" archive card carries the
    deck today; three genuine projects beats two + placeholder.
-5. **Professional experience entries** — the Journey timeline is
-   education-heavy; add internships/freelance/work engagements with dates.
+5. ~~**Professional experience entries**~~ — done; Softrefine internship + role
+   in the Experience timeline.
 6. **Analytics** — Vercel Analytics or Plausible to see what recruiters read.
 7. **"Book a call"** — cal.com/Calendly link beside the email CTA for serious
    inbound.

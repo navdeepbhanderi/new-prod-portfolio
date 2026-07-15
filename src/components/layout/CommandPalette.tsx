@@ -12,6 +12,7 @@ import {
   ArrowUp,
   Check,
   Copy,
+  FileText,
   FolderKanban,
   Home,
   Layers,
@@ -327,10 +328,8 @@ export function CommandPalette() {
           break;
         case "cat":
           if (arg === "resume" || arg === "resume.pdf") {
-            push([
-              "resume.pdf: not published yet.",
-              `email ${EMAIL} for the latest copy.`,
-            ]);
+            push([`opening ${PROFILE.resume.slice(1)}…`]);
+            window.open(PROFILE.resume, "_blank", "noopener,noreferrer");
           } else {
             push([`cat: ${arg || "?"}: no such file`]);
           }
@@ -399,7 +398,7 @@ export function CommandPalette() {
       { id: "about", label: "About", icon: User },
       { id: "expertise", label: "Expertise", icon: Layers },
       { id: "projects", label: "Projects", icon: FolderKanban },
-      { id: "journey", label: "Journey", icon: Milestone },
+      { id: "journey", label: "Experience", icon: Milestone },
       { id: "contact", label: "Contact", icon: Mail },
     ];
     return [
@@ -436,6 +435,17 @@ export function CommandPalette() {
         icon: Mail,
         perform: () => {
           window.location.href = `mailto:${EMAIL}`;
+        },
+      },
+      {
+        id: "resume",
+        group: "Actions",
+        label: "View resume",
+        hint: "resume.pdf",
+        keywords: "resume cv download pdf curriculum vitae hire experience",
+        icon: FileText,
+        perform: () => {
+          window.open(PROFILE.resume, "_blank", "noopener,noreferrer");
         },
       },
       {

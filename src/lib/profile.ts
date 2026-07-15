@@ -12,7 +12,9 @@ export const PROFILE = {
   tagline:
     "Building AI-powered products and modern web applications — end to end, from idea to production.",
   summary:
-    "Software engineer who builds products end to end — from the database to the last pixel. Core expertise across Node.js, Next.js, React, and Angular, with a focus on interfaces that feel fast and systems that hold up in production. Currently going deeper into applied AI.",
+    "Software engineer who builds products end to end — from the database to the last pixel. Core expertise across Node.js, Next.js, React, and Angular, with a focus on interfaces that feel fast and systems that hold up in production. Currently building at Softrefine Technology and going deeper into applied AI.",
+  company: "Softrefine Technology Pvt. Ltd.",
+  resume: "/resume.pdf",
   availability: [
     "Full-time opportunities",
     "Freelance projects",
@@ -43,6 +45,10 @@ export const SITE_JSON_LD = {
         addressLocality: "Junagadh",
         addressRegion: "Gujarat",
         addressCountry: "IN",
+      },
+      worksFor: {
+        "@type": "Organization",
+        name: PROFILE.company,
       },
       alumniOf: [
         { "@type": "CollegeOrUniversity", name: "Dr. Subhash University" },

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion, useTransform } from "framer-motion";
-import { ArrowDown, ArrowUpRight, MapPin } from "lucide-react";
+import { ArrowDown, ArrowUpRight, FileText, MapPin } from "lucide-react";
 import { PROFILE } from "@/lib/profile";
 import { SOCIALS } from "@/data/socials";
 import { BRAND_ICONS } from "@/components/icons";
@@ -153,6 +153,12 @@ export function Hero() {
                 </Link>
               </Button>
             </Magnetic>
+            <Button asChild size="lg" variant="outline">
+              <a href={PROFILE.resume} target="_blank" rel="noopener noreferrer">
+                <SwapText>Resume</SwapText>
+                <FileText className="h-4 w-4 transition-transform duration-300 group-hover/btn:-translate-y-0.5" />
+              </a>
+            </Button>
           </motion.div>
 
           <motion.div

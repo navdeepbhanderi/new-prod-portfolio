@@ -663,9 +663,12 @@ export function ChatWidget() {
                       {m.role === "assistant" && !!m.actions?.length && (
                         <div className="flex flex-wrap gap-2 pl-9">
                           {m.actions.map((action) => {
+                            // Static files (resume.pdf) open in a new tab —
+                            // they're not client routes.
                             const isExternal =
                               action.href.startsWith("http") ||
-                              action.href.startsWith("mailto:");
+                              action.href.startsWith("mailto:") ||
+                              action.href.endsWith(".pdf");
                             const isSection = action.href.startsWith("/#");
                             const buttonClasses =
                               "inline-flex items-center gap-1.5 rounded-full border border-foreground/20 bg-foreground/10 px-3.5 py-1.5 text-xs font-medium text-foreground transition-colors hover:border-foreground/35 hover:bg-foreground/15";

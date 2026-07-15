@@ -21,8 +21,8 @@ export const INTENTS: Intent[] = [
       "summary",
     ],
     answer:
-      "Navdeep Bhanderi is a software developer based in Junagadh, Gujarat, India. He builds scalable, user-friendly applications as a full-stack developer, working across Next.js, React, Angular, and Node.js, while actively expanding into Artificial Intelligence and Blockchain. He cares about clean architecture, thoughtful UX, and shipping high-quality products.",
-    related: ["What technologies does he specialize in?", "Why should I hire him?"],
+      "Navdeep Bhanderi is a software engineer based in Junagadh, Gujarat, India, currently working as a Software Developer at Softrefine Technology. He builds user-friendly applications end to end across Next.js, React, Angular, and Node.js, and is going deeper into applied AI. He cares about clean architecture, thoughtful UX, and shipping high-quality products.",
+    related: ["What's his work experience?", "Why should I hire him?"],
   },
   {
     id: "skills",
@@ -103,8 +103,31 @@ export const INTENTS: Intent[] = [
       "school",
     ],
     answer:
-      "Navdeep earned a Diploma in Computer Engineering (2020) from Dr. Subhash Technical Campus, followed by a B.Tech in Information Technology (2023) from Dr. Subhash University. Today he's building modern software products and exploring AI and blockchain — with a focus on building scalable, modern software and intelligent product features.",
-    related: ["What is he working on now?", "Why should I hire him?"],
+      "Navdeep earned a Diploma in Computer Engineering (2020–2023) from Dr. Subhash Technical Campus, then a B.Tech in Information Technology (2023–2026) from Dr. Subhash University — completing the degree while already working in the industry at Softrefine Technology.",
+    related: ["What's his work experience?", "Why should I hire him?"],
+    actions: ["resume"],
+  },
+  {
+    id: "experience",
+    keywords: [
+      "experience",
+      "work experience",
+      "job",
+      "company",
+      "employer",
+      "softrefine",
+      "current role",
+      "where does he work",
+      "working",
+      "career",
+      "internship",
+      "professional",
+      "years",
+    ],
+    answer:
+      "Navdeep is a Software Developer at Softrefine Technology Pvt. Ltd., where he's been since July 2024 — he joined the core team after a six-month internship there (January–June 2024). He builds and ships full-stack web applications in production, and completed his B.Tech while working. His resume has the full picture.",
+    related: ["What projects has he built?", "Why should I hire him?"],
+    actions: ["resume", "linkedin"],
   },
   {
     id: "hire",
@@ -121,9 +144,9 @@ export const INTENTS: Intent[] = [
       "convince",
     ],
     answer:
-      "Hire Navdeep if you want an engineer who blends product thinking with technical depth. He ships scalable, user-friendly applications across the full stack (Next.js, React, Angular, Node.js), brings AI capabilities into real features, and learns fast — already extending into AI and blockchain. He cares about quality, clean architecture, and great user experience, and he's pragmatic about delivering results.",
-    related: ["What's his experience with AI?", "How can I contact him?"],
-    actions: ["email", "contact"],
+      "Hire Navdeep if you want an engineer who blends product thinking with technical depth. He has professional experience shipping production software at Softrefine Technology, builds user-friendly applications across the full stack (Next.js, React, Angular, Node.js), and brings AI capabilities into real features. He cares about quality, clean architecture, and great user experience — and he's pragmatic about delivering results.",
+    related: ["What's his work experience?", "How can I contact him?"],
+    actions: ["resume", "email"],
   },
   {
     id: "contact",
@@ -186,8 +209,8 @@ export const FALLBACK_ANSWER =
 
 export const SUGGESTED_QUESTIONS: string[] = [
   "Who is Navdeep?",
+  "What's his work experience?",
   "What technologies does he specialize in?",
-  "Tell me about his AI experience.",
   "Why should I hire him?",
   "How can I contact him?",
 ];

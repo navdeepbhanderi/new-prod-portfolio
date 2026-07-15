@@ -20,7 +20,7 @@ const NAV_LINKS = [
   { label: "About", href: "#about", id: "about" },
   { label: "Expertise", href: "#expertise", id: "expertise" },
   { label: "Projects", href: "#projects", id: "projects" },
-  { label: "Journey", href: "#journey", id: "journey" },
+  { label: "Experience", href: "#journey", id: "journey" },
 ];
 
 // Includes hero/contact so the pill clears at the page's ends.
