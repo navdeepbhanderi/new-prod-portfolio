@@ -173,7 +173,7 @@ export function Footer() {
 
         {/* Right padding keeps "Back to top" clear of the floating chat button. */}
         <div className="container-px flex flex-col items-center justify-between gap-6 border-t border-border/40 pt-8 text-xs text-muted-foreground sm:flex-row sm:gap-4 sm:pt-6 md:pr-56">
-          <p>© {new Date().getFullYear()} {PROFILE.name}. Built with Next.js.</p>
+          <p>© {new Date().getFullYear()} {PROFILE.name}. Designed &amp; built from scratch.</p>
           <LocalTime />
           <Magnetic>
             <Link

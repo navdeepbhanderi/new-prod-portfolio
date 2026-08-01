@@ -22,7 +22,7 @@ export function buildSystemPrompt(): string {
   ).join("\n");
 
   const timeline = TIMELINE.map(
-    (t) => `- ${t.period} — ${t.title} (${t.subtitle}): ${t.description}`
+    (t) => `- ${t.period ? `${t.period} — ` : ""}${t.title} (${t.subtitle}): ${t.description}`
   ).join("\n");
 
   const socials = SOCIALS.map((s) => `${s.label}: ${s.href}`).join(" · ");

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { Project } from "@/types";
 import { cn } from "@/lib/utils";
 
@@ -163,7 +164,20 @@ export function ProductMock({
       )}
     >
       <ChromeBar id={project.id} lg={lg} />
-      <Body lg={lg} />
+      {project.image ? (
+        <div className={cn("overflow-hidden border border-foreground/10", lg ? "rounded-xl" : "rounded-lg")}>
+          <Image
+            src={project.image.src}
+            alt={project.image.alt}
+            width={project.image.width}
+            height={project.image.height}
+            sizes={lg ? "(max-width: 1024px) 90vw, 640px" : "(max-width: 768px) 90vw, 420px"}
+            className="h-auto w-full"
+          />
+        </div>
+      ) : (
+        <Body lg={lg} />
+      )}
     </div>
   );
 }

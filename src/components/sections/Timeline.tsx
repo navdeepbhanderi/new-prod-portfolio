@@ -107,15 +107,17 @@ export function Timeline() {
                       <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-background" />
                     </span>
                   ) : (
-                    // First year in the period ("Apr 2020 — May 2023" → 2020)
-                    item.period.match(/\d{4}/)?.[0]
+                    // Sequential step index (dates intentionally omitted)
+                    String(i + 1).padStart(2, "0")
                   )}
                 </span>
 
                 <div className="flex flex-col gap-1.5 pb-2">
-                  <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                    {item.period}
-                  </span>
+                  {item.period && (
+                    <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                      {item.period}
+                    </span>
+                  )}
                   <h3 className="text-xl font-semibold tracking-tight sm:text-2xl">
                     {item.title}
                   </h3>

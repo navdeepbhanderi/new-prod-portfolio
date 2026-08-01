@@ -6,13 +6,13 @@ export const PROFILE = {
   firstName: "Navdeep",
   surname: "Bhanderi",
   title: "Software Engineer",
-  headline: "Full-stack engineer building AI-powered products and modern web experiences.",
+  headline: "Frontend engineer with full-stack range.",
   location: "Junagadh, Gujarat, India",
   email: EMAIL,
   tagline:
-    "Building AI-powered products and modern web applications — end to end, from idea to production.",
+    "Own frontend delivery end to end — requirement to release, backend included when needed.",
   summary:
-    "Software engineer who builds products end to end — from the database to the last pixel. Core expertise across Node.js, Next.js, React, and Angular, with a focus on interfaces that feel fast and systems that hold up in production. Currently building at Softrefine Technology and going deeper into applied AI.",
+    "Frontend engineer who reads a requirement all the way through before writing code, then builds and delivers it end to end. Comfortable enough on the backend (Node.js) to build and reason about the system behind the UI, not just consume it. Also bring team-leadership experience — coordinating delivery and keeping the team on track.",
   company: "Softrefine Technology Pvt. Ltd.",
   resume: "/resume.pdf",
   availability: [

@@ -1,0 +1,272 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "meta": {
+    "title": "Navdeep Bhanderi — Portfolio Information",
+    "description": "Structured, single-file export of the entire portfolio's content and technical profile. Generated from the site's data sources (src/lib/profile.ts, src/data/*, src/lib/site.ts).",
+    "siteUrl": "https://navdeepbhanderi.dev",
+    "generatedFrom": [
+      "src/lib/profile.ts",
+      "src/lib/site.ts",
+      "src/data/socials.ts",
+      "src/data/expertise.ts",
+      "src/data/skills.ts",
+      "src/data/timeline.ts",
+      "src/data/projects.ts"
+    ],
+    "version": "1.0.0"
+  },
+  "profile": {
+    "name": "Navdeep Bhanderi",
+    "firstName": "Navdeep",
+    "surname": "Bhanderi",
+    "title": "Software Engineer",
+    "headline": "Frontend engineer with full-stack range.",
+    "tagline": "Own frontend delivery end to end — requirement to release, backend included when needed.",
+    "summary": "Frontend engineer who reads a requirement all the way through before writing code, then builds and delivers it end to end. Comfortable enough on the backend (Node.js) to build and reason about the system behind the UI, not just consume it. Also bring team-leadership experience — coordinating delivery and keeping the team on track.",
+    "location": {
+      "city": "Junagadh",
+      "region": "Gujarat",
+      "country": "India",
+      "countryCode": "IN",
+      "remoteFriendly": true
+    },
+    "currentRole": "Senior Frontend Engineer",
+    "company": "Softrefine Technology Pvt. Ltd.",
+    "resume": "/resume.pdf",
+    "availability": [
+      "Full-time opportunities",
+      "Freelance projects",
+      "Startup collaborations",
+      "Product engineering roles"
+    ]
+  },
+  "contact": {
+    "email": "navdeepbhanderi1@gmail.com",
+    "socials": [
+      {
+        "label": "GitHub",
+        "handle": "@navdeepbhanderi",
+        "href": "https://github.com/navdeepbhanderi/"
+      },
+      {
+        "label": "LinkedIn",
+        "handle": "in/navdeepbhanderi",
+        "href": "https://www.linkedin.com/in/navdeepbhanderi/"
+      },
+      {
+        "label": "X (Twitter)",
+        "handle": "@NavdeepBhanderi",
+        "href": "https://x.com/NavdeepBhanderi"
+      }
+    ]
+  },
+  "expertise": [
+    {
+      "id": "frontend",
+      "label": "Frontend",
+      "blurb": "Where most of the day-to-day work happens.",
+      "technologies": ["Angular", "React", "Next.js", "JavaScript", "TypeScript", "TailwindCSS"]
+    },
+    {
+      "id": "backend",
+      "label": "Backend",
+      "blurb": "Enough to reason about the whole system, not just the UI.",
+      "technologies": ["Node.js", "NestJS", "Express.js", "PHP"]
+    },
+    {
+      "id": "databases",
+      "label": "Databases",
+      "blurb": "Relational and document stores behind the products I build.",
+      "technologies": ["SQL", "PostgreSQL", "MongoDB", "Firebase"]
+    },
+    {
+      "id": "languages",
+      "label": "Languages",
+      "blurb": "The languages I think and build in.",
+      "technologies": ["JavaScript", "TypeScript", "Java", "C++"]
+    },
+    {
+      "id": "ai",
+      "label": "AI",
+      "blurb": "Used where it actually earns a place in the product.",
+      "technologies": ["Generative AI", "LLM Tools", "AI Workflows"]
+    },
+    {
+      "id": "tools",
+      "label": "Tools",
+      "blurb": "The everyday tools that keep delivery sharp.",
+      "technologies": ["Git", "GitHub", "VS Code", "Postman", "Figma", "Linear", "npm"]
+    }
+  ],
+  "skills": {
+    "frontend": ["Angular", "React", "Next.js", "JavaScript", "TypeScript", "TailwindCSS"],
+    "backend": ["Node.js", "NestJS", "Express.js", "PHP"],
+    "databases": ["SQL", "PostgreSQL", "MongoDB", "Firebase"],
+    "languages": ["JavaScript", "TypeScript", "Java", "C++"],
+    "ai": ["Generative AI Tools", "LLM Applications"],
+    "tools": ["Git", "GitHub", "VS Code", "Postman", "Figma", "Linear", "npm"]
+  },
+  "education": [
+    {
+      "id": "diploma",
+      "credential": "Diploma in Computer Engineering",
+      "institution": "Dr. Subhash Technical Campus",
+      "period": ""
+    },
+    {
+      "id": "btech",
+      "credential": "B.Tech, Information Technology",
+      "institution": "Dr. Subhash University",
+      "period": "",
+      "note": "Completed while already working in the industry."
+    }
+  ],
+  "experience": [
+    {
+      "id": "internship",
+      "role": "Software Developer Intern",
+      "company": "Softrefine Technology Pvt. Ltd.",
+      "period": "",
+      "status": "past",
+      "description": "First real industry work — moved from coursework to shipping production code on live client projects across the stack."
+    },
+    {
+      "id": "softrefine",
+      "role": "Senior Frontend Engineer",
+      "company": "Softrefine Technology Pvt. Ltd.",
+      "period": "Present",
+      "status": "present",
+      "description": "Lead the frontend side of a client engagement. Start from the full requirement, not just the ticket, then split and deliver the build across the team. Own my own work end to end — including backend pieces when the feature calls for it — and stay close enough to the rest of the team's to catch issues before they reach QA."
+    }
+  ],
+  "timeline": [
+    {
+      "id": "diploma",
+      "period": "",
+      "title": "Diploma in Computer Engineering",
+      "subtitle": "Dr. Subhash Technical Campus",
+      "description": "Built the fundamentals — programming, systems, and the engineering principles that still shape how I work.",
+      "status": "past"
+    },
+    {
+      "id": "btech",
+      "period": "",
+      "title": "B.Tech, Information Technology",
+      "subtitle": "Dr. Subhash University",
+      "description": "Deepened into modern software engineering and full-stack development — completed while already working in the industry.",
+      "status": "past"
+    },
+    {
+      "id": "internship",
+      "period": "",
+      "title": "Software Developer Intern",
+      "subtitle": "Softrefine Technology Pvt. Ltd.",
+      "description": "First real industry work — moved from coursework to shipping production code on live client projects across the stack.",
+      "status": "past"
+    },
+    {
+      "id": "softrefine",
+      "period": "Present",
+      "title": "Senior Frontend Engineer",
+      "subtitle": "Softrefine Technology Pvt. Ltd.",
+      "description": "Leading the frontend side of a client build — starting from the full requirement, splitting delivery across the team, and shipping my own share of it end to end, backend work included where it's needed.",
+      "status": "present"
+    }
+  ],
+  "projects": [
+    {
+      "id": "travel-commerce-platform",
+      "index": "01",
+      "title": "Travel Commerce Platform",
+      "tagline": "White-label travel packages, built and priced in real time.",
+      "year": "2024",
+      "role": "Frontend Engineer",
+      "url": "https://navdeepbhanderi.dev/projects/travel-commerce-platform",
+      "description": "A B2B SaaS platform that lets travel agencies, tour operators, and travel businesses build complete, custom travel packages — flights, hotels, activities, transfers, insurance — instead of selling them one at a time. Agents assemble an itinerary from live supplier inventory and it re-prices automatically as they customize it, then goes out under the agency's own brand.",
+      "highlights": [
+        "Post-booking modification flow — swap a hotel, shift dates, or upgrade a flight on an existing booking, with pricing, taxes, and availability recalculated without rebuilding the package",
+        "Package reusability — clone and edit an existing itinerary to requote a similar trip in minutes instead of building from scratch",
+        "Quotation, itinerary, invoice, and voucher PDF generation, branded per agency",
+        "Migrated the codebase across seven major versions, Angular 12 to 19, while shipping feature work in parallel"
+      ],
+      "stack": ["Angular", "TypeScript", "Angular Material", "TailwindCSS", "REST APIs"],
+      "caseStudy": {
+        "problem": "Travel businesses — agencies, tour operators, DMCs, airlines — need to sell complete, custom trip packages under their own brand rather than individual flights or hotels. Assembling a multi-supplier itinerary by hand doesn't scale past a handful of bookings a day, and once a customer had booked, even a small change like a different hotel or a shifted date usually meant cancelling and rebuilding the whole package.",
+        "approach": [
+          {
+            "title": "Dynamic package builder",
+            "detail": "Built the agent-facing UI for assembling flights, hotels, activities, transfers, and insurance from live supplier inventory into a single itinerary, with the price recalculating automatically as anything in it changes."
+          },
+          {
+            "title": "Post-booking modifications",
+            "detail": "Built the flow for changing an existing booking — new hotel, new dates, an upgraded flight — without cancelling and recreating it, keeping pricing, taxes, and availability in sync with the change."
+          },
+          {
+            "title": "Package reusability",
+            "detail": "Added clone-and-edit for itineraries so agents could duplicate a package, adjust it, and requote in minutes instead of starting over."
+          },
+          {
+            "title": "Angular 12 → 19 migration",
+            "detail": "Migrated the codebase across seven major Angular versions — build tooling, deprecated APIs, component patterns — while the app kept shipping feature work in parallel."
+          }
+        ],
+        "outcome": "A production platform that lets travel businesses build, price, customize, and modify complex multi-city packages in real time under their own brand — kept on a current, maintainable Angular version throughout rather than left to drift."
+      }
+    },
+    {
+      "id": "attendance",
+      "index": "02",
+      "title": "Attendance Admin Panel",
+      "tagline": "Admin panel for a WiFi-verified attendance system, built at Smart India Hackathon.",
+      "year": "2023",
+      "role": "Admin Panel Developer · Smart India Hackathon",
+      "url": "https://navdeepbhanderi.dev/projects/attendance",
+      "image": "/projects/attendance-admin.webp",
+      "description": "A team project built at Smart India Hackathon: an attendance system that verifies student check-ins against the campus WiFi network instead of a manual roll call. I built the admin panel — managing faculty and student records, running weekly lecture scheduling per class, and a live classroom dashboard pulled straight from the database.",
+      "highlights": [
+        "Admin panel for managing faculty and student records across classes",
+        "Weekly lecture scheduling with a day-by-day timetable per class",
+        "Live classroom dashboard — WiFi-verified attendance and progress (done / in progress / to-do) pulled directly from the database",
+        "Built and shipped my scope solo within the hackathon's timeframe"
+      ],
+      "stack": ["HTML", "TailwindCSS", "JavaScript", "PHP"],
+      "caseStudy": {
+        "problem": "Manual roll call burns lecture time and doesn't stop proxy attendance — one student signing in for a friend who isn't in the room. Biometrics or extra hardware fix it but add cost and friction. Built as a team project at Smart India Hackathon, the system verifies attendance through the campus WiFi network instead — my part was the admin panel that runs and surfaces it.",
+        "approach": [
+          {
+            "title": "Team concept: WiFi as the proof",
+            "detail": "The system validates a student's attendance only when their device is verifiably on the campus network — no biometrics, no extra hardware. The panel below is the piece I built."
+          },
+          {
+            "title": "Admin panel as the control center",
+            "detail": "Built the admin panel end to end — managing faculty and student records, assigning classes, and running weekly lecture scheduling."
+          },
+          {
+            "title": "Live attendance, not end-of-day reports",
+            "detail": "Built the classroom dashboard that pulls attendance and progress (done / in progress / to-do) straight from the database as lectures happen, instead of reconciling from sheets afterwards."
+          },
+          {
+            "title": "Shipped at Smart India Hackathon",
+            "detail": "Scoped and built the admin panel end to end within the hackathon's timeframe, as my contribution to a team project."
+          }
+        ],
+        "outcome": "An admin panel that gives faculty and coordinators full control over classes, scheduling, and live, WiFi-verified attendance — built as my share of a team project at Smart India Hackathon."
+      }
+    }
+  ],
+  "site": {
+    "framework": "Next.js 15 (App Router)",
+    "language": "TypeScript",
+    "styling": "Tailwind CSS 3.4",
+    "motion": ["Framer Motion 12", "GSAP + ScrollTrigger", "Lenis"],
+    "fonts": ["Geist Sans", "Geist Mono"],
+    "email": "nodemailer (Gmail SMTP)",
+    "aiChat": {
+      "assistantName": "Nova",
+      "provider": "Google Gemini (streamed) with a local knowledge-base fallback",
+      "defaultModel": "gemini-2.5-flash"
+    },
+    "designDirection": "Cinematic Editorial Monochrome — dark-only, restrained typography, motion over color",
+    "sections": ["Hero", "About", "Expertise", "Projects", "Timeline", "Contact", "Footer"]
+  }
+}

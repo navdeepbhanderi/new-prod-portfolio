@@ -21,7 +21,7 @@ export const INTENTS: Intent[] = [
       "summary",
     ],
     answer:
-      "Navdeep Bhanderi is a software engineer based in Junagadh, Gujarat, India, currently working as a Software Developer at Softrefine Technology. He builds user-friendly applications end to end across Next.js, React, Angular, and Node.js, and is going deeper into applied AI. He cares about clean architecture, thoughtful UX, and shipping high-quality products.",
+      "Navdeep Bhanderi is a software engineer based in Junagadh, Gujarat, India, currently working as a Senior Frontend Engineer at Softrefine Technology. He leads the frontend side of delivery and builds across the full stack — Next.js, React, Angular, and Node.js — when the product needs it, and is going deeper into applied AI. He cares about clean architecture, thoughtful UX, and shipping high-quality products.",
     related: ["What's his work experience?", "Why should I hire him?"],
   },
   {
@@ -41,7 +41,7 @@ export const INTENTS: Intent[] = [
       "what can he do",
     ],
     answer:
-      "Navdeep specializes in modern full-stack development. On the frontend: Angular, React, Next.js, TypeScript, JavaScript, and TailwindCSS. On the backend: Node.js, NestJS, Express.js, and PHP. He also works with Generative AI and LLM tooling, and explores Blockchain, Web3, and smart contracts. Core languages include TypeScript, JavaScript, Java, and C++.",
+      "Navdeep specializes in modern full-stack development. On the frontend: Angular, React, Next.js, TypeScript, JavaScript, and TailwindCSS. On the backend: Node.js, NestJS, Express.js, and PHP, with databases across SQL, PostgreSQL, MongoDB, and Firebase. He also works with Generative AI and LLM tooling. Core languages include TypeScript, JavaScript, Java, and C++.",
     related: ["Tell me about his AI experience.", "What projects has he built?"],
     actions: ["github"],
   },
@@ -60,9 +60,8 @@ export const INTENTS: Intent[] = [
       "intelligent",
     ],
     answer:
-      "AI is central to how Navdeep builds. He works with Generative AI and LLM tools to design AI workflows and bring intelligence into real products — most notably an AI-powered travel platform that generates complete, personalized travel packages (flights, hotels, activities, transfers, and itineraries) from a single prompt. He's focused on building practical, production-ready AI features.",
-    related: ["Tell me about the AI travel app.", "What technologies does he use?"],
-    actions: ["case-ai-travel"],
+      "AI shows up in Navdeep's work where it genuinely earns a place rather than as a headline feature. He works with Generative AI and LLM tooling to build practical, production-ready features — this portfolio's own assistant is one example — and is going deeper into applied AI and generative-AI workflows.",
+    related: ["What projects has he built?", "What technologies does he use?"],
   },
   {
     id: "projects",
@@ -82,9 +81,9 @@ export const INTENTS: Intent[] = [
       "hackathon",
     ],
     answer:
-      "Two featured projects: (1) AI-Powered Travel App — an AI platform that generates personalized travel packages including flights, hotels, activities, transfers, and itineraries, with dynamic recommendations and a polished, responsive UX. (2) Remote-Based Student Attendance System — a hackathon project that validates attendance through college WiFi, with real-time live-lecture tracking, student/teacher/timetable management, and an admin dashboard.",
-    related: ["Tell me about his AI experience.", "How can I contact him?"],
-    actions: ["case-ai-travel", "case-attendance"],
+      "Two featured projects: (1) Travel Commerce Platform — a B2B SaaS platform where travel businesses build complete, custom travel packages (flights, hotels, activities, transfers, insurance) under their own brand, with real-time pricing, post-booking modifications, package reuse, and branded PDF generation; he also migrated it across Angular 12 to 19. (2) Attendance Admin Panel — his contribution to a team project at Smart India Hackathon, where attendance is verified through the campus WiFi network; he built the admin panel for managing faculty and student records, weekly lecture scheduling, and a live classroom dashboard pulled from the database.",
+    related: ["Tell me about his experience.", "How can I contact him?"],
+    actions: ["case-travel-commerce-platform", "case-attendance"],
   },
   {
     id: "education",
@@ -103,7 +102,7 @@ export const INTENTS: Intent[] = [
       "school",
     ],
     answer:
-      "Navdeep earned a Diploma in Computer Engineering (2020–2023) from Dr. Subhash Technical Campus, then a B.Tech in Information Technology (2023–2026) from Dr. Subhash University — completing the degree while already working in the industry at Softrefine Technology.",
+      "Navdeep earned a Diploma in Computer Engineering from Dr. Subhash Technical Campus, then a B.Tech in Information Technology from Dr. Subhash University — completing the degree while already working in the industry at Softrefine Technology.",
     related: ["What's his work experience?", "Why should I hire him?"],
     actions: ["resume"],
   },
@@ -125,7 +124,7 @@ export const INTENTS: Intent[] = [
       "years",
     ],
     answer:
-      "Navdeep is a Software Developer at Softrefine Technology Pvt. Ltd., where he's been since July 2024 — he joined the core team after a six-month internship there (January–June 2024). He builds and ships full-stack web applications in production, and completed his B.Tech while working. His resume has the full picture.",
+      "Navdeep is a Senior Frontend Engineer at Softrefine Technology Pvt. Ltd. — he joined the core team after a six-month internship there. He leads the frontend side of client builds, taking features from requirement to release and building backend pieces when a feature needs it, and completed his B.Tech while working. His resume has the full picture.",
     related: ["What projects has he built?", "Why should I hire him?"],
     actions: ["resume", "linkedin"],
   },
@@ -144,7 +143,7 @@ export const INTENTS: Intent[] = [
       "convince",
     ],
     answer:
-      "Hire Navdeep if you want an engineer who blends product thinking with technical depth. He has professional experience shipping production software at Softrefine Technology, builds user-friendly applications across the full stack (Next.js, React, Angular, Node.js), and brings AI capabilities into real features. He cares about quality, clean architecture, and great user experience — and he's pragmatic about delivering results.",
+      "Hire Navdeep if you want an engineer who blends product thinking with technical depth. He has professional experience shipping production software at Softrefine Technology, leads frontend delivery across the full stack (Next.js, React, Angular, Node.js), and brings AI capabilities into real features. He cares about quality, clean architecture, and great user experience — and he's pragmatic about delivering results.",
     related: ["What's his work experience?", "How can I contact him?"],
     actions: ["resume", "email"],
   },
@@ -192,7 +191,7 @@ export const INTENTS: Intent[] = [
       "vision",
     ],
     answer:
-      "Navdeep is passionate about building scalable, user-friendly products and exploring the next wave of technology. Right now that means going deeper into applied AI, generative AI workflows, and blockchain/Web3 — with a long-term focus on advanced, intelligent systems that scale.",
+      "Navdeep is passionate about building scalable, user-friendly products and going deeper into applied AI — generative AI workflows and LLM-powered features — with a long-term focus on advanced, intelligent systems that scale.",
     related: ["Tell me about his AI experience.", "What does he specialize in?"],
   },
   {

@@ -12,6 +12,11 @@ export const SKILL_GROUPS: SkillGroup[] = [
     skills: ["Node.js", "NestJS", "Express.js", "PHP"],
   },
   {
+    id: "databases",
+    label: "Databases",
+    skills: ["SQL", "PostgreSQL", "MongoDB", "Firebase"],
+  },
+  {
     id: "languages",
     label: "Languages",
     skills: ["JavaScript", "TypeScript", "Java", "C++"],
@@ -24,26 +29,35 @@ export const SKILL_GROUPS: SkillGroup[] = [
   {
     id: "tools",
     label: "Tools",
-    skills: ["Git", "GitHub", "ESLint", "TailwindCSS"],
+    skills: ["Git", "GitHub", "VS Code", "Postman", "Figma", "Linear", "npm"],
   },
 ];
 
 // Flat marquee list for the moving technology landscape.
+// Ordered by group: frameworks → languages → styling → backend → databases → AI → tools.
 export const SKILL_MARQUEE: string[] = [
-  "TypeScript",
   "Next.js",
   "React",
   "Angular",
-  "Node.js",
-  "NestJS",
-  "Express.js",
-  "TailwindCSS",
+  "TypeScript",
   "JavaScript",
   "Java",
   "C++",
+  "TailwindCSS",
+  "Node.js",
+  "NestJS",
+  "Express.js",
   "PHP",
+  "PostgreSQL",
+  "MongoDB",
+  "Firebase",
   "Generative AI",
   "LLM Tools",
   "Git",
   "GitHub",
+  "VS Code",
+  "Postman",
+  "Figma",
+  "Linear",
+  "npm",
 ];

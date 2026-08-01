@@ -1,20 +1,27 @@
-import { Boxes, Braces, Cpu, Layers, Sparkles, Wrench } from "lucide-react";
+import { Boxes, Braces, Database, Layers, Sparkles, Wrench } from "lucide-react";
 import type { ExpertiseCategory } from "@/types";
 
 export const EXPERTISE: ExpertiseCategory[] = [
   {
     id: "frontend",
     label: "Frontend",
-    blurb: "Interfaces that feel fast, intentional, and alive.",
+    blurb: "Where most of the day-to-day work happens.",
     icon: Layers,
     technologies: ["Angular", "React", "Next.js", "JavaScript", "TypeScript", "TailwindCSS"],
   },
   {
     id: "backend",
     label: "Backend",
-    blurb: "APIs and services built to scale cleanly.",
+    blurb: "Enough to reason about the whole system, not just the UI.",
     icon: Boxes,
     technologies: ["Node.js", "NestJS", "Express.js", "PHP"],
+  },
+  {
+    id: "databases",
+    label: "Databases",
+    blurb: "Relational and document stores behind the products I build.",
+    icon: Database,
+    technologies: ["SQL", "PostgreSQL", "MongoDB", "Firebase"],
   },
   {
     id: "languages",
@@ -26,22 +33,15 @@ export const EXPERTISE: ExpertiseCategory[] = [
   {
     id: "ai",
     label: "AI",
-    blurb: "Bringing intelligence into everyday products.",
+    blurb: "Used where it actually earns a place in the product.",
     icon: Sparkles,
     technologies: ["Generative AI", "LLM Tools", "AI Workflows"],
-  },
-  {
-    id: "emerging",
-    label: "Emerging Tech",
-    blurb: "Exploring the next wave of the web.",
-    icon: Cpu,
-    technologies: ["Blockchain", "Web3", "Smart Contracts"],
   },
   {
     id: "tools",
     label: "Tools",
     blurb: "The everyday tools that keep delivery sharp.",
     icon: Wrench,
-    technologies: ["Git", "GitHub", "TailwindCSS"],
+    technologies: ["Git", "GitHub", "VS Code", "Postman", "Figma", "Linear", "npm"],
   },
 ];

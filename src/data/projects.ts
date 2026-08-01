@@ -2,97 +2,103 @@ import type { Project } from "@/types";
 
 export const PROJECTS: Project[] = [
   {
-    id: "ai-travel",
+    id: "travel-commerce-platform",
     index: "01",
-    title: "AI-Powered Travel App",
-    tagline: "Personalized trips, generated in seconds.",
+    title: "Travel Commerce Platform",
+    tagline: "White-label travel packages, built and priced in real time.",
     year: "2024",
-    role: "Full-stack & AI Engineering",
+    role: "Frontend Engineer",
     description:
-      "An AI-driven travel platform that composes complete, personalized travel packages — flights, hotels, activities, transfers, and day-by-day itineraries — from a single prompt. The system blends generative AI with real product constraints to deliver recommendations travelers can actually book.",
+      "A B2B SaaS platform that lets travel agencies, tour operators, and travel businesses build complete, custom travel packages — flights, hotels, activities, transfers, insurance — instead of selling them one at a time. Agents assemble an itinerary from live supplier inventory and it re-prices automatically as they customize it, then goes out under the agency's own brand.",
     highlights: [
-      "Dynamic AI recommendations tailored to budget, dates, and taste",
-      "End-to-end packages: flights, hotels, activities, transfers, itineraries",
-      "Responsive, modern interfaces with a polished booking experience",
-      "Scalable architecture designed for real-world usage",
+      "Post-booking modification flow — swap a hotel, shift dates, or upgrade a flight on an existing booking, with pricing, taxes, and availability recalculated without rebuilding the package",
+      "Package reusability — clone and edit an existing itinerary to requote a similar trip in minutes instead of building from scratch",
+      "Quotation, itinerary, invoice, and voucher PDF generation, branded per agency",
+      "Migrated the codebase across seven major versions, Angular 12 to 19, while shipping feature work in parallel",
     ],
-    stack: ["Next.js", "TypeScript", "Node.js", "Generative AI", "TailwindCSS"],
-    accent: "from-sky-500/25 via-indigo-500/15 to-transparent",
+    stack: ["Angular", "TypeScript", "Angular Material", "TailwindCSS", "REST APIs"],
+    accent: "from-cyan-500/25 via-blue-500/15 to-transparent",
     visual: "itinerary",
     caseStudy: {
       problem:
-        "Planning a real trip means hours of tab-juggling — comparing flights, cross-checking hotels, stitching activities into a schedule that actually works. Generic packages ignore budget, dates, and taste; fully manual planning doesn't scale past a weekend getaway. The gap: turning one plain-language request into a complete, bookable plan.",
+        "Travel businesses — agencies, tour operators, DMCs, airlines — need to sell complete, custom trip packages under their own brand rather than individual flights or hotels. Assembling a multi-supplier itinerary by hand doesn't scale past a handful of bookings a day, and once a customer had booked, even a small change like a different hotel or a shifted date usually meant cancelling and rebuilding the whole package.",
       approach: [
         {
-          title: "Prompt to structured itinerary",
+          title: "Dynamic package builder",
           detail:
-            "A single natural-language request is parsed into structured travel intent — destination, dates, budget, travel style — then expanded by generative AI into a day-by-day plan instead of a wall of suggestions.",
+            "Built the agent-facing UI for assembling flights, hotels, activities, transfers, and insurance from live supplier inventory into a single itinerary, with the price recalculating automatically as anything in it changes.",
         },
         {
-          title: "AI constrained by real product rules",
+          title: "Post-booking modifications",
           detail:
-            "Recommendations are generated against real inventory constraints — flights, hotels, transfers, and activities that can actually be combined and booked — so the output is a plan, not a hallucination.",
+            "Built the flow for changing an existing booking — new hotel, new dates, an upgraded flight — without cancelling and recreating it, keeping pricing, taxes, and availability in sync with the change.",
         },
         {
-          title: "A booking-grade interface",
+          title: "Package reusability",
           detail:
-            "The itinerary renders as a polished, responsive booking flow: swap a hotel, stretch a day, watch the package re-price. The AI stays in the loop without ever blocking the user.",
+            "Added clone-and-edit for itineraries so agents could duplicate a package, adjust it, and requote in minutes instead of starting over.",
         },
         {
-          title: "Architecture built to grow",
+          title: "Angular 12 → 19 migration",
           detail:
-            "A clean Next.js + Node.js separation keeps AI orchestration, inventory logic, and UI independently scalable — designed for real-world usage from day one.",
+            "Migrated the codebase across seven major Angular versions — build tooling, deprecated APIs, component patterns — while the app kept shipping feature work in parallel.",
         },
       ],
       outcome:
-        "A travel platform that composes complete, personalized packages — flights, hotels, activities, transfers, and itineraries — from a single prompt, in seconds. It demonstrates end-to-end product engineering: generative AI applied with real constraints, wrapped in an experience travelers can actually book.",
+        "A production platform that lets travel businesses build, price, customize, and modify complex multi-city packages in real time under their own brand — kept on a current, maintainable Angular version throughout rather than left to drift.",
     },
   },
   {
     id: "attendance",
     index: "02",
-    title: "Remote-Based Student Attendance System",
-    tagline: "Attendance you can trust — verified by campus WiFi.",
+    title: "Attendance Admin Panel",
+    tagline: "Admin panel for a WiFi-verified attendance system, built at Smart India Hackathon.",
     year: "2023",
-    role: "Hackathon · Full-stack",
+    role: "Admin Panel Developer · Smart India Hackathon",
     description:
-      "A hackathon-built platform that validates student attendance through college WiFi, removing proxy attendance while keeping the flow effortless. It pairs secure, network-based verification with full management tooling for students, teachers, and live lectures.",
+      "A team project built at Smart India Hackathon: an attendance system that verifies student check-ins against the campus WiFi network instead of a manual roll call. I built the admin panel — managing faculty and student records, running weekly lecture scheduling per class, and a live classroom dashboard pulled straight from the database.",
     highlights: [
-      "Secure attendance validation through college WiFi",
-      "Real-time live-lecture tracking and updates",
-      "Student, teacher, and timetable management",
-      "Admin dashboard with a clean, responsive UI",
+      "Admin panel for managing faculty and student records across classes",
+      "Weekly lecture scheduling with a day-by-day timetable per class",
+      "Live classroom dashboard — WiFi-verified attendance and progress (done / in progress / to-do) pulled directly from the database",
+      "Built and shipped my scope solo within the hackathon's timeframe",
     ],
-    stack: ["React", "Node.js", "Express.js", "Real-time", "TailwindCSS"],
+    stack: ["HTML", "TailwindCSS", "JavaScript", "PHP"],
     accent: "from-emerald-500/25 via-teal-500/15 to-transparent",
     visual: "roster",
+    image: {
+      src: "/projects/attendance-admin.webp",
+      alt: "Attendance admin panel — class timetable, faculty details, and a live classroom-progress dashboard",
+      width: 3020,
+      height: 1408,
+    },
     caseStudy: {
       problem:
-        "Proxy attendance is the open secret of every campus: one student signs in for three, and manual roll calls burn lecture time while still producing unreliable records. Institutions needed attendance they could trust without adding friction for honest students — or new hardware.",
+        "Manual roll call burns lecture time and doesn't stop proxy attendance — one student signing in for a friend who isn't in the room. Biometrics or extra hardware fix it but add cost and friction. Built as a team project at Smart India Hackathon, the system verifies attendance through the campus WiFi network instead — my part was the admin panel that runs and surfaces it.",
       approach: [
         {
-          title: "The campus WiFi as the proof",
+          title: "Team concept: WiFi as the proof",
           detail:
-            "Attendance validates only when the student's device is verifiably on the college network — no biometrics, no extra hardware, no way to check in from the hostel.",
+            "The system validates a student's attendance only when their device is verifiably on the campus network — no biometrics, no extra hardware. The panel below is the piece I built.",
         },
         {
-          title: "Real-time lecture tracking",
+          title: "Admin panel as the control center",
           detail:
-            "Live lectures stream attendance updates as they happen, so teachers see presence forming in real time instead of reconciling sheets afterwards.",
+            "Built the admin panel end to end — managing faculty and student records, assigning classes, and running weekly lecture scheduling.",
         },
         {
-          title: "One platform, three roles",
+          title: "Live attendance, not end-of-day reports",
           detail:
-            "Students, teachers, and admins each get a focused surface — check-in, live monitoring, and full timetable/management tooling — over one shared source of truth.",
+            "Built the classroom dashboard that pulls attendance and progress (done / in progress / to-do) straight from the database as lectures happen, instead of reconciling from sheets afterwards.",
         },
         {
-          title: "Shipped under hackathon pressure",
+          title: "Shipped at Smart India Hackathon",
           detail:
-            "Scoped, built, and demoed within a hackathon window: a working end-to-end system with a clean, responsive dashboard rather than a slide-deck concept.",
+            "Scoped and built the admin panel end to end within the hackathon's timeframe, as my contribution to a team project.",
         },
       ],
       outcome:
-        "A working platform that makes proxy attendance structurally impossible while making honest attendance effortless — secure network-based verification, real-time visibility, and complete management tooling, built end-to-end under competition constraints.",
+        "An admin panel that gives faculty and coordinators full control over classes, scheduling, and live, WiFi-verified attendance — built as my share of a team project at Smart India Hackathon.",
     },
   },
 ];

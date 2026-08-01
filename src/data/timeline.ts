@@ -3,7 +3,7 @@ import type { TimelineItem } from "@/types";
 export const TIMELINE: TimelineItem[] = [
   {
     id: "diploma",
-    period: "Apr 2020 — May 2023",
+    period: "",
     title: "Diploma in Computer Engineering",
     subtitle: "Dr. Subhash Technical Campus",
     description:
@@ -12,7 +12,7 @@ export const TIMELINE: TimelineItem[] = [
   },
   {
     id: "btech",
-    period: "Jul 2023 — Apr 2026",
+    period: "",
     title: "B.Tech, Information Technology",
     subtitle: "Dr. Subhash University",
     description:
@@ -21,20 +21,20 @@ export const TIMELINE: TimelineItem[] = [
   },
   {
     id: "internship",
-    period: "Jan 2024 — Jun 2024",
+    period: "",
     title: "Software Developer Intern",
     subtitle: "Softrefine Technology Pvt. Ltd.",
     description:
-      "First industry role — moved from coursework to production code, contributing to real client projects across the stack.",
+      "First real industry work — moved from coursework to shipping production code on live client projects across the stack.",
     status: "past",
   },
   {
     id: "softrefine",
-    period: "Jul 2024 — Present",
-    title: "Software Developer",
+    period: "Present",
+    title: "Senior Frontend Engineer",
     subtitle: "Softrefine Technology Pvt. Ltd.",
     description:
-      "Joined the core team after the internship. Designing, building, and shipping full-stack web applications in production — while putting applied AI to work in real features.",
+      "Leading the frontend side of a client build — starting from the full requirement, splitting delivery across the team, and shipping my own share of it end to end, backend work included where it's needed.",
     status: "present",
   },
 ];

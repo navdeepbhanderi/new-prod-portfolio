@@ -8,7 +8,7 @@ import { ScrambleText } from "@/components/ui/ScrambleText";
 
 const FACTS = [
   { icon: MapPin, label: "Based in", value: PROFILE.location },
-  { icon: Sparkles, label: "Focus", value: "Full-stack · Applied AI" },
+  { icon: Sparkles, label: "Focus", value: "Full-stack" },
   { icon: BadgeCheck, label: "Status", value: "Open to opportunities" },
 ] as const;
 
