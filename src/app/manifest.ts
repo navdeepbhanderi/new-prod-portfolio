@@ -2,10 +2,10 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Navdeep Bhanderi — Software Engineer",
+    name: "Navdeep Bhanderi — Senior Frontend Engineer",
     short_name: "Navdeep",
     description:
-      "Software engineer building AI-powered products, modern web applications, and scalable digital experiences.",
+      "Frontend engineer with full-stack range, building and leading frontend delivery across modern web stacks.",
     start_url: "/",
     display: "standalone",
     background_color: "#0a0a0b",

@@ -18,7 +18,17 @@ export const PROJECTS: Project[] = [
     ],
     stack: ["Angular", "TypeScript", "Angular Material", "TailwindCSS", "REST APIs"],
     accent: "from-cyan-500/25 via-blue-500/15 to-transparent",
-    visual: "itinerary",
+    diagram: {
+      scope: "Frontend I built",
+      flow: ["Package builder UI", "Booking & pricing views", "API service layer"],
+      consumes: "Platform REST API",
+      note: "Consumes the platform's REST API for live inventory and pricing.",
+      metrics: [
+        { value: "12 → 19", label: "Angular versions" },
+        { value: "5", label: "supplier types in UI" },
+        { value: "3", label: "core flows built" },
+      ],
+    },
     caseStudy: {
       problem:
         "Travel businesses — agencies, tour operators, DMCs, airlines — need to sell complete, custom trip packages under their own brand rather than individual flights or hotels. Assembling a multi-supplier itinerary by hand doesn't scale past a handful of bookings a day, and once a customer had booked, even a small change like a different hotel or a shifted date usually meant cancelling and rebuilding the whole package.",
@@ -54,7 +64,7 @@ export const PROJECTS: Project[] = [
     title: "Attendance Admin Panel",
     tagline: "Admin panel for a WiFi-verified attendance system, built at Smart India Hackathon.",
     year: "2023",
-    role: "Admin Panel Developer · Smart India Hackathon",
+    role: "Full-stack (Admin Panel)",
     description:
       "A team project built at Smart India Hackathon: an attendance system that verifies student check-ins against the campus WiFi network instead of a manual roll call. I built the admin panel — managing faculty and student records, running weekly lecture scheduling per class, and a live classroom dashboard pulled straight from the database.",
     highlights: [
@@ -65,12 +75,14 @@ export const PROJECTS: Project[] = [
     ],
     stack: ["HTML", "TailwindCSS", "JavaScript", "PHP"],
     accent: "from-emerald-500/25 via-teal-500/15 to-transparent",
-    visual: "roster",
     image: {
       src: "/projects/attendance-admin.webp",
       alt: "Attendance admin panel — class timetable, faculty details, and a live classroom-progress dashboard",
       width: 3020,
       height: 1408,
+    },
+    links: {
+      repo: "https://github.com/navdeepbhanderi/student-attandance-admin-panle-php",
     },
     caseStudy: {
       problem:

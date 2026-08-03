@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { ArrowRight } from "lucide-react";
 import type { Project } from "@/types";
 import { cn } from "@/lib/utils";
 
@@ -20,105 +21,89 @@ function ChromeBar({ id, lg }: { id: string; lg?: boolean }) {
   );
 }
 
-/** Travel app: map pane with a plotted route + day-by-day itinerary rows.
-    On card hover the destination pings and the days cascade — the plan
-    "re-computes". */
-function ItineraryBody({ lg }: { lg?: boolean }) {
-  const days = lg ? ["D1", "D2", "D3", "D4"] : ["D1", "D2", "D3"];
+/** NDA-friendly visual: a layered architecture flow + honest metric tiles.
+    Reveals system thinking without exposing any client UI. */
+function ArchitectureBody({
+  diagram,
+  lg,
+}: {
+  diagram: NonNullable<Project["diagram"]>;
+  lg?: boolean;
+}) {
+  // Owned layers render solid; the consumed external system renders dashed and
+  // dimmed so the boundary of what was actually built is unmistakable.
+  const nodes = [
+    ...diagram.flow.map((label) => ({ label, external: false })),
+    ...(diagram.consumes ? [{ label: diagram.consumes, external: true }] : []),
+  ];
+
   return (
-    <div className={cn("grid grid-cols-[1fr_1.15fr]", lg ? "gap-3" : "gap-2.5")}>
-      {/* Map pane */}
-      <div className="relative overflow-hidden rounded-lg bg-foreground/[0.05]">
-        <div className="absolute inset-0 bg-grid opacity-80" />
-        {/* route: origin → destination over a dashed path */}
-        <span className="absolute left-[18%] top-[26%] h-2 w-2 rounded-full bg-foreground/80" />
-        <span className="absolute left-[21%] top-[31%] h-px w-[62%] origin-left rotate-[26deg] border-t border-dashed border-foreground/40" />
-        <span className="absolute bottom-[22%] right-[16%] grid h-4 w-4 place-items-center rounded-full bg-foreground/15">
-          <span className="absolute h-4 w-4 animate-ping rounded-full bg-foreground/30 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-          <span className="h-1.5 w-1.5 rounded-full bg-foreground/90" />
+    <div className={cn("flex flex-col", lg ? "gap-3" : "gap-2.5")}>
+      {diagram.scope && (
+        <span
+          className={cn(
+            "flex items-center gap-1.5 font-mono uppercase tracking-[0.18em] text-muted-foreground",
+            lg ? "text-[10px]" : "text-[8px]"
+          )}
+        >
+          <span className="h-1.5 w-1.5 rounded-full bg-foreground/50" aria-hidden />
+          {diagram.scope}
         </span>
-        <span className="absolute bottom-[10%] left-[14%] h-2 w-1/3 rounded-full bg-foreground/10" />
-      </div>
-      {/* Itinerary rows */}
-      <div className={cn("flex flex-col", lg ? "gap-2.5" : "gap-2")}>
-        {days.map((d, i) => (
-          <div
-            key={d}
-            style={{ transitionDelay: `${i * 70}ms` }}
-            className={cn(
-              "flex items-center gap-2.5 rounded-lg bg-foreground/[0.05] transition-transform duration-500 ease-out-quart group-hover:translate-x-1.5",
-              lg ? "p-2.5" : "p-2"
-            )}
-          >
+      )}
+
+      {/* Layered flow: owned layers → consumed backend boundary.
+          Hidden on phones (too cramped for 4 nodes); the scope label, note,
+          and metrics carry the story there. */}
+      <div className={cn("hidden items-stretch sm:flex", lg ? "gap-1.5" : "gap-1")}>
+        {nodes.map((node, i) => (
+          <div key={node.label} className={cn("flex flex-1 items-center", lg ? "gap-1.5" : "gap-1")}>
             <span
               className={cn(
-                "grid shrink-0 place-items-center rounded-md bg-foreground/10 font-mono text-muted-foreground",
-                lg ? "h-8 w-8 text-[10px]" : "h-6 w-6 text-[8px]"
+                "flex flex-1 items-center justify-center rounded-lg text-center font-mono leading-tight",
+                lg ? "min-h-[3.25rem] px-2 text-[10px]" : "min-h-[2.5rem] px-1 text-[8px]",
+                node.external
+                  ? "border border-dashed border-border bg-transparent text-muted-foreground"
+                  : "border border-border bg-foreground/[0.05] text-foreground/70"
               )}
             >
-              {d}
+              {node.label}
             </span>
-            <div className="flex min-w-0 flex-1 flex-col gap-1.5">
-              <span className={cn("h-2 rounded-full bg-foreground/15", i % 2 ? "w-1/2" : "w-2/3")} />
-              <span className="h-2 w-5/6 rounded-full bg-foreground/[0.07]" />
-            </div>
+            {i < nodes.length - 1 && (
+              <ArrowRight
+                aria-hidden
+                className={cn("shrink-0 text-foreground/30", lg ? "h-3.5 w-3.5" : "h-2.5 w-2.5")}
+              />
+            )}
           </div>
         ))}
       </div>
-    </div>
-  );
-}
 
-/** Attendance app: live-lecture header + roster rows with presence dots. */
-function RosterBody({ lg }: { lg?: boolean }) {
-  const rows = lg ? [0, 1, 2, 3] : [0, 1, 2];
-  return (
-    <div className={cn("flex flex-col", lg ? "gap-2.5" : "gap-2")}>
-      {/* live lecture header */}
-      <div
-        className={cn(
-          "flex items-center justify-between rounded-lg bg-foreground/[0.05]",
-          lg ? "p-2.5" : "p-2"
-        )}
-      >
-        <span className={cn("h-2 rounded-full bg-foreground/15", lg ? "w-1/3" : "w-2/5")} />
-        <span className="flex items-center gap-1.5 rounded-full bg-foreground/10 px-2 py-0.5">
-          <span className="relative flex h-1.5 w-1.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-foreground/70" />
-            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-foreground/90" />
-          </span>
-          <span className="font-mono text-[8px] uppercase tracking-widest text-muted-foreground">
-            Live
-          </span>
-        </span>
-      </div>
-      {/* roster rows — presence verified, one still connecting */}
-      {rows.map((i) => (
-        <div
-          key={i}
-          className={cn(
-            "flex items-center gap-2.5 rounded-lg bg-foreground/[0.05]",
-            lg ? "p-2.5" : "p-2"
-          )}
-        >
-          <span className={cn("shrink-0 rounded-full bg-foreground/15", lg ? "h-6 w-6" : "h-5 w-5")} />
-          <span
-            className={cn("h-2 flex-1 rounded-full bg-foreground/10", i % 2 ? "max-w-[45%]" : "max-w-[60%]")}
-          />
-          <span className="ml-auto flex items-center gap-1.5">
-            <span className="h-1.5 w-6 rounded-full bg-foreground/[0.07]" />
-            {/* the last student is still connecting — on hover, they check in */}
-            <span
+      {diagram.note && (
+        <p className={cn("leading-snug text-muted-foreground", lg ? "text-xs" : "text-[10px]")}>
+          {diagram.note}
+        </p>
+      )}
+
+      {diagram.metrics && diagram.metrics.length > 0 && (
+        <div className={cn("flex", lg ? "gap-2" : "gap-1.5")}>
+          {diagram.metrics.map((m) => (
+            <div
+              key={m.label}
               className={cn(
-                "h-2 w-2 rounded-full transition-colors duration-500",
-                i === rows.length - 1
-                  ? "border border-foreground/40 bg-transparent group-hover:border-transparent group-hover:bg-foreground/80"
-                  : "bg-foreground/80"
+                "flex-1 rounded-lg bg-foreground/[0.05] text-center",
+                lg ? "p-2.5" : "p-2"
               )}
-            />
-          </span>
+            >
+              <div className={cn("font-semibold tracking-tight text-foreground", lg ? "text-lg" : "text-sm")}>
+                {m.value}
+              </div>
+              <div className={cn("leading-tight text-muted-foreground", lg ? "text-[10px]" : "text-[8px]")}>
+                {m.label}
+              </div>
+            </div>
+          ))}
         </div>
-      ))}
+      )}
     </div>
   );
 }
@@ -148,12 +133,6 @@ export function ProductMock({
   size?: "sm" | "lg";
 }) {
   const lg = size === "lg";
-  const Body =
-    project.visual === "itinerary"
-      ? ItineraryBody
-      : project.visual === "roster"
-        ? RosterBody
-        : GenericBody;
 
   return (
     <div
@@ -175,8 +154,10 @@ export function ProductMock({
             className="h-auto w-full"
           />
         </div>
+      ) : project.diagram ? (
+        <ArchitectureBody diagram={project.diagram} lg={lg} />
       ) : (
-        <Body lg={lg} />
+        <GenericBody lg={lg} />
       )}
     </div>
   );

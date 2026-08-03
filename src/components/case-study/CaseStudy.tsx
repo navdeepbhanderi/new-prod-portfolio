@@ -59,11 +59,13 @@ function HeroVisual({ project }: { project: Project }) {
       // Shared element: the deck card's visual morphs into this hero.
       style={{ viewTransitionName: `project-${project.id}` }}
     >
-      <GlassCard className="aspect-[16/8] rounded-[2rem] p-0 sm:aspect-[16/7]">
-        <div className={cn("absolute inset-0 bg-gradient-to-br", project.accent)} />
+      {/* Mobile: height follows the mock so tall visuals never clip.
+          sm+: the wide cinematic banner is tall enough to center the mock. */}
+      <GlassCard className="grid min-h-[15rem] place-items-center rounded-[2rem] p-0 sm:block sm:min-h-0 sm:aspect-[16/7]">
+        <div aria-hidden className={cn("absolute inset-0 bg-gradient-to-br", project.accent)} />
         <motion.div
           style={{ y }}
-          className="absolute inset-0 flex items-center justify-center p-8"
+          className="relative flex items-center justify-center p-6 sm:absolute sm:inset-0 sm:p-8"
         >
           <ProductMock project={project} size="lg" />
         </motion.div>

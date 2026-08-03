@@ -15,7 +15,7 @@ import { ProductMock } from "@/components/ui/ProductMock";
 import { Tilt } from "@/components/ui/Tilt";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { useMediaQuery, usePrefersReducedMotion } from "@/hooks/use-media-query";
+import { usePrefersReducedMotion } from "@/hooks/use-media-query";
 
 function ProjectVisual({ project }: { project: Project }) {
   const ref = useRef<HTMLAnchorElement>(null);
@@ -39,17 +39,19 @@ function ProjectVisual({ project }: { project: Project }) {
       style={{ viewTransitionName: `project-${project.id}` }}
     >
       <Tilt max={5} className="rounded-2xl">
-        <GlassCard className="aspect-[4/3] p-0">
-        <div className={cn("absolute inset-0 bg-gradient-to-br", project.accent)} />
-        <motion.div style={{ y }} className="absolute inset-0 flex items-center justify-center p-8">
-          <ProductMock project={project} size="sm" />
-        </motion.div>
+        {/* Height follows the mock so nothing clips on any screen; a min keeps
+            short mocks card-like. Padding leaves room for the parallax drift. */}
+        <GlassCard className="grid min-h-[13rem] place-items-center p-0 sm:min-h-[20rem]">
+        <div aria-hidden className={cn("absolute inset-0 bg-gradient-to-br", project.accent)} />
         <motion.span
           style={{ y: numeralY }}
           className="absolute right-5 top-4 font-mono text-7xl font-bold text-foreground/[0.06]"
         >
           {project.index}
         </motion.span>
+        <motion.div style={{ y }} className="relative flex items-center justify-center p-6 sm:p-8">
+          <ProductMock project={project} size="sm" />
+        </motion.div>
         </GlassCard>
       </Tilt>
     </Link>
@@ -71,7 +73,6 @@ type StackCardProps = {
  */
 export function StackCard({ index, total, progress, children, className }: StackCardProps) {
   const reduced = usePrefersReducedMotion();
-  const isDesktop = useMediaQuery("(min-width: 1024px)");
 
   // Card i settles at a slightly smaller scale the deeper it sits in the deck.
   const targetScale = 1 - (total - 1 - index) * 0.04;
@@ -82,12 +83,15 @@ export function StackCard({ index, total, progress, children, className }: Stack
     [0, index === total - 1 ? 0 : 0.5]
   );
 
-  const scrub = isDesktop && !reduced;
+  // Sticky stacking + scale/dim scrub is the deck's signature on every screen.
+  // The scale/dim is what makes the overlap read as an intentional stack; it
+  // must run on mobile too, not just desktop. Reduced motion → plain flow.
+  const scrub = !reduced;
 
   return (
     <div
-      className={cn(reduced ? "relative" : "sticky", className)}
-      style={reduced ? undefined : { top: `calc(9svh + ${index * 1.75}rem)` }}
+      className={cn(scrub ? "sticky" : "relative", className)}
+      style={scrub ? { top: `calc(9svh + ${index * 1.75}rem)` } : undefined}
     >
       <motion.div
         style={scrub ? { scale, transformOrigin: "center top" } : undefined}
@@ -115,12 +119,12 @@ export function ProjectCardContent({
   reversed: boolean;
 }) {
   return (
-    <div className="relative grid min-h-[70svh] grid-cols-1 content-center items-center gap-8 p-6 sm:p-10 lg:grid-cols-2 lg:gap-16 lg:p-14">
+    <div className="relative grid min-h-[86svh] grid-cols-1 content-center items-center gap-5 p-5 sm:min-h-[70svh] sm:gap-8 sm:p-10 lg:grid-cols-2 lg:gap-16 lg:p-14">
       <div className={cn(reversed && "lg:order-2")}>
         <ProjectVisual project={project} />
       </div>
 
-      <div className={cn("flex flex-col gap-5", reversed && "lg:order-1")}>
+      <div className={cn("flex flex-col gap-4 sm:gap-5", reversed && "lg:order-1")}>
         <div className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
           <span className="text-foreground/80">{project.index}</span>
           <span className="h-px w-6 bg-border" />
@@ -134,9 +138,15 @@ export function ProjectCardContent({
           <p className="mt-1 text-lg text-muted-foreground">{project.tagline}</p>
         </div>
 
-        <p className="leading-relaxed text-muted-foreground">{project.description}</p>
+        {/* Clamp on small screens so the card fits one viewport (keeps the
+            sticky stack pinning cleanly); full text on desktop + case study. */}
+        <p className="line-clamp-3 leading-relaxed text-muted-foreground lg:line-clamp-none">
+          {project.description}
+        </p>
 
-        <ul className="grid gap-2.5 sm:grid-cols-2">
+        {/* Below lg, show the top 2 highlights only (rest live in the case
+            study) so the card stays within a phone screen. */}
+        <ul className="grid gap-2.5 sm:grid-cols-2 [&>li:nth-child(n+3)]:hidden lg:[&>li:nth-child(n+3)]:flex">
           {project.highlights.map((h) => (
             <li key={h} className="flex items-start gap-2.5 text-sm text-foreground/85">
               <span className="mt-0.5 grid h-4 w-4 shrink-0 place-items-center rounded-full bg-foreground/10">

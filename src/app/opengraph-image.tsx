@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Navdeep Bhanderi — Software Engineer";
+export const alt = "Navdeep Bhanderi — Senior Frontend Engineer";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -52,12 +52,12 @@ export default function OGImage() {
             Navdeep Bhanderi
           </div>
           <div style={{ fontSize: 36, color: "#a1a1aa", maxWidth: 900 }}>
-            Building AI-powered products and modern web applications.
+            Frontend engineer with full-stack range.
           </div>
         </div>
 
         <div style={{ display: "flex", gap: 12, fontSize: 24, color: "#71717a" }}>
-          {["Next.js", "React", "Node.js", "TypeScript", "Generative AI"].map((t) => (
+          {["React", "Angular", "Next.js", "TypeScript", "Node.js"].map((t) => (
             <div
               key={t}
               style={{

@@ -116,7 +116,7 @@ export function Hero() {
             <CharReveal
               as="h1"
               text="Navdeep"
-              label="Navdeep Bhanderi — Software Engineer"
+              label="Navdeep Bhanderi — Senior Frontend Engineer"
               trigger="manual"
               play={done}
               stagger={0.045}

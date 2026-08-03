@@ -13,13 +13,13 @@
       "src/data/timeline.ts",
       "src/data/projects.ts"
     ],
-    "version": "1.0.0"
+    "version": "1.1.0"
   },
   "profile": {
     "name": "Navdeep Bhanderi",
     "firstName": "Navdeep",
     "surname": "Bhanderi",
-    "title": "Software Engineer",
+    "title": "Senior Frontend Engineer",
     "headline": "Frontend engineer with full-stack range.",
     "tagline": "Own frontend delivery end to end — requirement to release, backend included when needed.",
     "summary": "Frontend engineer who reads a requirement all the way through before writing code, then builds and delivers it end to end. Comfortable enough on the backend (Node.js) to build and reason about the system behind the UI, not just consume it. Also bring team-leadership experience — coordinating delivery and keeping the team on track.",
@@ -190,6 +190,17 @@
         "Migrated the codebase across seven major versions, Angular 12 to 19, while shipping feature work in parallel"
       ],
       "stack": ["Angular", "TypeScript", "Angular Material", "TailwindCSS", "REST APIs"],
+      "diagram": {
+        "scope": "Frontend I built",
+        "flow": ["Package builder UI", "Booking & pricing views", "API service layer"],
+        "consumes": "Platform REST API",
+        "note": "Consumes the platform's REST API for live inventory and pricing.",
+        "metrics": [
+          { "value": "12 → 19", "label": "Angular versions" },
+          { "value": "5", "label": "supplier types in UI" },
+          { "value": "3", "label": "core flows built" }
+        ]
+      },
       "caseStudy": {
         "problem": "Travel businesses — agencies, tour operators, DMCs, airlines — need to sell complete, custom trip packages under their own brand rather than individual flights or hotels. Assembling a multi-supplier itinerary by hand doesn't scale past a handful of bookings a day, and once a customer had booked, even a small change like a different hotel or a shifted date usually meant cancelling and rebuilding the whole package.",
         "approach": [
@@ -219,9 +230,10 @@
       "title": "Attendance Admin Panel",
       "tagline": "Admin panel for a WiFi-verified attendance system, built at Smart India Hackathon.",
       "year": "2023",
-      "role": "Admin Panel Developer · Smart India Hackathon",
+      "role": "Full-stack (Admin Panel)",
       "url": "https://navdeepbhanderi.dev/projects/attendance",
       "image": "/projects/attendance-admin.webp",
+      "links": { "repo": "https://github.com/navdeepbhanderi/student-attandance-admin-panle-php" },
       "description": "A team project built at Smart India Hackathon: an attendance system that verifies student check-ins against the campus WiFi network instead of a manual roll call. I built the admin panel — managing faculty and student records, running weekly lecture scheduling per class, and a live classroom dashboard pulled straight from the database.",
       "highlights": [
         "Admin panel for managing faculty and student records across classes",

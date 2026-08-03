@@ -48,7 +48,7 @@ function shell(content: string, preheader: string): string {
   <tr><td style="padding:22px 8px 0;text-align:center;">
     <p style="margin:0;font-family:${mono};font-size:11px;letter-spacing:2px;text-transform:uppercase;color:${muted};">
       <a href="${SITE_URL}" style="color:${muted};text-decoration:none;">navdeepbhanderi.dev</a>
-      &nbsp;·&nbsp; Software Engineer &nbsp;·&nbsp; Junagadh, IN
+      &nbsp;·&nbsp; Senior Frontend Engineer &nbsp;·&nbsp; Junagadh, IN
     </p>
   </td></tr>
 
@@ -157,7 +157,7 @@ export function autoReplyEmail(input: {
 
     <p style="margin:30px 0 0;font-family:${font};font-size:15px;line-height:1.6;color:#c9c9d1;">
       &mdash; ${PROFILE.name}<br>
-      <span style="font-family:${mono};font-size:12px;letter-spacing:1px;color:${muted};">Software Engineer</span>
+      <span style="font-family:${mono};font-size:12px;letter-spacing:1px;color:${muted};">Senior Frontend Engineer</span>
     </p>
   `, `Hi ${firstName}, your message landed safely in my inbox. I read every note personally and will get back to you within 24 hours.`);
 

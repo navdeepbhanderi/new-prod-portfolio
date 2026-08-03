@@ -19,14 +19,15 @@ import { SITE_URL } from "@/lib/site";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Navdeep Bhanderi — Software Engineer",
+    default: "Navdeep Bhanderi — Senior Frontend Engineer",
     template: "%s — Navdeep Bhanderi",
   },
   description:
-    "Software engineer building AI-powered products and modern web applications with Next.js, React, Angular, and Node.js — end to end, from idea to production.",
+    "Frontend engineer with full-stack range — building and leading frontend delivery across Next.js, React, Angular, and Node.js, from requirement to release.",
   keywords: [
     "Navdeep Bhanderi",
-    "Software Engineer",
+    "Senior Frontend Engineer",
+    "Frontend Engineer",
     "Full-stack Developer",
     "Next.js",
     "React",
@@ -48,15 +49,15 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: SITE_URL,
     siteName: "Navdeep Bhanderi",
-    title: "Navdeep Bhanderi — Software Engineer",
+    title: "Navdeep Bhanderi — Senior Frontend Engineer",
     description:
-      "Building AI-powered products and modern web applications with Next.js, React, Angular, and Node.js.",
+      "Frontend engineer with full-stack range — leading frontend delivery across React, Angular, Next.js, and Node.js.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Navdeep Bhanderi — Software Engineer",
+    title: "Navdeep Bhanderi — Senior Frontend Engineer",
     description:
-      "Building AI-powered products and modern web applications — end to end, from idea to production.",
+      "Frontend engineer with full-stack range — requirement to release, backend included when needed.",
     creator: "@NavdeepBhanderi",
   },
   robots: {

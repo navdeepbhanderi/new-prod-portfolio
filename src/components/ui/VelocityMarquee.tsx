@@ -95,7 +95,9 @@ export function VelocityMarquee({
 
   if (reduced) {
     return (
-      <div className="flex flex-wrap justify-center gap-3 px-6">
+      // Decorative: every skill is already real, accessible text in the
+      // Expertise cards above — hide this duplicate row from assistive tech.
+      <div aria-hidden className="flex flex-wrap justify-center gap-3 px-6">
         {items.map((item) => (
           <Pill key={item} label={item} />
         ))}
@@ -109,7 +111,9 @@ export function VelocityMarquee({
   const half = Array.from({ length: 4 }, () => items).flat();
 
   return (
-    <div className="mask-x overflow-hidden">
+    // Decorative infinite ticker (items repeated 8×); the real, accessible
+    // skill list lives in the Expertise cards above — hide it from AT.
+    <div aria-hidden className="mask-x overflow-hidden">
       <div ref={rowRef} className={cn("flex")}>
         <div ref={trackRef} className="flex shrink-0 gap-3 pr-3">
           {[...half, ...half].map((item, i) => (

@@ -200,7 +200,7 @@ export function Preloader() {
 
         <div className="pl-meta relative flex items-end justify-between px-6 pb-6 sm:px-10 sm:pb-8">
           <span className="font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground">
-            Software Engineer
+            Senior Frontend Engineer
           </span>
           <span
             ref={counterRef}

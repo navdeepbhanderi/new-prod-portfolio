@@ -19,10 +19,22 @@ export type Project = {
   highlights: string[];
   stack: string[];
   accent: string; // gradient classes for the visual
-  /** Which stylised product mock to render until real screenshots exist. */
-  visual?: "itinerary" | "roster";
   /** Real product screenshot; when set it replaces the stylised mock. */
   image?: { src: string; alt: string; width: number; height: number };
+  /**
+   * NDA-friendly alternative to a screenshot: a layered architecture flow plus
+   * a few honest metrics. Takes precedence over `visual`, below `image`.
+   */
+  diagram?: {
+    /** Eyebrow label naming the scope you owned, e.g. "Frontend I built". */
+    scope?: string;
+    /** The layers you actually built, left → right. */
+    flow: string[];
+    /** External system you integrate with (rendered dashed — consumed, not built). */
+    consumes?: string;
+    note?: string;
+    metrics?: { value: string; label: string }[];
+  };
   /** Optional proof links — buttons render only when provided. */
   links?: { live?: string; repo?: string };
   /** Long-form content for the /projects/[slug] case study page. */
@@ -40,12 +52,6 @@ export type TimelineItem = {
   subtitle: string;
   description: string;
   status: "past" | "present" | "future";
-};
-
-export type SkillGroup = {
-  id: string;
-  label: string;
-  skills: string[];
 };
 
 export type Social = {

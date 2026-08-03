@@ -17,9 +17,9 @@ pipeline — live at **[navdeepbhanderi.dev](https://navdeepbhanderi.dev)**.
 Junagadh, Gujarat, India. Owns frontend delivery end to end — requirement to
 release, backend included when needed. Currently a **Senior Frontend Engineer
 at Softrefine Technology Pvt. Ltd.**, leading the frontend side of a client
-build, with deepening focus on applied AI.
+build.
 
-- **Stack:** Next.js · React · Angular · Node.js · TypeScript · Generative AI
+- **Stack:** React · Angular · Next.js · TypeScript · Node.js · SQL/MongoDB
 - **Email:** navdeepbhanderi1@gmail.com
 - **GitHub:** [@navdeepbhanderi](https://github.com/navdeepbhanderi/) ·
   **LinkedIn:** [in/navdeepbhanderi](https://www.linkedin.com/in/navdeepbhanderi/) ·
@@ -37,8 +37,10 @@ build, with deepening focus on applied AI.
   velocity-reactive skill marquees, and an "earth from space" footer finale.
 - **Interaction language** — contextual custom cursor, active-section navbar pill
   with hide-on-scroll, 3D tilt cards, text-swap buttons, ⌘K command palette.
-- **Case studies** — `/projects/[slug]` pages (problem → approach → features →
-  outcome) with per-page SEO and JSON-LD.
+- **Case studies** — `/projects/[slug]` pages (problem → approach → outcome)
+  with per-page SEO and JSON-LD. Project visuals adapt per project: a real
+  product screenshot, an NDA-safe architecture diagram + metrics, or a stylised
+  fallback (see `ProductMock`).
 - **Nova (Ask AI)** — chat assistant (streamed Gemini replies when configured,
   local knowledge base fallback) with tappable action buttons, lazy-loaded on
   idle, rate-limited.
@@ -145,19 +147,21 @@ npm run build && npm start   # production build (stop `dev` first — shared .ne
 
 ## 📈 Roadmap — highest-impact improvements next
 
-1. **Real project screenshots** — replace the stylised CSS mocks with actual
-   product shots (`public/projects/…`); single biggest credibility upgrade.
-2. **Project proof links** — fill `links: { live, repo }` in
-   `src/data/projects.ts`; "Live demo" / "View code" buttons render automatically.
-3. ~~**Resume download**~~ — done; CTA in hero + contact + palette.
-   ⚠️ `public/resume.pdf` is currently a placeholder — replace with the real one.
-4. **A third real case study** — the "MORE → GitHub" archive card carries the
-   deck today; three genuine projects beats two.
-5. ~~**Professional experience entries**~~ — done; internship + current role
-   in the Experience timeline.
-6. **Analytics** — Vercel Analytics or Plausible to see what recruiters read.
-7. **"Book a call"** — cal.com/Calendly link beside the email CTA for serious
+1. ⚠️ **Replace `public/resume.pdf`** — it is currently the WRONG file (a
+   scanned appointment PDF, not a resume) and every Resume CTA serves it. Drop
+   the real resume at the same path. **Highest priority.**
+2. ~~**Real project visuals**~~ — done; the Attendance project uses a real
+   screenshot (`public/projects/…`), the (NDA) Travel Commerce Platform uses an
+   architecture-diagram + metrics visual. Add shots for future non-NDA work.
+3. ~~**Project proof links**~~ — done for Attendance (public GitHub repo →
+   "View code"). Add `links: { live, repo }` for future projects.
+4. **A third real project** — the "MORE → GitHub" archive card carries the deck
+   today; a third genuine project (ideally a React/Next.js build) beats two.
+5. **Analytics** — Vercel Analytics or Plausible to see what recruiters read.
+6. **"Book a call"** — cal.com/Calendly link beside the email CTA for serious
    inbound.
+7. **Nova "JD-fit" mode** — let a recruiter paste a job description and have the
+   assistant map Navdeep's fit; extends the existing Gemini + context pipeline.
 8. **Live GitHub activity strip** — pinned repos / contribution graph via the
    GitHub API; self-updating proof of shipping.
 9. **Blog (MDX)** — the biggest long-term SEO lever; only commit if you'll
