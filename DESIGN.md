@@ -35,6 +35,12 @@ never invent new surface styles. Film grain overlay (`.grain`) sits at z-60 over
 ## 3. Typography
 
 - **Geist Sans** for everything; **Geist Mono** for eyebrows, indices, meta, kbd.
+- **Instrument Serif** (italic) is the ONE display-serif accent — reserved for a single
+  emphasis phrase inside a section heading (`SectionHeading` → `TextReveal`). Mark it in
+  the title string with `*asterisks*` (e.g. `Projects built *like products*`); the reveal
+  strips them (aria-label included) and renders the word(s) with `.text-accent-italic`.
+  Never in body/UI, never in the char-level hero/contact/footer finales, never more than
+  one phrase per heading.
 - Display sizes are fluid clamps: hero name `clamp(3.5rem,11vw,8.5rem)`, footer name
   `clamp(3.5rem,14vw,13rem)`, section numerals `clamp(8rem,22vw,18rem)`.
 - Eyebrow pattern: mono, `text-xs uppercase tracking-[0.2em..0.3em] text-muted-foreground`,
@@ -127,13 +133,16 @@ Rules:
    **Exit choreography:** scrubbed to scroll-out — copy drifts −70px, portrait −130px
    (deeper layer exits faster), both fading; framer motion values on wrapper layers
    OUTSIDE the pointer-parallax wrappers, gated by `usePrefersReducedMotion`.
-3. **Projects deck:** sticky stacking cards + terminal "MORE → GitHub" archive card. Inside
-   each card the mock and index numeral parallax in opposite directions; card hover plays the
-   mock's micro-story (itinerary days cascade + destination pings / last roster dot checks in).
-4. **Expertise constellation:** hovering a domain card draws hairlines (`foreground/16`,
-   pathLength draw, 0.045s stagger) from its icon to the other five icons — desktop
-   hover only, gated by `useIsTouch` + reduced motion. Icon positions are measured on
-   hover, never cached.
+3. **Projects deck:** sticky stacking cards (scale + dim scrub on every screen; reduced
+   motion → plain flow) + "MORE → GitHub" archive card. Each card is an **overview** —
+   title, tagline, a 3-line teaser, stack chips, and a "Read case study" CTA; the full
+   description, highlights, approach, and outcome live on `/projects/[slug]`. The card
+   visual is one of: a real product screenshot, an NDA-safe architecture diagram +
+   metrics, or a generic mock (`ProductMock`, precedence image → diagram → mock); the
+   index numeral parallaxes behind it. Card height follows the visual so nothing clips.
+4. **Expertise grid:** six domain cards (Frontend · Backend · Databases · Languages · AI ·
+   Tools) with a cursor-following glow (`GlassCard`); below it, two velocity-reactive
+   `VelocityMarquee` rows (decorative, `aria-hidden` — the cards carry the real text).
 5. **Footer finale:** sticky-bottom uncover (`<main>` is opaque z-10 and lifts away; footer
    `sticky bottom-0 z-0` — z must stay ≥0 or it becomes unclickable), starfield with rare
    shooting stars (~every 9–18s, thin gradient streak, none under reduced motion) + `HorizonGlow`.
@@ -193,4 +202,5 @@ for reduced-motion + touch · keep new sections' eyebrow/heading pattern via `Se
 **Don't:** add color · add light mode · pin with GSAP · scrub blur · setState on mousemove ·
 hardcode easings/durations/URLs · negative z-index on interactive elements · put content
 inside `aria-hidden` wrappers without a text alternative · exceed 6° tilt or 1.03 hover scale ·
-add a second accent font.
+add a fourth font family (Geist Sans / Geist Mono / Instrument Serif accent only) · use the
+serif accent outside a section-heading emphasis phrase.

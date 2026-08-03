@@ -2,7 +2,18 @@ import type { Metadata, Viewport } from "next";
 import { ViewTransitions } from "next-view-transitions";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
+import { Instrument_Serif } from "next/font/google";
 import "./globals.css";
+
+// Display serif used ONLY for the italic emphasis word in section headings —
+// the editorial counterpoint to Geist's grotesque. See DESIGN.md §3.
+const displaySerif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
+  variable: "--font-display",
+  display: "swap",
+});
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { HashScroll } from "@/components/layout/HashScroll";
 import { MotionProvider } from "@/components/layout/MotionProvider";
@@ -79,7 +90,7 @@ export default function RootLayout({
     <ViewTransitions>
     <html
       lang="en"
-      className={`${GeistSans.variable} ${GeistMono.variable}`}
+      className={`${GeistSans.variable} ${GeistMono.variable} ${displaySerif.variable}`}
       suppressHydrationWarning
     >
       <head>

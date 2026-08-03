@@ -62,7 +62,7 @@ export function Projects() {
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
           <SectionHeading
             eyebrow="Selected Work"
-            title="Projects built like products"
+            title="Projects built *like products*"
             description="Each one is a small case study — the problem, the approach, and what makes it work."
           />
           <BlurReveal>

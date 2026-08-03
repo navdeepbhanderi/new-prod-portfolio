@@ -34,6 +34,7 @@ const config: Config = {
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
         mono: ["var(--font-mono)", "ui-monospace", "monospace"],
+        display: ["var(--font-display)", "Georgia", "serif"],
       },
       maxWidth: {
         // Wide enough that 1920px screens don't feel like a centered column;

@@ -24,7 +24,25 @@ export function TextReveal({
   once = true,
   as = "h2",
 }: TextRevealProps) {
-  const words = text.split(" ");
+  // Words wrapped in *asterisks* render in the display serif italic — one
+  // editorial emphasis phrase per heading. Asterisks are stripped everywhere
+  // (including the aria-label) so AT reads clean prose.
+  let active = false;
+  const words = text.split(" ").map((token) => {
+    let word = token;
+    let accent = active;
+    if (word.startsWith("*")) {
+      accent = true;
+      active = true;
+      word = word.slice(1);
+    }
+    if (word.endsWith("*")) {
+      word = word.slice(0, -1);
+      active = false;
+    }
+    return { word, accent };
+  });
+  const label = text.replace(/\*/g, "");
   const MotionTag = motion[as];
 
   return (
@@ -34,12 +52,12 @@ export function TextReveal({
       whileInView="visible"
       viewport={{ once, margin: "-60px" }}
       transition={{ staggerChildren: stagger, delayChildren: delay }}
-      aria-label={text}
+      aria-label={label}
     >
-      {words.map((word, i) => (
+      {words.map(({ word, accent }, i) => (
         <span key={`${word}-${i}`} className="inline-block overflow-hidden align-bottom">
           <motion.span
-            className="inline-block"
+            className={cn("inline-block", accent && "text-accent-italic")}
             aria-hidden
             variants={{
               hidden: { y: "110%", opacity: 0, filter: "blur(8px)" },

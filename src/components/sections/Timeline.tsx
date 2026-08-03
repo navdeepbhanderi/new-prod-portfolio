@@ -71,7 +71,7 @@ export function Timeline() {
       <div className="container-px">
         <SectionHeading
           eyebrow="Experience"
-          title="From fundamentals to production"
+          title="From fundamentals to *production*"
           description="Education and industry, side by side — a degree completed while shipping real software."
         />
 

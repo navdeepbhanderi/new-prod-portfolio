@@ -8,7 +8,7 @@ import {
   useTransform,
   type MotionValue,
 } from "framer-motion";
-import { ArrowUpRight, Check, Code2 } from "lucide-react";
+import { ArrowUpRight, Code2 } from "lucide-react";
 import type { Project } from "@/types";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { ProductMock } from "@/components/ui/ProductMock";
@@ -138,24 +138,11 @@ export function ProjectCardContent({
           <p className="mt-1 text-lg text-muted-foreground">{project.tagline}</p>
         </div>
 
-        {/* Clamp on small screens so the card fits one viewport (keeps the
-            sticky stack pinning cleanly); full text on desktop + case study. */}
-        <p className="line-clamp-3 leading-relaxed text-muted-foreground lg:line-clamp-none">
+        {/* Overview only — a short teaser. The full description, highlights,
+            approach, and outcome all live in the case study. */}
+        <p className="line-clamp-3 leading-relaxed text-muted-foreground">
           {project.description}
         </p>
-
-        {/* Below lg, show the top 2 highlights only (rest live in the case
-            study) so the card stays within a phone screen. */}
-        <ul className="grid gap-2.5 sm:grid-cols-2 [&>li:nth-child(n+3)]:hidden lg:[&>li:nth-child(n+3)]:flex">
-          {project.highlights.map((h) => (
-            <li key={h} className="flex items-start gap-2.5 text-sm text-foreground/85">
-              <span className="mt-0.5 grid h-4 w-4 shrink-0 place-items-center rounded-full bg-foreground/10">
-                <Check className="h-2.5 w-2.5" />
-              </span>
-              {h}
-            </li>
-          ))}
-        </ul>
 
         <div className="mt-1 flex flex-wrap gap-2">
           {project.stack.map((tech) => (

@@ -66,7 +66,7 @@ export function Expertise() {
       <div className="container-px">
         <SectionHeading
           eyebrow="Expertise"
-          title="A connected ecosystem of skills"
+          title="A connected *ecosystem* of skills"
           description="Every domain and the technologies behind it — visible at a glance, no digging required."
         />
 

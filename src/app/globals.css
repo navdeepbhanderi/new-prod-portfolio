@@ -143,6 +143,18 @@
     background-clip: text;
     color: transparent;
   }
+
+  /* Editorial italic emphasis inside section headings — the serif counterpoint
+     to Geist. Reserved for ONE phrase per section title (see DESIGN.md §3).
+     Slight right padding so the italic overhang isn't clipped by the
+     word-reveal's overflow box. */
+  .text-accent-italic {
+    font-family: var(--font-display), Georgia, "Times New Roman", serif;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: 0.005em;
+    padding-inline-end: 0.05em;
+  }
 }
 
 @layer utilities {
