@@ -17,6 +17,7 @@ import { BRAND_ICONS } from "@/components/icons";
 import { SOCIALS } from "@/data/socials";
 import { PROFILE } from "@/lib/profile";
 import { NAV_SECTIONS, SECTION_IDS } from "@/data/navigation";
+import { ASSISTANT_LABEL } from "@/lib/ai/knowledge";
 import { DUR, EASE_OUT, SPRING_SNAPPY, STAGGER, staggerContainer } from "@/lib/motion";
 import { holdScroll } from "@/lib/scroll-lock";
 import { useActiveSection } from "@/hooks/use-active-section";
@@ -284,7 +285,7 @@ export function Navbar() {
                   className="hidden h-9 items-center gap-2 whitespace-nowrap rounded-full border border-border bg-background/80 px-3.5 text-sm text-foreground/75 transition-colors hover:border-foreground/25 hover:text-foreground lg:flex"
                 >
                   <Sparkles className="h-3.5 w-3.5 shrink-0" />
-                  Ask AI
+                  {ASSISTANT_LABEL}
                 </motion.button>
               )}
             </AnimatePresence>
@@ -410,7 +411,7 @@ export function Navbar() {
                     closeSheet();
                     openChat();
                   }}
-                  aria-label="Ask AI about my work"
+                  aria-label={`${ASSISTANT_LABEL} about Navdeep's work`}
                   className="grid h-14 w-14 shrink-0 place-items-center rounded-full border border-border text-foreground/75 transition-colors hover:border-foreground/30 hover:text-foreground"
                 >
                   <Sparkles className="h-4 w-4" />

@@ -539,7 +539,7 @@ export function ChatWidget() {
           ref={launcherRef}
           type="button"
           onClick={() => setOpen((v) => !v)}
-          aria-label={open ? "Close chat" : ` — Navdeep's AI assistant`}
+          aria-label={open ? "Close chat" : `${ASSISTANT_LABEL} — Navdeep's AI assistant`}
           aria-expanded={open}
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -586,7 +586,7 @@ export function ChatWidget() {
               ref={dialogRef}
               role="dialog"
               aria-modal="true"
-              aria-label={` — Navdeep's AI assistant`}
+              aria-label={`${ASSISTANT_LABEL} — Navdeep's AI assistant`}
               onKeyDown={trapFocus}
               data-cursor="hidden"
               initial={{ opacity: 0, y: 24, scale: 0.96 }}
