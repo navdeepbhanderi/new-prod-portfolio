@@ -100,7 +100,11 @@ export function Hero() {
       {/* ---------- portrait: top band below md, full-bleed column at md+ ---------- */}
       <motion.div
         style={reduced ? undefined : { y: portraitExitY, opacity: portraitExitOpacity }}
-        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(13rem,32svh,18rem)] md:inset-y-0 md:left-auto md:right-0 md:h-auto md:w-[38vw] xl:w-[34vw]"
+        // Below md the band is 45svh — 4c's 380/844. It used to clamp at 18rem,
+        // which capped it at ~32svh on a tall phone: the portrait read as a
+        // letterbox, and the scrim's 0.72→0.12 ramp got squeezed into so short a
+        // run that the navbar sat on the bright part of it.
+        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(15rem,45svh,25rem)] md:inset-y-0 md:left-auto md:right-0 md:h-auto md:w-[38vw] xl:w-[34vw]"
       >
         <motion.div
           style={reduced ? undefined : { x: portraitX, y: portraitY }}
@@ -119,7 +123,10 @@ export function Hero() {
       </motion.div>
 
       {/* ---------- content ---------- */}
-      <div className="container-px relative z-10 flex min-h-[100svh] flex-col pb-10 pt-[clamp(12rem,30svh,17rem)] md:pb-12 md:pt-28 lg:pb-14">
+      {/* pt tracks the band: 4c starts the copy at 300/844 = 35.5svh, i.e. it
+          overlaps the band's last ~80px so the eyebrow sits in the scrim's
+          dark floor rather than below it. */}
+      <div className="container-px relative z-10 flex min-h-[100svh] flex-col pb-8 pt-[clamp(11.5rem,35.5svh,19.5rem)] md:pb-12 md:pt-28 lg:pb-14">
         <motion.div
           style={reduced ? undefined : { y: copyExitY, opacity: copyExitOpacity }}
           className="flex flex-1 flex-col justify-center"
@@ -128,17 +135,10 @@ export function Hero() {
             style={reduced ? undefined : { x: copyX, y: copyY }}
             className="flex flex-col items-start md:max-w-[56%] lg:max-w-[52%] xl:max-w-[46rem]"
           >
-            <motion.div
-              variants={fadeUpBlur(at(0.35), 14)}
-              initial="hidden"
-              animate={state}
-              className="flex items-center gap-3.5 font-mono text-[9.5px] uppercase tracking-[0.26em] text-muted-foreground sm:text-[11px]"
-            >
-              <span aria-hidden className="h-px w-5 bg-foreground/30 sm:w-6" />
-              Portfolio — {new Date().getFullYear()}
-            </motion.div>
-
-            <div data-cursor="invert" className="mt-5 sm:mt-8">
+            {/* No eyebrow. 3b opened on "Portfolio — {year}", but a dateline
+                above the claim is the weakest thing on the screen — it says the
+                page exists, which the visitor already knows. The claim leads. */}
+            <div data-cursor="invert">
               <TextReveal
                 as="h1"
                 text={PROFILE.claim}
@@ -154,7 +154,7 @@ export function Hero() {
               variants={fadeUpBlur(at(0.75), 16)}
               initial="hidden"
               animate={state}
-              className="mt-5 max-w-xl text-[15px] leading-relaxed text-muted-foreground sm:mt-8 sm:text-lg"
+              className="mt-4 max-w-xl text-[15px] leading-relaxed text-muted-foreground sm:mt-8 sm:text-lg"
             >
               <span className="text-foreground/85">
                 {PROFILE.name} — {PROFILE.title} at {PROFILE.companyShort}.
@@ -166,7 +166,7 @@ export function Hero() {
               variants={fadeUpBlur(at(0.9), 16)}
               initial="hidden"
               animate={state}
-              className="mt-7 flex w-full flex-col gap-3 sm:mt-9 sm:w-auto sm:flex-row sm:items-center"
+              className="mt-6 flex w-full flex-col gap-3 sm:mt-9 sm:w-auto sm:flex-row sm:items-center"
             >
               <Magnetic className="w-full sm:w-auto">
                 <Button asChild size="lg" className="w-full sm:w-auto">
@@ -193,7 +193,7 @@ export function Hero() {
           variants={fadeUpBlur(at(1.05), 16)}
           initial="hidden"
           animate={state}
-          className="mt-10 grid grid-cols-2 gap-x-6 gap-y-5 border-t border-foreground/[0.12] pt-5 sm:gap-x-10 sm:gap-y-6 lg:grid-cols-[repeat(3,minmax(0,1fr))_auto] lg:items-end lg:gap-10 lg:pt-7"
+          className="mt-8 grid grid-cols-2 gap-x-6 gap-y-4 border-t border-foreground/[0.12] pt-4 sm:mt-10 sm:gap-x-10 sm:gap-y-6 sm:pt-5 lg:grid-cols-[repeat(3,minmax(0,1fr))_auto] lg:items-end lg:gap-10 lg:pt-7"
         >
           <Fact label="Currently">{PROFILE.currently}</Fact>
           <Fact label="Core stack">{PROFILE.coreStack.join(" · ")}</Fact>

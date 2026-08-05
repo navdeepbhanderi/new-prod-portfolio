@@ -189,7 +189,7 @@ export function CommandPalette() {
         id: "resume",
         group: "Actions",
         label: "View resume",
-        hint: "resume.pdf",
+        hint: "PDF",
         keywords: "resume cv download pdf curriculum vitae hire experience",
         icon: FileText,
         perform: () => {

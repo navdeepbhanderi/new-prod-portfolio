@@ -19,12 +19,15 @@ function strokeFor(size: number): number {
 export function NMark({
   size = 30,
   framed = false,
+  frameClassName,
   strokeWidth,
   className,
 }: {
   size?: number;
   /** Draws the rounded container hairline (the standalone / lockup form). */
   framed?: boolean;
+  /** Classes for the frame alone — lets a caller drop it at one breakpoint. */
+  frameClassName?: string;
   strokeWidth?: number;
   className?: string;
 }) {
@@ -44,7 +47,7 @@ export function NMark({
           width="46"
           height="46"
           rx="14"
-          className="stroke-border"
+          className={cn("stroke-border", frameClassName)}
         />
       )}
       <path

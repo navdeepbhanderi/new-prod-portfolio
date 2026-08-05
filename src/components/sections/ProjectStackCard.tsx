@@ -74,10 +74,10 @@ function Metrics({ project }: { project: Project }) {
   const metrics = project.diagram?.metrics;
   if (!metrics?.length) return null;
   return (
-    <div className="mt-6 grid grid-cols-3 gap-4 border-y border-border py-5 sm:gap-5">
+    <div className="mt-[1.125rem] grid grid-cols-3 gap-4 border-y border-border py-4 sm:mt-6 sm:gap-5 sm:py-5">
       {metrics.map((metric) => (
         <div key={metric.label} className="flex flex-col gap-1.5">
-          <span className="text-lg font-semibold tracking-tight sm:text-[1.375rem]">
+          <span className="text-[17px] font-semibold tracking-tight sm:text-[1.375rem]">
             {metric.value}
           </span>
           <span className="font-mono text-[8.5px] uppercase leading-tight tracking-[0.18em] text-muted-foreground sm:text-[9.5px] sm:tracking-[0.2em]">
@@ -120,8 +120,20 @@ export function StackCard({ index, total, progress, children, className }: Stack
 
   return (
     <div
-      className={cn(scrub ? "sticky" : "relative", className)}
-      style={scrub ? { top: `calc(9svh + ${index * 1.75}rem)` } : undefined}
+      // The 1.75rem-per-card offset is a depth cue for the wide deck, where
+      // there is room to spare. On a phone it only pushes each successive card
+      // further down a viewport the card already fills — card 3's CTA ended up
+      // 56px lower than card 1's, and off-screen. Below lg every card pins at
+      // the same 9svh.
+      className={cn(
+        scrub ? "sticky top-[9svh] lg:top-[var(--stack-top)]" : "relative",
+        className
+      )}
+      style={
+        scrub
+          ? ({ "--stack-top": `calc(9svh + ${index * 1.75}rem)` } as React.CSSProperties)
+          : undefined
+      }
     >
       <motion.div
         // `will-change` is normally framer's job, but it only sets it for
@@ -168,14 +180,16 @@ export function ProjectCardContent({ project }: { project: Project }) {
           {project.tagline}
         </p>
 
-        {/* Overview only — the full story lives in the case study. */}
-        <p className="mt-4 line-clamp-4 leading-relaxed text-muted-foreground sm:mt-5">
+        {/* Overview only — the full story lives in the case study. Three lines
+            on a phone, not four: 7a's card has to fit under the pin with its
+            CTA still on screen, and the fourth line is the cheapest 26px. */}
+        <p className="mt-4 line-clamp-3 text-[15px] leading-relaxed text-muted-foreground sm:mt-5 sm:line-clamp-4 sm:text-base">
           {project.description}
         </p>
 
         <Metrics project={project} />
 
-        <div className="mt-5 flex flex-wrap gap-2">
+        <div className="mt-4 flex flex-wrap gap-2 sm:mt-5">
           {project.stack.map((tech) => (
             <span
               key={tech}
@@ -188,7 +202,7 @@ export function ProjectCardContent({ project }: { project: Project }) {
 
         {/* Explicit z: interactive elements must win hit-testing inside the
             scaled card shell (its transform reorders paint layers). */}
-        <div className="relative z-20 mt-auto flex items-center gap-2.5 pt-7">
+        <div className="relative z-20 mt-auto flex items-center gap-2.5 pt-5 sm:pt-7">
           <Button asChild size="lg" className="flex-1 sm:flex-none">
             <Link href={`/projects/${project.id}`}>
               Read case study

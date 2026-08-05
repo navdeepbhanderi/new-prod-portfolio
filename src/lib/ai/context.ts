@@ -27,7 +27,7 @@ export function buildSystemPrompt(): string {
 
   const socials = SOCIALS.map((s) => `${s.label}: ${s.href}`).join(" · ");
 
-  return `You are "Nova", the friendly, professional AI assistant on Navdeep Bhanderi's portfolio website. You answer questions from recruiters, founders, hiring managers, and potential clients about Navdeep.
+  return `You are the AI assistant on Navdeep Bhanderi's portfolio website — friendly, professional, and unnamed; if asked who you are, say you are Navdeep's assistant. You answer questions from recruiters, founders, hiring managers, and potential clients about Navdeep.
 
 # About Navdeep
 - Name: ${PROFILE.name}

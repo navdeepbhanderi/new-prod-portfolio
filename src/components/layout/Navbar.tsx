@@ -142,6 +142,11 @@ export function Navbar() {
         // Keyboard users must never lose the nav while tabbing.
         onFocusCapture={() => setHidden(false)}
       >
+        {/* No scrim here. The transparent state is the design (§6), and a strip
+            dark enough to carry muted text stacked with the hero band's own 0.72
+            top scrim to ~0.96 — a visible black bar across the portrait, with a
+            hard edge where it ended. The controls carry their own contrast
+            instead, which is what actually needed fixing. */}
         <motion.nav
           // `layout` is what makes the wide bar collapse into the condensed
           // pill as one continuous move instead of two states swapping.
@@ -165,7 +170,13 @@ export function Navbar() {
             >
               {/* id: the intro's name flies to this mark as the curtain lifts. */}
               <span id="nav-mark" className="flex items-center">
-                <NMark size={scrolled ? 26 : 30} framed={!scrolled} />
+                {/* Bare mark on phones — 4b/4c draw the nav mark as a plain
+                    glyph with no container at any width. */}
+                <NMark
+                  size={scrolled ? 26 : 30}
+                  framed={!scrolled}
+                  frameClassName="max-sm:hidden"
+                />
               </span>
               {/* No width animation on any of the collapsing labels: the nav's
                   own `layout` closes the gap, and animating to width:auto
@@ -233,8 +244,13 @@ export function Navbar() {
               aria-label="Search — open the command palette"
               aria-keyshortcuts={isMac ? "Meta+K" : "Control+K"}
               className={cn(
-                "hidden items-center gap-2 rounded-full border border-border bg-foreground/5 text-sm text-muted-foreground transition-colors hover:border-foreground/25 hover:text-foreground lg:flex",
-                scrolled ? "h-9 w-9 justify-center" : "h-9 px-3.5"
+                "hidden items-center gap-2 rounded-full border border-border text-sm transition-colors hover:border-foreground/25 hover:text-foreground lg:flex",
+                // Scrolled, the nav's own glass supplies the contrast. Unscrolled
+                // the control has to carry its own, or it reads as a ghost over
+                // anything light.
+                scrolled
+                  ? "h-9 w-9 justify-center bg-foreground/5 text-muted-foreground"
+                  : "h-9 bg-background/80 px-3.5 text-foreground/70"
               )}
             >
               <Search className="h-3.5 w-3.5 shrink-0" />
@@ -265,7 +281,7 @@ export function Navbar() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: DUR.fast, ease: EASE_OUT }}
-                  className="hidden h-9 items-center gap-2 whitespace-nowrap rounded-full border border-border bg-foreground/5 px-3.5 text-sm text-foreground/75 transition-colors hover:border-foreground/25 hover:text-foreground lg:flex"
+                  className="hidden h-9 items-center gap-2 whitespace-nowrap rounded-full border border-border bg-background/80 px-3.5 text-sm text-foreground/75 transition-colors hover:border-foreground/25 hover:text-foreground lg:flex"
                 >
                   <Sparkles className="h-3.5 w-3.5 shrink-0" />
                   Ask AI
@@ -283,7 +299,7 @@ export function Navbar() {
               type="button"
               onClick={openPalette}
               aria-label="Search — open the command palette"
-              className="grid h-11 w-11 place-items-center rounded-full border border-border bg-foreground/5 text-foreground/75 transition-colors hover:text-foreground lg:hidden"
+              className="grid h-11 w-11 place-items-center rounded-full border border-border bg-background/80 text-foreground/75 transition-colors hover:text-foreground lg:hidden"
             >
               <Search className="h-4 w-4" />
             </button>

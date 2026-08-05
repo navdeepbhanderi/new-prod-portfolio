@@ -214,7 +214,16 @@ export const SUGGESTED_QUESTIONS: string[] = [
   "How can I contact him?",
 ];
 
-/** The assistant's name — referenced everywhere, change it here only. */
-export const ASSISTANT_NAME = "Nova";
+/**
+ * One label for the assistant, everywhere it is named — the launcher, the
+ * navbar, the panel header, the command palette. It used to be three different
+ * things on one screen: "Ask AI" in the nav, "Ask Nova" on the launcher, and
+ * "Ask about my work" inside the panel, which reads like three features.
+ *
+ * The persona name went with them. On a personal portfolio a named bot puts a
+ * character between the visitor and the work; unnamed, it is plainly what it
+ * is — a way to ask about Navdeep.
+ */
+export const ASSISTANT_LABEL = "Ask AI";
 
-export const GREETING_MESSAGE = `Hi — I'm ${ASSISTANT_NAME}, ${PROFILE.firstName}'s AI assistant. Ask me anything about his work, skills, or how to reach him.`;
+export const GREETING_MESSAGE = `Hi — I'm ${PROFILE.firstName}'s AI assistant. Ask me anything about his work, skills, or how to reach him.`;

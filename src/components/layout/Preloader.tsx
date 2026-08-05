@@ -19,10 +19,11 @@ const MIN_MS = 900;
 /** …and never hold the visitor longer than this, however slow the network is. */
 const MAX_MS = 2000;
 
+/** 6b runs the log at one word per line — the desktop phrasing wraps at 390. */
 const STEPS = [
-  { id: "fonts", label: "Typefaces loaded" },
-  { id: "scene", label: "Scene compiled" },
-  { id: "hero", label: "Entering hero" },
+  { id: "fonts", label: "Typefaces loaded", short: "Typefaces" },
+  { id: "scene", label: "Scene compiled", short: "Scene" },
+  { id: "hero", label: "Entering hero", short: "Hero" },
 ];
 
 const CORNERS = [
@@ -49,7 +50,6 @@ export function Preloader() {
   const rootRef = useRef<HTMLDivElement>(null);
   const counterRef = useRef<HTMLSpanElement>(null);
   const fillRef = useRef<HTMLSpanElement>(null);
-  const sweepRef = useRef<HTMLSpanElement>(null);
   const hairlineRef = useRef<HTMLDivElement>(null);
   const [gone, setGone] = useState(false);
   const [done, setDone] = useState<Record<string, boolean>>({});
@@ -148,18 +148,21 @@ export function Preloader() {
       let exiting = false;
       const start = performance.now();
 
+      // 3c fills the one-line name left→right; 6b stacks it to two lines and
+      // fills top→bottom instead, because a horizontal wipe across a stacked
+      // block reads as two unrelated wipes. Held as a MediaQueryList so `paint`
+      // stays a property read rather than a re-evaluated query each frame.
+      const stacked = window.matchMedia("(max-width: 639px)");
+
       const paint = (p: number) => {
         if (counterRef.current) {
           counterRef.current.textContent = String(Math.round(p * 100)).padStart(3, "0");
         }
         if (fillRef.current) {
-          fillRef.current.style.clipPath = `inset(0 ${(1 - p) * 100}% 0 0)`;
-        }
-        // The light bar rides the sweep's leading edge — the fill isn't just
-        // appearing, something is drawing it.
-        if (sweepRef.current) {
-          sweepRef.current.style.left = `${p * 100}%`;
-          sweepRef.current.style.opacity = p > 0.015 && p < 0.99 ? "1" : "0";
+          const remaining = (1 - p) * 100;
+          fillRef.current.style.clipPath = stacked.matches
+            ? `inset(0 0 ${remaining}% 0)`
+            : `inset(0 ${remaining}% 0 0)`;
         }
         if (hairlineRef.current) {
           hairlineRef.current.style.transform = `scaleX(${p})`;
@@ -284,26 +287,23 @@ export function Preloader() {
       <div className="pl-panel-main absolute inset-0 flex flex-col overflow-hidden bg-background">
         <Starfield density={0.00009} className="opacity-80" />
         <div className="pl-horizon absolute inset-0" style={{ opacity: 0 }}>
-          <HorizonGlow className="opacity-90" />
+          <HorizonGlow variant="intro" className="opacity-90" />
         </div>
 
         {/* Registration marks — the frame the sequence is composed inside. */}
         {CORNERS.map((pos) => (
           <span
             key={pos}
-            className={cn("pl-mark absolute h-4 w-4 border-foreground/25", pos)}
+            className={cn("pl-mark absolute h-3 w-3 border-foreground/25 sm:h-4 sm:w-4", pos)}
             style={{ opacity: 0 }}
           />
         ))}
 
-        <div className="pl-meta relative flex flex-col gap-1.5 px-6 pt-11 font-mono text-[9px] uppercase tracking-[0.3em] text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:px-[4.5rem] sm:pt-16 sm:text-[11px]">
+        <div className="pl-meta relative flex flex-col gap-2 px-[2.125rem] pt-11 font-mono text-[9px] uppercase tracking-[0.3em] text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:px-[4.5rem] sm:pt-16 sm:text-[11px]">
+          {/* The name takes the slot the dateline used to hold — it's the one
+              thing worth reading on a loading screen, and 6b only has room for
+              two items. */}
           <span className="pl-meta-item" style={{ opacity: 0, transform: "translateY(8px)" }}>
-            Portfolio — {new Date().getFullYear()}
-          </span>
-          <span
-            className="pl-meta-item hidden sm:block"
-            style={{ opacity: 0, transform: "translateY(8px)" }}
-          >
             {PROFILE.name}
           </span>
           <span className="pl-meta-item" style={{ opacity: 0, transform: "translateY(8px)" }}>
@@ -311,17 +311,19 @@ export function Preloader() {
           </span>
         </div>
 
-        <div className="relative flex flex-1 flex-col justify-center px-6 sm:px-[4.5rem]">
+        <div className="relative flex flex-1 flex-col justify-center px-[2.125rem] sm:px-[4.5rem]">
           <div
-            className="pl-name relative select-none text-[clamp(2.4rem,8.6vw,7.5rem)] font-semibold leading-[0.94] tracking-tight"
+            className="pl-name relative select-none text-[clamp(3.25rem,8.6vw,7.5rem)] font-semibold leading-[0.94] tracking-tight"
             style={{ opacity: 0, transform: "translateY(40%)" }}
           >
             {/* Outline layer */}
-            <span className="text-stroke-strong block">
+            <span className="text-stroke-intro block">
               NAVDEEP <br className="sm:hidden" />
               BHANDERI
             </span>
-            {/* Fill layer — clipped to the real progress value */}
+            {/* Fill layer — clipped to the real progress value. 3c and 6b are
+                both a plain clip against a static gradient; there is no light
+                bar riding the edge, and adding one turned a wipe into a scan. */}
             <span
               ref={fillRef}
               className="pl-fill text-name-gradient absolute inset-0 block"
@@ -330,12 +332,6 @@ export function Preloader() {
               NAVDEEP <br className="sm:hidden" />
               BHANDERI
             </span>
-            <span
-              ref={sweepRef}
-              aria-hidden
-              className="pointer-events-none absolute inset-y-[-0.35em] w-px bg-gradient-to-b from-transparent via-[hsl(225_80%_88%/0.9)] to-transparent transition-opacity duration-200"
-              style={{ left: 0, opacity: 0 }}
-            />
           </div>
 
           <div
@@ -353,7 +349,7 @@ export function Preloader() {
         </div>
 
         <div
-          className="pl-foot relative flex items-end justify-between gap-6 px-6 pb-12 sm:px-[4.5rem] sm:pb-24"
+          className="pl-foot relative flex items-end justify-between gap-6 px-[2.125rem] pb-[3.25rem] sm:px-[4.5rem] sm:pb-24"
           style={{ opacity: 0 }}
         >
           <div className="flex flex-col gap-2 font-mono text-[10px] tracking-[0.12em] text-muted-foreground sm:gap-2.5 sm:text-xs">
@@ -365,7 +361,8 @@ export function Preloader() {
                   {done[step.id] ? "✓" : "▸"}
                 </span>
                 <span className={done[step.id] ? "" : "text-foreground/85"}>
-                  {step.label}
+                  <span className="sm:hidden">{step.short}</span>
+                  <span className="hidden sm:inline">{step.label}</span>
                 </span>
               </span>
             ))}
@@ -373,7 +370,7 @@ export function Preloader() {
           <div className="flex items-end gap-2">
             <span
               ref={counterRef}
-              className="font-mono text-[clamp(3.25rem,11vw,6rem)] font-medium leading-[0.8] tracking-tight text-foreground [font-variant-numeric:tabular-nums]"
+              className="font-mono text-[clamp(3.875rem,11vw,6rem)] font-medium leading-[0.8] tracking-tight text-foreground [font-variant-numeric:tabular-nums]"
             >
               000
             </span>
@@ -383,11 +380,15 @@ export function Preloader() {
           </div>
         </div>
 
-        <div
-          ref={hairlineRef}
-          className="pl-hairline absolute bottom-0 left-0 h-px w-full origin-left bg-gradient-to-r from-foreground/25 to-foreground"
-          style={{ transform: "scaleX(0)" }}
-        />
+        {/* Floor rule: an unlit track the progress line is drawn along, so the
+            bar reads as filling a meter rather than growing out of nothing. */}
+        <div aria-hidden className="absolute inset-x-0 bottom-0 h-px bg-foreground/[0.07]">
+          <div
+            ref={hairlineRef}
+            className="pl-hairline h-px w-full origin-left bg-gradient-to-r from-foreground/25 to-foreground"
+            style={{ transform: "scaleX(0)" }}
+          />
+        </div>
       </div>
     </div>
   );

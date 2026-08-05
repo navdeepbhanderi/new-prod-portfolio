@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "next-view-transitions";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, X, ArrowUp, ArrowUpRight, RefreshCw } from "lucide-react";
-import { SUGGESTED_QUESTIONS, GREETING_MESSAGE, ASSISTANT_NAME } from "@/lib/ai/knowledge";
+import { SUGGESTED_QUESTIONS, GREETING_MESSAGE, ASSISTANT_LABEL } from "@/lib/ai/knowledge";
 import {
   ACTION_TOKEN_RE,
   ALLOWED_ACTION_HREFS,
@@ -530,7 +530,7 @@ export function ChatWidget() {
               exit={{ opacity: 0, x: 8 }}
               className="pointer-events-none hidden rounded-full border border-border bg-background/80 px-3 py-1.5 text-xs font-medium text-foreground/90 backdrop-blur-md md:block"
             >
-              Ask {ASSISTANT_NAME}
+              {ASSISTANT_LABEL}
             </motion.span>
           )}
         </AnimatePresence>
@@ -539,7 +539,7 @@ export function ChatWidget() {
           ref={launcherRef}
           type="button"
           onClick={() => setOpen((v) => !v)}
-          aria-label={open ? "Close chat" : `Ask ${ASSISTANT_NAME} — Navdeep's AI assistant`}
+          aria-label={open ? "Close chat" : ` — Navdeep's AI assistant`}
           aria-expanded={open}
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -586,7 +586,7 @@ export function ChatWidget() {
               ref={dialogRef}
               role="dialog"
               aria-modal="true"
-              aria-label={`${ASSISTANT_NAME} — Navdeep's AI assistant`}
+              aria-label={` — Navdeep's AI assistant`}
               onKeyDown={trapFocus}
               data-cursor="hidden"
               initial={{ opacity: 0, y: 24, scale: 0.96 }}
@@ -607,7 +607,7 @@ export function ChatWidget() {
                     <Sparkles className="h-3.5 w-3.5" />
                   </span>
                   <div className="flex flex-col gap-0.5">
-                    <span className="text-sm font-medium">Ask about my work</span>
+                    <span className="text-sm font-medium">{ASSISTANT_LABEL}</span>
                     {/* Setting the expectation up front is the honest move —
                         and it's what stops the "can you write my essay" turn. */}
                     <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-muted-foreground">
@@ -645,7 +645,7 @@ export function ChatWidget() {
                 data-lenis-prevent
                 role="log"
                 aria-live="polite"
-                aria-label={`Conversation with ${ASSISTANT_NAME}`}
+                aria-label={`Conversation with Navdeep's AI assistant`}
                 className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto overscroll-contain px-4 py-5"
               >
                 {messages.map((m, mi) => {

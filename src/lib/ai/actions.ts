@@ -1,5 +1,6 @@
 import { EMAIL, SOCIALS } from "@/data/socials";
 import { PROJECTS } from "@/data/projects";
+import { PROFILE } from "@/lib/profile";
 
 /**
  * The fixed catalog of actions the chat assistant may attach to a reply.
@@ -21,7 +22,7 @@ export const CHAT_ACTIONS: Record<string, ChatAction> = {
       { label: `Case study: ${p.title}`, href: `/projects/${p.id}` },
     ])
   ),
-  resume: { label: "View resume", href: "/resume.pdf" },
+  resume: { label: "View resume", href: PROFILE.resume },
   email: { label: "Email Navdeep", href: `mailto:${EMAIL}` },
   contact: { label: "Go to the contact form", href: "/#contact" },
   github: { label: "View GitHub", href: GITHUB },

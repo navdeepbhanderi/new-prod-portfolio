@@ -33,8 +33,11 @@
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     scroll-behavior: smooth;
-    /* Always reserve scrollbar space so locking scroll (mobile menu / chat)
-       never shifts fixed, right-anchored elements. */
+    /* Always reserve scrollbar space so locking scroll (mobile menu / palette /
+       chat) never shifts fixed, right-anchored elements. Declared on `body`
+       too: `overflow-x: hidden` below makes body the element the UA propagates
+       overflow — and with it scrollbar-gutter — from to the viewport, so this
+       declaration on `html` alone is ignored. */
     scrollbar-gutter: stable;
   }
 
@@ -46,8 +49,14 @@
   .lenis.lenis-smooth {
     scroll-behavior: auto !important;
   }
+  /* `hidden`, not `clip`. `clip` is not a scroll container, and
+     `scrollbar-gutter` only applies to scroll containers — so the instant an
+     overlay called `lenis.stop()` the reserved gutter collapsed and the whole
+     page, navbar included, jumped right by the scrollbar's width. `hidden`
+     still blocks user scrolling but keeps the scroll container, and the gutter
+     with it. */
   .lenis.lenis-stopped {
-    overflow: clip;
+    overflow: hidden;
   }
 
   body {
@@ -55,6 +64,10 @@
     color: hsl(var(--foreground));
     font-family: var(--font-sans), system-ui, sans-serif;
     overflow-x: hidden;
+    /* See the note on `html` — this is the declaration that actually reaches
+       the viewport, because `overflow-x: hidden` makes body the propagation
+       source. */
+    scrollbar-gutter: stable;
     font-feature-settings: "ss01", "cv01", "cv03";
   }
 
@@ -195,6 +208,13 @@
   .text-stroke-strong {
     color: transparent;
     -webkit-text-stroke: 1px hsl(var(--foreground) / 0.45);
+  }
+  /* The intro's unfilled name. 3c strokes it at 0.3, not the 0.45 the MORE card
+     uses — the outline has to read as the *empty* half of a filling meter, so
+     it sits a step back from the lit half. */
+  .text-stroke-intro {
+    color: transparent;
+    -webkit-text-stroke: 1px hsl(var(--foreground) / 0.3);
   }
   /* Hero surname — a crisp hairline outline with a faint bottom-lit fill.
      1px keeps the stroke sharp; the fill fades out by mid-glyph so the

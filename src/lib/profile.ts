@@ -30,7 +30,7 @@ export const PROFILE = {
   company: "Softrefine Technology Pvt. Ltd.",
   /** Conversational form, for running copy where the legal suffix reads stiff. */
   companyShort: "Softrefine",
-  resume: "/resume.pdf",
+  resume: "/navdeep-bhanderi-resume.pdf",
   availability: [
     "Full-time opportunities",
     "Freelance projects",

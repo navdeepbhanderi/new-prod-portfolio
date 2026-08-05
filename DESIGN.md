@@ -46,7 +46,8 @@ never invent new surface styles. Film grain overlay (`.grain`) sits at z-60 over
   outcome pull-quote** (upright `font-display`, not italic — it's a quote, not an accent).
   Never in body/UI, never more than one phrase per heading.
 - Display sizes are fluid clamps: hero claim `clamp(2.375rem,6.4vw,5.75rem)`, intro name
-  `clamp(2.4rem,8.6vw,7.5rem)`, footer name `clamp(3.5rem,16.5vw,15rem)`, section
+  `clamp(3.25rem,8.6vw,7.5rem)` (the floor is 6b's 52px at 390 — 2.4rem left the stacked
+  name looking incidental), footer name `clamp(3.5rem,16.5vw,15rem)`, section
   numerals `clamp(8rem,22vw,18rem)`.
 - **Custom font sizes must be registered with tailwind-merge** (`src/lib/utils.ts`).
   It only knows Tailwind's built-in scale, so an unregistered `text-fluid-h2` is filed
@@ -155,6 +156,11 @@ Rules:
    portrait's decode report in, and the name's light sweep is the same number as a
    `clip-path`. Never fake it: warm assets finish early (floor `MIN_MS` so the sweep is
    seen), a stalled network still leaves at `MAX_MS`, and any key or tap skips.
+   The fill is a plain clip against a static gradient — left→right on one line
+   (3c), top→bottom once the name stacks below `sm` (6b). No light bar rides the
+   leading edge; that turns a wipe into a scan, and it is not in the design.
+   The floor rule sits on an unlit track, and the horizon behind it is
+   `HorizonGlow variant="intro"` — 3c's proportions rather than 3g's.
    The name then **drifts toward `#nav-mark`** (travel capped ±110/90px, scale 0.94,
    dissolve — a lean, never a full flight) as the double curtain lifts;
    `intro.complete()` fires at curtain-start so the hero rises underneath.
@@ -187,6 +193,11 @@ Rules:
    (opacity 0.3→1 starting at t=0.3) — the sunrise happens because the visitor scrolled.
    (earth rim, apex must stay inside its masked container; mask prevents bloom seams),
    `.text-horizon-lit` giant name, live IST clock.
+   **The horizon is an arc, not a rule.** `HorizonGlow` sizes its height from its
+   width so `border-radius: 999px` leaves the flat run at `width - height`; both
+   rounded ends must land inside the viewport (3g bends over its outer ~90px of
+   1440, 3c over ~120px). Any fixed px width only matches at one viewport — the
+   old `max(2300px,170vw)` was 3g exactly up to 1353px and dead straight above it.
 
 ## 8. Z-index map (keep sacred)
 
