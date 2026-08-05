@@ -311,7 +311,15 @@ export function Preloader() {
           </span>
         </div>
 
-        <div className="relative flex flex-1 flex-col justify-center px-[2.125rem] sm:px-[4.5rem]">
+        {/* Anchored to the frame, not centred in the leftover flex space.
+            3c places this block at top:50% translateY(-54%), which is what
+            drops the hairline row *below* the horizon apex — the apex (54.8%)
+            falls inside the 30px gap between the name (ends 53.8%) and the
+            role row (starts 57.3%). Centring it between the meta row and the
+            much taller boot-log footer pushed the whole block up ~3%, putting
+            the role line above the horizon instead of under it.
+            6b uses top:47% translateY(-50%) for the stacked mobile name. */}
+        <div className="pointer-events-none absolute inset-x-0 top-[47%] -translate-y-1/2 px-[2.125rem] sm:top-1/2 sm:-translate-y-[62%] sm:px-[4.5rem]">
           <div
             className="pl-name relative select-none text-[clamp(3.25rem,8.6vw,7.5rem)] font-semibold leading-[0.94] tracking-tight"
             style={{ opacity: 0, transform: "translateY(40%)" }}
@@ -335,7 +343,13 @@ export function Preloader() {
           </div>
 
           <div
-            className="pl-role mt-9 flex items-center gap-4 sm:mt-11 sm:gap-5"
+            // The horizon apex lands inside this gap, so it has to be wide
+            // enough for the line to clear the name's baseline above it and the
+            // hairline row below it — 3c leaves ~24px on each side. 30px (the
+            // design's literal margin) measured from the name's *box*, which
+            // sits well above its baseline at leading 0.94; the visible gap was
+            // a third of that and the line cut through the letterforms.
+            className="pl-role mt-12 flex items-center gap-4 sm:mt-[3.9375rem] sm:gap-5"
             style={{ opacity: 0 }}
           >
             <span className="whitespace-nowrap font-mono text-[9px] uppercase tracking-[0.3em] text-muted-foreground sm:text-xs sm:tracking-[0.34em]">
@@ -349,7 +363,8 @@ export function Preloader() {
         </div>
 
         <div
-          className="pl-foot relative flex items-end justify-between gap-6 px-[2.125rem] pb-[3.25rem] sm:px-[4.5rem] sm:pb-24"
+          // mt-auto, because the name block above is out of flow now.
+          className="pl-foot relative mt-auto flex items-end justify-between gap-6 px-[2.125rem] pb-[3.25rem] sm:px-[4.5rem] sm:pb-24"
           style={{ opacity: 0 }}
         >
           <div className="flex flex-col gap-2 font-mono text-[10px] tracking-[0.12em] text-muted-foreground sm:gap-2.5 sm:text-xs">
