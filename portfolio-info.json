@@ -5,15 +5,15 @@
     "description": "Structured, single-file export of the entire portfolio's content and technical profile. Generated from the site's data sources (src/lib/profile.ts, src/data/*, src/lib/site.ts).",
     "siteUrl": "https://navdeepbhanderi.dev",
     "generatedFrom": [
-      "src/lib/profile.ts",
-      "src/lib/site.ts",
-      "src/data/socials.ts",
       "src/data/expertise.ts",
+      "src/data/projects.ts",
       "src/data/skills.ts",
+      "src/data/socials.ts",
       "src/data/timeline.ts",
-      "src/data/projects.ts"
+      "src/lib/profile.ts",
+      "src/lib/site.ts"
     ],
-    "version": "1.1.0"
+    "version": "1.2.0"
   },
   "profile": {
     "name": "Navdeep Bhanderi",
@@ -28,7 +28,9 @@
       "region": "Gujarat",
       "country": "India",
       "countryCode": "IN",
-      "remoteFriendly": true
+      "remoteFriendly": true,
+      "short": "Junagadh, IN",
+      "timezone": "IST"
     },
     "currentRole": "Senior Frontend Engineer",
     "company": "Softrefine Technology Pvt. Ltd.",
@@ -38,7 +40,17 @@
       "Freelance projects",
       "Startup collaborations",
       "Product engineering roles"
-    ]
+    ],
+    "claim": "Frontend built like *product*, not like tickets.",
+    "byline": "I own delivery from the requirement through to release, backend included when the work needs it.",
+    "currently": "Leading the frontend of a client build",
+    "coreStack": [
+      "Angular",
+      "React",
+      "Next.js",
+      "Node.js"
+    ],
+    "companyShort": "Softrefine"
   },
   "contact": {
     "email": "navdeepbhanderi1@gmail.com",
@@ -64,47 +76,120 @@
     {
       "id": "frontend",
       "label": "Frontend",
-      "blurb": "Where most of the day-to-day work happens.",
-      "technologies": ["Angular", "React", "Next.js", "JavaScript", "TypeScript", "TailwindCSS"]
+      "blurb": "Where most of the day-to-day work happens — architecture, state, performance, and the last 10% that makes an interface feel finished.",
+      "technologies": [
+        "Angular",
+        "React",
+        "Next.js",
+        "JavaScript",
+        "TypeScript",
+        "TailwindCSS"
+      ],
+      "weight": "primary"
     },
     {
       "id": "backend",
       "label": "Backend",
       "blurb": "Enough to reason about the whole system, not just the UI.",
-      "technologies": ["Node.js", "NestJS", "Express.js", "PHP"]
+      "technologies": [
+        "Node.js",
+        "NestJS",
+        "Express.js",
+        "PHP"
+      ],
+      "weight": "standard"
     },
     {
       "id": "databases",
       "label": "Databases",
       "blurb": "Relational and document stores behind the products I build.",
-      "technologies": ["SQL", "PostgreSQL", "MongoDB", "Firebase"]
+      "technologies": [
+        "SQL",
+        "PostgreSQL",
+        "MongoDB",
+        "Firebase"
+      ],
+      "weight": "standard"
     },
     {
       "id": "languages",
       "label": "Languages",
       "blurb": "The languages I think and build in.",
-      "technologies": ["JavaScript", "TypeScript", "Java", "C++"]
+      "technologies": [
+        "JavaScript",
+        "TypeScript",
+        "Java",
+        "C++"
+      ],
+      "weight": "standard"
     },
     {
       "id": "ai",
       "label": "AI",
       "blurb": "Used where it actually earns a place in the product.",
-      "technologies": ["Generative AI", "LLM Tools", "AI Workflows"]
+      "technologies": [
+        "Generative AI",
+        "LLM Tools",
+        "AI Workflows"
+      ],
+      "weight": "standard"
     },
     {
       "id": "tools",
       "label": "Tools",
       "blurb": "The everyday tools that keep delivery sharp.",
-      "technologies": ["Git", "GitHub", "VS Code", "Postman", "Figma", "Linear", "npm"]
+      "technologies": [
+        "Git",
+        "GitHub",
+        "VS Code",
+        "Postman",
+        "Figma",
+        "Linear",
+        "npm"
+      ],
+      "weight": "utility"
     }
   ],
   "skills": {
-    "frontend": ["Angular", "React", "Next.js", "JavaScript", "TypeScript", "TailwindCSS"],
-    "backend": ["Node.js", "NestJS", "Express.js", "PHP"],
-    "databases": ["SQL", "PostgreSQL", "MongoDB", "Firebase"],
-    "languages": ["JavaScript", "TypeScript", "Java", "C++"],
-    "ai": ["Generative AI Tools", "LLM Applications"],
-    "tools": ["Git", "GitHub", "VS Code", "Postman", "Figma", "Linear", "npm"]
+    "frontend": [
+      "Angular",
+      "React",
+      "Next.js",
+      "JavaScript",
+      "TypeScript",
+      "TailwindCSS"
+    ],
+    "backend": [
+      "Node.js",
+      "NestJS",
+      "Express.js",
+      "PHP"
+    ],
+    "databases": [
+      "SQL",
+      "PostgreSQL",
+      "MongoDB",
+      "Firebase"
+    ],
+    "languages": [
+      "JavaScript",
+      "TypeScript",
+      "Java",
+      "C++"
+    ],
+    "ai": [
+      "Generative AI Tools",
+      "LLM Applications"
+    ],
+    "tools": [
+      "Git",
+      "GitHub",
+      "VS Code",
+      "Postman",
+      "Figma",
+      "Linear",
+      "npm"
+    ]
   },
   "education": [
     {
@@ -146,7 +231,12 @@
       "title": "Diploma in Computer Engineering",
       "subtitle": "Dr. Subhash Technical Campus",
       "description": "Built the fundamentals — programming, systems, and the engineering principles that still shape how I work.",
-      "status": "past"
+      "status": "past",
+      "stage": "Start",
+      "aside": {
+        "label": "Foundation",
+        "value": "Programming · Systems"
+      }
     },
     {
       "id": "btech",
@@ -154,7 +244,12 @@
       "title": "B.Tech, Information Technology",
       "subtitle": "Dr. Subhash University",
       "description": "Deepened into modern software engineering and full-stack development — completed while already working in the industry.",
-      "status": "past"
+      "status": "past",
+      "stage": "Education",
+      "aside": {
+        "label": "Alongside",
+        "value": "Studied while working full-time"
+      }
     },
     {
       "id": "internship",
@@ -162,7 +257,12 @@
       "title": "Software Developer Intern",
       "subtitle": "Softrefine Technology Pvt. Ltd.",
       "description": "First real industry work — moved from coursework to shipping production code on live client projects across the stack.",
-      "status": "past"
+      "status": "past",
+      "stage": "Industry",
+      "aside": {
+        "label": "Turning point",
+        "value": "Coursework → production"
+      }
     },
     {
       "id": "softrefine",
@@ -170,7 +270,17 @@
       "title": "Senior Frontend Engineer",
       "subtitle": "Softrefine Technology Pvt. Ltd.",
       "description": "Leading the frontend side of a client build — starting from the full requirement, splitting delivery across the team, and shipping my own share of it end to end, backend work included where it's needed.",
-      "status": "present"
+      "status": "present",
+      "stage": "Present",
+      "aside": {
+        "label": "Scope",
+        "value": "Requirement → architecture → release"
+      },
+      "stack": [
+        "Angular",
+        "TypeScript",
+        "Node.js"
+      ]
     }
   ],
   "projects": [
@@ -189,16 +299,35 @@
         "Quotation, itinerary, invoice, and voucher PDF generation, branded per agency",
         "Migrated the codebase across seven major versions, Angular 12 to 19, while shipping feature work in parallel"
       ],
-      "stack": ["Angular", "TypeScript", "Angular Material", "TailwindCSS", "REST APIs"],
+      "stack": [
+        "Angular",
+        "TypeScript",
+        "Angular Material",
+        "TailwindCSS",
+        "REST APIs"
+      ],
       "diagram": {
         "scope": "Frontend I built",
-        "flow": ["Package builder UI", "Booking & pricing views", "API service layer"],
+        "flow": [
+          "Package builder UI",
+          "Booking & pricing views",
+          "API service layer"
+        ],
         "consumes": "Platform REST API",
         "note": "Consumes the platform's REST API for live inventory and pricing.",
         "metrics": [
-          { "value": "12 → 19", "label": "Angular versions" },
-          { "value": "5", "label": "supplier types in UI" },
-          { "value": "3", "label": "core flows built" }
+          {
+            "value": "12 → 19",
+            "label": "Angular versions"
+          },
+          {
+            "value": "5",
+            "label": "supplier types in UI"
+          },
+          {
+            "value": "3",
+            "label": "core flows built"
+          }
         ]
       },
       "caseStudy": {
@@ -233,7 +362,9 @@
       "role": "Full-stack (Admin Panel)",
       "url": "https://navdeepbhanderi.dev/projects/attendance",
       "image": "/projects/attendance-admin.webp",
-      "links": { "repo": "https://github.com/navdeepbhanderi/student-attandance-admin-panle-php" },
+      "links": {
+        "repo": "https://github.com/navdeepbhanderi/student-attandance-admin-panle-php"
+      },
       "description": "A team project built at Smart India Hackathon: an attendance system that verifies student check-ins against the campus WiFi network instead of a manual roll call. I built the admin panel — managing faculty and student records, running weekly lecture scheduling per class, and a live classroom dashboard pulled straight from the database.",
       "highlights": [
         "Admin panel for managing faculty and student records across classes",
@@ -241,7 +372,12 @@
         "Live classroom dashboard — WiFi-verified attendance and progress (done / in progress / to-do) pulled directly from the database",
         "Built and shipped my scope solo within the hackathon's timeframe"
       ],
-      "stack": ["HTML", "TailwindCSS", "JavaScript", "PHP"],
+      "stack": [
+        "HTML",
+        "TailwindCSS",
+        "JavaScript",
+        "PHP"
+      ],
       "caseStudy": {
         "problem": "Manual roll call burns lecture time and doesn't stop proxy attendance — one student signing in for a friend who isn't in the room. Biometrics or extra hardware fix it but add cost and friction. Built as a team project at Smart India Hackathon, the system verifies attendance through the campus WiFi network instead — my part was the admin panel that runs and surfaces it.",
         "approach": [
@@ -270,8 +406,16 @@
     "framework": "Next.js 15 (App Router)",
     "language": "TypeScript",
     "styling": "Tailwind CSS 3.4",
-    "motion": ["Framer Motion 12", "GSAP + ScrollTrigger", "Lenis"],
-    "fonts": ["Geist Sans", "Geist Mono"],
+    "motion": [
+      "Framer Motion 12",
+      "GSAP + ScrollTrigger",
+      "Lenis"
+    ],
+    "fonts": [
+      "Geist Sans",
+      "Geist Mono",
+      "Instrument Serif (display accent)"
+    ],
     "email": "nodemailer (Gmail SMTP)",
     "aiChat": {
       "assistantName": "Nova",
@@ -279,6 +423,16 @@
       "defaultModel": "gemini-2.5-flash"
     },
     "designDirection": "Cinematic Editorial Monochrome — dark-only, restrained typography, motion over color",
-    "sections": ["Hero", "About", "Expertise", "Projects", "Timeline", "Contact", "Footer"]
+    "sections": [
+      "Hero",
+      "About",
+      "Expertise",
+      "Projects",
+      "Timeline",
+      "Contact",
+      "Footer"
+    ],
+    "brandMark": "The N-mark — one continuous stroke, with the dot as the release.",
+    "notes": "The timeline is deliberately dateless and the site states no years-of-experience figure; both are omitted rather than estimated."
   }
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { useScroll } from "framer-motion";
+import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { PROJECTS } from "@/data/projects";
 import { SOCIALS } from "@/data/socials";
@@ -11,12 +11,54 @@ import { ParallaxNumeral } from "@/components/ui/ParallaxNumeral";
 import { Button } from "@/components/ui/button";
 import { Magnetic } from "@/components/ui/MagneticButton";
 import { SwapText } from "@/components/ui/SwapText";
+import { usePrefersReducedMotion } from "@/hooks/use-media-query";
 import {
   StackCard,
   ProjectCardContent,
 } from "@/components/sections/ProjectStackCard";
 
 const GITHUB = SOCIALS.find((s) => s.icon === "github")?.href ?? "#";
+
+const pad = (n: number) => String(n).padStart(2, "0");
+
+/**
+ * Deck position indicator: where you are in the stack, without a scrollbar.
+ * Driven straight off the deck's scroll progress — no React state per frame.
+ */
+function DeckRail({
+  progress,
+  total,
+}: {
+  progress: MotionValue<number>;
+  total: number;
+}) {
+  const TRACK = 72;
+  const thumb = TRACK / total;
+  const y = useTransform(progress, [0, 1], [0, TRACK - thumb]);
+
+  return (
+    <div className="pointer-events-none absolute inset-y-0 -right-7 hidden w-6 xl:block">
+      <div className="sticky top-[42svh] flex flex-col items-center gap-2.5">
+        <span className="font-mono text-[10px] tracking-[0.2em] text-foreground">
+          {pad(1)}
+        </span>
+        <span
+          aria-hidden
+          className="relative w-0.5 rounded-full bg-border"
+          style={{ height: TRACK }}
+        >
+          <motion.span
+            style={{ y, height: thumb }}
+            className="absolute inset-x-0 top-0 block rounded-full bg-foreground"
+          />
+        </span>
+        <span className="font-mono text-[10px] tracking-[0.2em] text-muted-foreground">
+          {pad(total)}
+        </span>
+      </div>
+    </div>
+  );
+}
 
 function ArchiveCardContent({ index }: { index: string }) {
   return (
@@ -48,6 +90,7 @@ function ArchiveCardContent({ index }: { index: string }) {
 
 export function Projects() {
   const stackRef = useRef<HTMLDivElement>(null);
+  const reduced = usePrefersReducedMotion();
   const { scrollYProgress } = useScroll({
     target: stackRef,
     offset: ["start start", "end end"],
@@ -61,33 +104,34 @@ export function Projects() {
       <div className="container-px">
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
           <SectionHeading
-            eyebrow="Selected Work"
+            eyebrow="Selected work"
             title="Projects built *like products*"
             description="Each one is a small case study — the problem, the approach, and what makes it work."
           />
           <BlurReveal>
-            <span className="hidden items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground sm:inline-flex">
-              <ArrowUpRight className="h-4 w-4" /> {String(PROJECTS.length).padStart(2, "0")} featured
+            <span className="hidden whitespace-nowrap font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground sm:block">
+              {pad(PROJECTS.length)} featured · 1 archive
             </span>
           </BlurReveal>
         </div>
 
-        <div ref={stackRef} className="mt-16 flex flex-col gap-[14vh] pb-[8svh]">
-          {PROJECTS.map((project, i) => (
-            <StackCard
-              key={project.id}
-              index={i}
-              total={total}
-              progress={scrollYProgress}
-            >
-              <ProjectCardContent project={project} reversed={i % 2 === 1} />
+        <div className="relative mt-16">
+          {!reduced && <DeckRail progress={scrollYProgress} total={total} />}
+          <div ref={stackRef} className="flex flex-col gap-[14vh] pb-[8svh]">
+            {PROJECTS.map((project, i) => (
+              <StackCard
+                key={project.id}
+                index={i}
+                total={total}
+                progress={scrollYProgress}
+              >
+                <ProjectCardContent project={project} />
+              </StackCard>
+            ))}
+            <StackCard index={total - 1} total={total} progress={scrollYProgress}>
+              <ArchiveCardContent index={pad(total)} />
             </StackCard>
-          ))}
-          <StackCard index={total - 1} total={total} progress={scrollYProgress}>
-            <ArchiveCardContent
-              index={String(total).padStart(2, "0")}
-            />
-          </StackCard>
+          </div>
         </div>
       </div>
     </section>

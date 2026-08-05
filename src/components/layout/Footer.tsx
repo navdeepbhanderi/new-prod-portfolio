@@ -2,22 +2,26 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUp } from "lucide-react";
 import { PROFILE } from "@/lib/profile";
-import { SOCIALS } from "@/data/socials";
-import { BRAND_ICONS } from "@/components/icons";
+import { SOCIALS, EMAIL } from "@/data/socials";
+import { PROJECTS } from "@/data/projects";
+import { SECTIONS } from "@/data/navigation";
 import { Magnetic } from "@/components/ui/MagneticButton";
 import { Starfield } from "@/components/ui/Starfield";
 import { HorizonGlow } from "@/components/ui/HorizonGlow";
 import { useMounted } from "@/hooks/use-mounted";
 import { usePrefersReducedMotion } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
-import { usePathname } from "next/navigation";
 import { useLenis } from "@/components/layout/SmoothScroll";
 
 const NAME = PROFILE.firstName.toUpperCase();
+
+// Everything but Home — the giant name below already goes there.
+const SECTION_LINKS = SECTIONS.filter((s) => s.id !== "hero");
 
 function LocalTime() {
   const mounted = useMounted();
@@ -42,16 +46,31 @@ function LocalTime() {
   // Render a same-width invisible placeholder until the clock is live so the
   // justify-between row doesn't reflow when the time pops in.
   return (
-    <span
-      className={cn(
-        "font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground",
-        !time && "invisible"
-      )}
-    >
-      Junagadh, IN · {time || "00:00"} IST
+    <span className={cn(!time && "invisible")}>
+      {PROFILE.locationShort} · {time || "00:00"} {PROFILE.timezone}
     </span>
   );
 }
+
+function LinkColumn({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="flex flex-col gap-3">
+      <span className="font-mono text-[9.5px] uppercase tracking-[0.26em] text-muted-foreground">
+        {title}
+      </span>
+      {children}
+    </div>
+  );
+}
+
+const linkClass =
+  "text-[14.5px] text-foreground/65 transition-colors hover:text-foreground";
 
 /**
  * Sticky-bottom uncover: <main> (opaque, z-10) lifts away as the page ends,
@@ -64,6 +83,10 @@ export function Footer() {
   const reduced = usePrefersReducedMotion();
   const pathname = usePathname();
   const lenis = useLenis();
+  // The starfield only animates once the footer is actually uncovered.
+  const [uncovered, setUncovered] = useState(false);
+
+  const href = (hash: string) => (pathname === "/" ? hash : `/${hash}`);
 
   const scrollToTop = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -84,6 +107,15 @@ export function Footer() {
 
     gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
+      const start = () => ScrollTrigger.maxScroll(window) - window.innerHeight * 0.9;
+
+      // Wakes the canvas as the footer comes out from under <main>.
+      ScrollTrigger.create({
+        start,
+        end: "max",
+        onToggle: (self) => setUncovered(self.isActive),
+      });
+
       const tl = gsap.timeline({
         scrollTrigger: {
           start: () => ScrollTrigger.maxScroll(window) - window.innerHeight * 0.7,
@@ -115,11 +147,13 @@ export function Footer() {
   }, [reduced]);
 
   return (
-    <footer ref={footerRef} className="sticky bottom-0 z-0 overflow-hidden md:h-[78svh]">
-      {/* Deep-space backdrop: twinkling stars over an event-horizon arc.
-          The horizon wrapper is translated by the finale scrub. */}
+    <footer
+      ref={footerRef}
+      className="sticky bottom-0 z-0 overflow-hidden md:h-[88svh]"
+    >
+      {/* Deep-space backdrop: twinkling stars over an event-horizon arc. */}
       <div aria-hidden className="absolute inset-0">
-        <Starfield density={0.00012} />
+        <Starfield density={0.00012} active={uncovered} />
         <div className="footer-horizon absolute inset-0">
           <HorizonGlow />
         </div>
@@ -127,64 +161,113 @@ export function Footer() {
 
       <div
         ref={innerRef}
-        className="relative flex h-full flex-col justify-end gap-10 pb-32 pt-16 md:gap-0 md:pb-8"
+        className="container-px relative flex h-full flex-col justify-between gap-12 pb-8 pt-16 md:gap-6 md:pt-20"
       >
-        <div className="container-px flex flex-1 flex-col items-center justify-center gap-6 text-center">
-          <span className="font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground">
-            {PROFILE.headline}
-          </span>
-          <Link
-            href={pathname === "/" ? "#hero" : "#top"}
-            scroll={false}
-            onClick={scrollToTop}
-            aria-label={`${PROFILE.name} — back to top`}
-            className="footer-name group flex select-none"
-          >
-            {Array.from(NAME).map((char, i) => (
-              <span
-                key={i}
-                aria-hidden
-                className="text-horizon-lit inline-block text-[clamp(3.5rem,14vw,13rem)] font-semibold leading-none tracking-tight transition-colors duration-300 hover:text-foreground"
+        {/* ---------- the ask, and the map ---------- */}
+        <div className="grid gap-10 md:grid-cols-[minmax(0,1fr)_repeat(3,minmax(0,10.5rem))] md:gap-12">
+          <div className="flex flex-col items-start">
+            <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-muted-foreground">
+              Available for work
+            </span>
+            <p className="mt-4 max-w-md text-[clamp(1.5rem,3vw,1.875rem)] font-medium leading-[1.28] tracking-[-0.02em] text-balance">
+              Got something worth building? Start with a line.
+            </p>
+            <a
+              href={`mailto:${EMAIL}`}
+              className="mt-5 border-b border-foreground/20 pb-1 text-base text-foreground/85 transition-colors hover:border-foreground/70 hover:text-foreground sm:text-lg"
+            >
+              {EMAIL}
+            </a>
+          </div>
+
+          <div className="grid grid-cols-2 gap-8 md:col-span-3 md:grid-cols-3 md:gap-12">
+            <LinkColumn title="Sections">
+              {SECTION_LINKS.map((link) => (
+                <Link
+                  key={link.id}
+                  href={href(link.hash)}
+                  scroll={false}
+                  className={linkClass}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </LinkColumn>
+
+            <LinkColumn title="Work">
+              {PROJECTS.map((project) => (
+                <Link
+                  key={project.id}
+                  href={`/projects/${project.id}`}
+                  className={linkClass}
+                >
+                  {project.title}
+                </Link>
+              ))}
+              <a
+                href={PROFILE.resume}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={linkClass}
               >
-                {char}
-              </span>
-            ))}
-          </Link>
-          {/* Over the starfield the standard border/muted treatment vanishes —
-              these need a filled glass disc and brighter strokes to read. */}
-          <div className="mt-2 flex items-center gap-3">
-            {SOCIALS.map((social) => {
-              const Icon = BRAND_ICONS[social.icon];
-              return (
+                Resume
+              </a>
+            </LinkColumn>
+
+            <LinkColumn title="Elsewhere">
+              {SOCIALS.map((social) => (
                 <a
                   key={social.label}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={social.label}
-                  className="grid h-11 w-11 place-items-center rounded-full border border-foreground/15 bg-foreground/[0.06] text-foreground/80 backdrop-blur-sm transition-all duration-300 hover:border-foreground/40 hover:bg-foreground/10 hover:text-foreground"
+                  className={linkClass}
                 >
-                  <Icon className="h-[1.1rem] w-[1.1rem]" />
+                  {social.label}
                 </a>
-              );
-            })}
+              ))}
+            </LinkColumn>
           </div>
         </div>
 
-        {/* Right padding keeps "Back to top" clear of the floating chat button. */}
-        <div className="container-px flex flex-col items-center justify-between gap-6 border-t border-border/40 pt-8 text-xs text-muted-foreground sm:flex-row sm:gap-4 sm:pt-6 md:pr-56">
-          <p>© {new Date().getFullYear()} {PROFILE.name}. Designed &amp; built from scratch.</p>
-          <LocalTime />
-          <Magnetic>
-            <Link
-              href={pathname === "/" ? "#hero" : "#top"}
-              scroll={false}
-              onClick={scrollToTop}
-              className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
-            >
-              Back to top <ArrowUp className="h-3.5 w-3.5" />
-            </Link>
-          </Magnetic>
+        {/* ---------- the finale ---------- */}
+        <div className="flex flex-col gap-6">
+          <Link
+            href={href("#hero")}
+            scroll={false}
+            onClick={scrollToTop}
+            aria-label={`${PROFILE.name} — back to top`}
+            className="footer-name group flex select-none justify-center overflow-hidden"
+          >
+            {Array.from(NAME).map((char, i) => (
+              <span
+                key={i}
+                aria-hidden
+                className="text-horizon-lit inline-block text-[clamp(3.5rem,18.5vw,17rem)] font-semibold leading-[0.8] tracking-[-0.04em] transition-colors duration-300 hover:text-foreground"
+              >
+                {char}
+              </span>
+            ))}
+          </Link>
+
+          {/* Right padding keeps "Back to top" clear of the floating chat button. */}
+          <div className="flex flex-col items-center justify-between gap-4 border-t border-foreground/[0.12] pt-5 font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground sm:flex-row md:pr-40 lg:pr-52">
+            <p>
+              © {new Date().getFullYear()} {PROFILE.name}
+              <span className="hidden sm:inline"> · Designed &amp; built from scratch</span>
+            </p>
+            <LocalTime />
+            <Magnetic>
+              <Link
+                href={href("#hero")}
+                scroll={false}
+                onClick={scrollToTop}
+                className="inline-flex items-center gap-2 transition-colors hover:text-foreground"
+              >
+                Back to top <ArrowUp className="h-3.5 w-3.5" />
+              </Link>
+            </Magnetic>
+          </div>
         </div>
       </div>
     </footer>

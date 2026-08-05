@@ -3,24 +3,56 @@
 import { useRef } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowDown, ArrowUpRight, FileText, MapPin } from "lucide-react";
+import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { PROFILE } from "@/lib/profile";
 import { SOCIALS } from "@/data/socials";
 import { BRAND_ICONS } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Magnetic } from "@/components/ui/MagneticButton";
 import { ProfileImage } from "@/components/ui/ProfileImage";
-import { CharReveal } from "@/components/ui/CharReveal";
+import { TextReveal } from "@/components/ui/TextReveal";
 import { SwapText } from "@/components/ui/SwapText";
-import { fadeUpBlur, EASE_IN_OUT, EASE_OUT } from "@/lib/motion";
+import { fadeUpBlur } from "@/lib/motion";
 import { useIntroDone } from "@/lib/intro";
 import { useMouseParallax } from "@/hooks/use-mouse-parallax";
 import { usePrefersReducedMotion } from "@/hooks/use-media-query";
+
+/**
+ * Portrait scrims. The portrait is a full-bleed column (md+) or a top band
+ * (below md), and in both cases it has to hand over to the canvas without a
+ * visible edge — so the fade runs along a different axis per layout.
+ */
+const SCRIM_BAND =
+  "bg-[linear-gradient(to_bottom,hsl(var(--background)/0.72)_0%,hsl(var(--background)/0.12)_30%,hsl(var(--background)/0.55)_68%,hsl(var(--background))_100%)]";
+const SCRIM_COLUMN =
+  "md:bg-[linear-gradient(to_right,hsl(var(--background))_0%,hsl(var(--background)/0.86)_9%,hsl(var(--background)/0.34)_24%,hsl(var(--background)/0.04)_46%,hsl(var(--background)/0.06)_78%,hsl(var(--background)/0.3)_100%)]";
+const SCRIM_FLOOR =
+  "md:bg-[linear-gradient(to_top,hsl(var(--background))_0%,transparent_34%)]";
+
+function Fact({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="flex flex-col gap-2">
+      <span className="font-mono text-[9.5px] uppercase tracking-[0.26em] text-muted-foreground">
+        {label}
+      </span>
+      <span className="text-[15px] leading-snug text-foreground/85 sm:text-base">
+        {children}
+      </span>
+    </div>
+  );
+}
 
 export function Hero() {
   const done = useIntroDone();
   const state = done ? "visible" : "hidden";
   const reduced = usePrefersReducedMotion();
+
+  /**
+   * MotionConfig strips transforms under reduced motion but keeps delays, which
+   * would leave those visitors watching an empty hero for a second while the
+   * staggered entrance "plays" invisibly. Collapse the choreography instead.
+   */
+  const at = (delay: number) => (reduced ? 0 : delay);
 
   const pointer = useMouseParallax();
   // Three depths: background drifts opposite the cursor, copy barely,
@@ -31,12 +63,10 @@ export function Hero() {
   const copyY = useTransform(pointer.y, (v) => v * 8);
   const portraitX = useTransform(pointer.x, (v) => v * 22);
   const portraitY = useTransform(pointer.y, (v) => v * 16);
-  const portraitRotateY = useTransform(pointer.x, (v) => v * 4);
-  const portraitRotateX = useTransform(pointer.y, (v) => v * -4);
 
-  // Exit choreography: as the hero scrolls out, copy and portrait drift up
-  // at different rates while fading — the inverse of the preloader handoff,
-  // so hero → About reads as one continuous camera move.
+  // Exit choreography: as the hero scrolls out, copy and portrait drift up at
+  // different rates while fading — the inverse of the intro hand-off, so
+  // hero → About reads as one continuous camera move.
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -51,218 +81,150 @@ export function Hero() {
     <section
       ref={sectionRef}
       id="hero"
-      className="relative flex min-h-[100svh] items-center overflow-hidden pt-28 pb-16"
+      className="relative flex min-h-[100svh] flex-col overflow-hidden"
     >
-      {/* Background layers */}
+      {/* ---------- atmosphere ---------- */}
       <motion.div
         aria-hidden
-        style={{ x: bgX, y: bgY }}
+        style={reduced ? undefined : { x: bgX, y: bgY }}
         className="absolute -inset-10 -z-10"
       >
         <div className="absolute inset-0 bg-grid-lines mask-b opacity-60" />
-        <div className="absolute left-1/2 top-0 h-[600px] w-[900px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,hsl(var(--accent)/0.12),transparent_60%)] blur-2xl" />
-        <motion.div
-          className="absolute -left-20 top-1/3 h-72 w-72 rounded-full bg-foreground/[0.04] blur-3xl"
-          animate={{ y: [0, 30, 0], x: [0, 20, 0] }}
-          transition={{ duration: 14, repeat: Infinity, ease: EASE_IN_OUT }}
-        />
-        <motion.div
-          className="absolute -right-10 bottom-1/4 h-80 w-80 rounded-full bg-accent/[0.05] blur-3xl"
-          animate={{ y: [0, -25, 0] }}
-          transition={{ duration: 11, repeat: Infinity, ease: EASE_IN_OUT }}
-        />
+        {/* Static, not a perpetual drift: a 288px blur-3xl element animating on
+            a loop repainted forever — including long after the hero had scrolled
+            away. The pointer parallax on this whole layer supplies the movement. */}
+        <div className="absolute -left-20 top-1/3 h-72 w-72 rounded-full bg-foreground/[0.04] blur-3xl" />
+        <div className="absolute bottom-0 left-1/2 h-[520px] w-[1100px] -translate-x-1/2 translate-y-1/3 rounded-full bg-[radial-gradient(ellipse_at_center,hsl(var(--accent)/0.16),transparent_65%)] blur-3xl" />
       </motion.div>
 
-      <div className="container-px grid grid-cols-1 items-center gap-12 lg:grid-cols-[1.4fr_1fr]">
-        {/* Left: copy — outer layer scrubs the exit, inner keeps pointer parallax */}
-        <motion.div style={reduced ? undefined : { y: copyExitY, opacity: copyExitOpacity }}>
+      {/* ---------- portrait: top band below md, full-bleed column at md+ ---------- */}
+      <motion.div
+        style={reduced ? undefined : { y: portraitExitY, opacity: portraitExitOpacity }}
+        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(13rem,32svh,18rem)] md:inset-y-0 md:left-auto md:right-0 md:h-auto md:w-[38vw] xl:w-[34vw]"
+      >
         <motion.div
-          style={{ x: copyX, y: copyY }}
-          className="flex flex-col items-start"
+          style={reduced ? undefined : { x: portraitX, y: portraitY }}
+          className="relative h-full w-full"
         >
-          {/* Mobile-only portrait — the face shouldn't disappear below lg. */}
-          <motion.div
-            variants={fadeUpBlur(0.4, 16)}
-            initial="hidden"
-            animate={state}
-            className="mb-6 lg:hidden"
-          >
-            <div className="glass relative h-24 w-24 overflow-hidden rounded-full p-1">
-              <div className="relative h-full w-full overflow-hidden rounded-full">
-                <ProfileImage priority sizes="6rem" />
-              </div>
-            </div>
-          </motion.div>
+          <ProfileImage
+            priority
+            tone
+            objectPosition="50% 16%"
+            sizes="(min-width: 1280px) 34vw, (min-width: 768px) 38vw, 100vw"
+            className="md:[object-position:50%_20%]"
+          />
+          <div aria-hidden className={`absolute inset-0 ${SCRIM_BAND} ${SCRIM_COLUMN}`} />
+          <div aria-hidden className={`absolute inset-0 ${SCRIM_FLOOR}`} />
+        </motion.div>
+      </motion.div>
 
+      {/* ---------- content ---------- */}
+      <div className="container-px relative z-10 flex min-h-[100svh] flex-col pb-10 pt-[clamp(12rem,30svh,17rem)] md:pb-12 md:pt-28 lg:pb-14">
+        <motion.div
+          style={reduced ? undefined : { y: copyExitY, opacity: copyExitOpacity }}
+          className="flex flex-1 flex-col justify-center"
+        >
           <motion.div
-            variants={fadeUpBlur(0.5, 16)}
-            initial="hidden"
-            animate={state}
-            className="mb-7 inline-flex items-center gap-2 rounded-full border border-border bg-foreground/5 px-3.5 py-1.5 text-xs text-muted-foreground"
+            style={reduced ? undefined : { x: copyX, y: copyY }}
+            className="flex flex-col items-start md:max-w-[56%] lg:max-w-[52%] xl:max-w-[46rem]"
           >
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/70" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
-            </span>
-            Open to opportunities
-            <span className="mx-1 h-3 w-px bg-border" />
-            <MapPin className="h-3 w-3" />
-            India
-          </motion.div>
+            <motion.div
+              variants={fadeUpBlur(at(0.35), 14)}
+              initial="hidden"
+              animate={state}
+              className="flex items-center gap-3.5 font-mono text-[9.5px] uppercase tracking-[0.26em] text-muted-foreground sm:text-[11px]"
+            >
+              <span aria-hidden className="h-px w-5 bg-foreground/30 sm:w-6" />
+              Portfolio — {new Date().getFullYear()}
+            </motion.div>
 
-          {/* id="hero-name": the preloader measures this block and flies its
-              own name into place here during the curtain lift. */}
-          <div id="hero-name" data-cursor="invert">
-            <CharReveal
-              as="h1"
-              text="Navdeep"
-              label="Navdeep Bhanderi — Senior Frontend Engineer"
-              trigger="manual"
-              play={done}
-              stagger={0.045}
-              charClassName="text-name-gradient"
-              className="text-[clamp(3.5rem,11vw,8.5rem)] font-semibold leading-[0.95] tracking-tight"
-            />
-            {/* Surname as outlined display type — aria-hidden, the h1 label
-                above already carries the full name for AT. Negative margin
-                pulls the two lines into one typographic unit. */}
-            <div aria-hidden>
-              <CharReveal
-                as="p"
-                text="Bhanderi"
+            <div data-cursor="invert" className="mt-5 sm:mt-8">
+              <TextReveal
+                as="h1"
+                text={PROFILE.claim}
                 trigger="manual"
                 play={done}
-                delay={0.35}
-                stagger={0.035}
-                charClassName="hero-surname-char"
-                className="-mt-[0.08em] text-[clamp(3.5rem,11vw,8.5rem)] font-semibold leading-[0.95] tracking-tight"
+                stagger={at(0.055)}
+                delay={at(0.15)}
+                className="max-w-[17ch] text-balance text-[clamp(2.375rem,6.4vw,5.75rem)] font-semibold leading-[1] tracking-[-0.034em]"
               />
             </div>
-          </div>
 
-          <motion.p
-            variants={fadeUpBlur(0.65, 16)}
-            initial="hidden"
-            animate={state}
-            className="mt-7 max-w-xl text-fluid-lead leading-relaxed text-muted-foreground"
-          >
-            {PROFILE.tagline}
-          </motion.p>
+            <motion.p
+              variants={fadeUpBlur(at(0.75), 16)}
+              initial="hidden"
+              animate={state}
+              className="mt-5 max-w-xl text-[15px] leading-relaxed text-muted-foreground sm:mt-8 sm:text-lg"
+            >
+              <span className="text-foreground/85">
+                {PROFILE.name} — {PROFILE.title} at {PROFILE.companyShort}.
+              </span>{" "}
+              {PROFILE.byline}
+            </motion.p>
 
-          <motion.div
-            variants={fadeUpBlur(0.8, 16)}
-            initial="hidden"
-            animate={state}
-            className="mt-9 flex flex-wrap items-center gap-3"
-          >
-            <Magnetic>
-              <Button asChild size="lg">
-                <Link href="#projects" scroll={false}>
-                  <SwapText>View Projects</SwapText>
-                  <ArrowDown className="h-4 w-4 transition-transform duration-300 group-hover/btn:translate-y-0.5" />
-                </Link>
-              </Button>
-            </Magnetic>
-            <Magnetic>
-              <Button asChild size="lg" variant="outline">
-                <Link href="#contact" scroll={false}>
-                  <SwapText>Contact Me</SwapText>
-                  <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5" />
-                </Link>
-              </Button>
-            </Magnetic>
-            <Button asChild size="lg" variant="outline">
-              <a href={PROFILE.resume} target="_blank" rel="noopener noreferrer">
-                <SwapText>Resume</SwapText>
-                <FileText className="h-4 w-4 transition-transform duration-300 group-hover/btn:-translate-y-0.5" />
-              </a>
-            </Button>
-          </motion.div>
-
-          <motion.div
-            variants={fadeUpBlur(0.95, 16)}
-            initial="hidden"
-            animate={state}
-            className="mt-10 flex items-center gap-4"
-          >
-            <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
-              Follow
-            </span>
-            <span className="h-px w-8 bg-border" />
-            <div className="flex items-center gap-2">
-              {SOCIALS.map((social) => {
-                const Icon = BRAND_ICONS[social.icon];
-                return (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={social.label}
-                    className="grid h-10 w-10 place-items-center rounded-full border border-border text-muted-foreground transition-all hover:border-foreground/30 hover:text-foreground"
-                  >
-                    <Icon className="h-4 w-4" />
-                  </a>
-                );
-              })}
-            </div>
+            <motion.div
+              variants={fadeUpBlur(at(0.9), 16)}
+              initial="hidden"
+              animate={state}
+              className="mt-7 flex w-full flex-col gap-3 sm:mt-9 sm:w-auto sm:flex-row sm:items-center"
+            >
+              <Magnetic className="w-full sm:w-auto">
+                <Button asChild size="lg" className="w-full sm:w-auto">
+                  <Link href="#projects" scroll={false}>
+                    <SwapText>View projects</SwapText>
+                    <ArrowDown className="h-4 w-4 transition-transform duration-300 group-hover/btn:translate-y-0.5" />
+                  </Link>
+                </Button>
+              </Magnetic>
+              <Magnetic className="w-full sm:w-auto">
+                <Button asChild size="lg" variant="outline" className="w-full sm:w-auto">
+                  <Link href="#contact" scroll={false}>
+                    <SwapText>Contact me</SwapText>
+                    <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5" />
+                  </Link>
+                </Button>
+              </Magnetic>
+            </motion.div>
           </motion.div>
         </motion.div>
-        </motion.div>
 
-        {/* Right: portrait — exits faster than the copy (deeper layer) */}
+        {/* ---------- fact ledger, pinned to the floor on a hairline ---------- */}
         <motion.div
-          variants={{
-            hidden: { opacity: 0, scale: 0.96, filter: "blur(12px)" },
-            visible: {
-              opacity: 1,
-              scale: 1,
-              filter: "blur(0px)",
-              transition: { duration: 0.9, ease: EASE_OUT, delay: 0.95 },
-            },
-          }}
+          variants={fadeUpBlur(at(1.05), 16)}
           initial="hidden"
           animate={state}
-          className="relative mx-auto hidden w-full max-w-sm lg:block xl:max-w-md"
+          className="mt-10 grid grid-cols-2 gap-x-6 gap-y-5 border-t border-foreground/[0.12] pt-5 sm:gap-x-10 sm:gap-y-6 lg:grid-cols-[repeat(3,minmax(0,1fr))_auto] lg:items-end lg:gap-10 lg:pt-7"
         >
-          <motion.div
-            style={reduced ? undefined : { y: portraitExitY, opacity: portraitExitOpacity }}
-          >
-          <motion.div
-            style={{
-              x: portraitX,
-              y: portraitY,
-              rotateX: portraitRotateX,
-              rotateY: portraitRotateY,
-              transformPerspective: 1000,
-            }}
-          >
-            <div className="absolute -inset-4 -z-10 rounded-[2rem] bg-[radial-gradient(circle_at_50%_30%,hsl(var(--accent)/0.15),transparent_70%)] blur-xl" />
-            <div className="glass relative aspect-[4/5] overflow-hidden rounded-[1.75rem] p-1.5">
-              <div className="relative h-full w-full overflow-hidden rounded-[1.4rem]">
-                <ProfileImage priority />
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
-              </div>
-            </div>
-          </motion.div>
-          </motion.div>
+          <Fact label="Currently">{PROFILE.currently}</Fact>
+          <Fact label="Core stack">{PROFILE.coreStack.join(" · ")}</Fact>
+          <Fact label="Available">
+            <span className="inline-flex items-center gap-2.5">
+              <span className="relative flex h-[7px] w-[7px]">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/70" />
+                <span className="relative inline-flex h-[7px] w-[7px] rounded-full bg-emerald-400" />
+              </span>
+              Open to opportunities
+            </span>
+          </Fact>
+          <div className="flex items-center gap-2 lg:justify-end">
+            {SOCIALS.map((social) => {
+              const Icon = BRAND_ICONS[social.icon];
+              return (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={social.label}
+                  className="grid h-10 w-10 place-items-center rounded-full border border-foreground/[0.18] bg-foreground/[0.06] text-foreground/80 transition-colors hover:border-foreground/40 hover:text-foreground"
+                >
+                  <Icon className="h-4 w-4" />
+                </a>
+              );
+            })}
+          </div>
         </motion.div>
       </div>
-
-      {/* Scroll hint — visible on all viewports, smaller on mobile */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: done ? 1 : 0 }}
-        transition={{ delay: 1.6 }}
-        className="absolute bottom-7 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 text-muted-foreground"
-      >
-        <span className="font-mono text-[10px] uppercase tracking-[0.3em]">Scroll</span>
-        <motion.span
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: EASE_IN_OUT }}
-          className="h-8 w-px bg-gradient-to-b from-foreground/50 to-transparent"
-        />
-      </motion.div>
     </section>
   );
 }

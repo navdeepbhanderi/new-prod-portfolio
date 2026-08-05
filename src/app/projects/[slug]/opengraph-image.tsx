@@ -1,6 +1,7 @@
 import { ImageResponse } from "next/og";
 import { PROJECTS } from "@/data/projects";
 import { PROFILE } from "@/lib/profile";
+import { OG_MARK_SRC } from "@/lib/og-mark";
 
 export const alt = "Case study — Navdeep Bhanderi";
 export const size = { width: 1200, height: 630 };
@@ -54,11 +55,9 @@ export default async function OGImage({
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontWeight: 600,
-              color: "#fafafa",
             }}
           >
-            NB
+            <img width="40" height="40" alt="" src={OG_MARK_SRC} />
           </div>
           Case study
         </div>

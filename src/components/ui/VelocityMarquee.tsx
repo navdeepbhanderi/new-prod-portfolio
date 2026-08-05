@@ -63,7 +63,28 @@ export function VelocityMarquee({
       tween.timeScale(speed);
       gsap.set(row, { skewX: skew });
     };
-    gsap.ticker.add(onTick);
+    // The ticker wrote a transform to both rows every frame for the life of the
+    // page, on-screen or not, and the skew forced the whole row to re-raster.
+    // Run it only while the row is actually visible.
+    let running = false;
+    const start = () => {
+      if (running) return;
+      running = true;
+      tween.resume();
+      gsap.ticker.add(onTick);
+    };
+    const stop = () => {
+      if (!running) return;
+      running = false;
+      tween.pause();
+      gsap.ticker.remove(onTick);
+      gsap.set(row, { skewX: 0 });
+    };
+    const io = new IntersectionObserver(
+      ([entry]) => (entry.isIntersecting ? start() : stop()),
+      { rootMargin: "200px 0px" }
+    );
+    io.observe(row);
 
     const onScroll = (e: { velocity: number }) => {
       speedTarget = 1 + Math.min(Math.abs(e.velocity) / 12, 2.5);
@@ -84,6 +105,7 @@ export function VelocityMarquee({
     }
 
     return () => {
+      io.disconnect();
       lenis?.off("scroll", onScroll);
       gsap.ticker.remove(onTick);
       tween.kill();

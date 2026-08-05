@@ -8,12 +8,28 @@ export const PROFILE = {
   title: "Senior Frontend Engineer",
   headline: "Frontend engineer with full-stack range.",
   location: "Junagadh, Gujarat, India",
+  /** Compact form for meta rows, ledgers and the nav sheet. */
+  locationShort: "Junagadh, IN",
+  timezone: "IST",
   email: EMAIL,
   tagline:
     "Own frontend delivery end to end — requirement to release, backend included when needed.",
+  /**
+   * The hero's claim. `*asterisks*` mark the one Instrument Serif emphasis
+   * phrase — `TextReveal` strips them from the rendered text and the aria-label.
+   */
+  claim: "Frontend built like *product*, not like tickets.",
+  /** Follows the claim: who is saying it, and what it means in practice. */
+  byline:
+    "I own delivery from the requirement through to release, backend included when the work needs it.",
+  /** Hero fact ledger — what I'm doing now and what I reach for. */
+  currently: "Leading the frontend of a client build",
+  coreStack: ["Angular", "React", "Next.js", "Node.js"],
   summary:
     "Frontend engineer who reads a requirement all the way through before writing code, then builds and delivers it end to end. Comfortable enough on the backend (Node.js) to build and reason about the system behind the UI, not just consume it. Also bring team-leadership experience — coordinating delivery and keeping the team on track.",
   company: "Softrefine Technology Pvt. Ltd.",
+  /** Conversational form, for running copy where the legal suffix reads stiff. */
+  companyShort: "Softrefine",
   resume: "/resume.pdf",
   availability: [
     "Full-time opportunities",

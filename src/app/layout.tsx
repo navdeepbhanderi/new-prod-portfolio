@@ -16,6 +16,7 @@ const displaySerif = Instrument_Serif({
 });
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { HashScroll } from "@/components/layout/HashScroll";
+import { RoutePrefetch } from "@/components/layout/RoutePrefetch";
 import { MotionProvider } from "@/components/layout/MotionProvider";
 import { Preloader } from "@/components/layout/Preloader";
 import { CommandPalette } from "@/components/layout/CommandPalette";
@@ -117,6 +118,7 @@ export default function RootLayout({
         <SmoothScroll>
           <MotionProvider>
             <HashScroll />
+            <RoutePrefetch />
             <Preloader />
             <CommandPalette />
             <CustomCursor />

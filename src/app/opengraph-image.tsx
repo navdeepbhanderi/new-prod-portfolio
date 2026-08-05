@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { OG_MARK_SRC } from "@/lib/og-mark";
 
 export const alt = "Navdeep Bhanderi — Senior Frontend Engineer";
 export const size = { width: 1200, height: 630 };
@@ -38,11 +39,9 @@ export default function OGImage() {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontWeight: 600,
-              color: "#fafafa",
             }}
           >
-            NB
+            <img width="40" height="40" alt="" src={OG_MARK_SRC} />
           </div>
           navdeepbhanderi
         </div>

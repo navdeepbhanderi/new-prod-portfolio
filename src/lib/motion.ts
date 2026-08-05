@@ -5,11 +5,47 @@ export const EASE_OUT = [0.22, 1, 0.36, 1] as const;
 export const EASE_OUT_EXPO = [0.16, 1, 0.3, 1] as const;
 export const EASE_IN_OUT = [0.65, 0, 0.35, 1] as const;
 
-/** GSAP twin of EASE_OUT_EXPO for timelines that live outside Framer. */
+/**
+ * GSAP twins for timelines that live outside Framer.
+ * (EASE_OUT's CSS twin is the Tailwind `ease-out-quart` token — same curve.)
+ */
 export const GSAP_EASE = "power4.out";
+export const GSAP_EASE_IN_OUT = "power4.inOut";
 
 /** Duration scale (seconds). */
-export const DUR = { fast: 0.2, base: 0.4, reveal: 0.7, slow: 1.1 } as const;
+export const DUR = {
+  micro: 0.18,
+  fast: 0.2,
+  enter: 0.24,
+  base: 0.4,
+  reveal: 0.7,
+  slow: 1.1,
+} as const;
+
+/** Stagger rhythm — one place, so the values in DESIGN.md §4 stop being retyped. */
+export const STAGGER = {
+  chip: 0.04,
+  char: 0.025,
+  meta: 0.04,
+  menu: 0.05,
+  card: 0.07,
+} as const;
+
+/**
+ * Intro sequence beats (seconds on the preloader timeline). The counter is
+ * driven by real asset progress, so these are the *latest* each beat may fire —
+ * when assets land early the timeline is fast-forwarded from `handoff`.
+ */
+export const INTRO = {
+  marks: 0,
+  name: 0.1,
+  horizon: 1.55,
+  metaOut: 1.8,
+  travel: 1.85,
+  handoff: 2.0,
+  curtain: 0.9,
+  curtainOffset: 0.06,
+} as const;
 
 /** UI-state spring — nav pill, cursor size, toggles. */
 export const SPRING_SNAPPY = {

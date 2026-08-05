@@ -11,6 +11,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowUp,
   Check,
+  ChevronRight,
+  Code2,
   Copy,
   FileText,
   FolderKanban,
@@ -24,25 +26,62 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { EMAIL, SOCIALS } from "@/data/socials";
+import { PROJECTS } from "@/data/projects";
+import { EXPERTISE } from "@/data/expertise";
 import { PROFILE } from "@/lib/profile";
+import { SECTIONS } from "@/data/navigation";
 import { BRAND_ICONS } from "@/components/icons";
 import { useLenis } from "@/components/layout/SmoothScroll";
-import { EASE_OUT } from "@/lib/motion";
+import { holdScroll } from "@/lib/scroll-lock";
+import { EASE_OUT, DUR } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 export const OPEN_PALETTE_EVENT = "navdeep:open-palette";
 
+type Group = "Navigate" | "Projects" | "Expertise" | "Actions" | "Connect";
+
 type Command = {
   id: string;
-  group: "Navigate" | "Actions" | "Connect";
+  group: Group;
   label: string;
   hint?: string;
+  /** Right-aligned mono tag — a stack name or a keyboard shortcut. */
+  tag?: string;
   keywords: string;
-  icon: LucideIcon | (typeof BRAND_ICONS)[keyof typeof BRAND_ICONS];
+  icon?: LucideIcon | (typeof BRAND_ICONS)[keyof typeof BRAND_ICONS];
+  /** Rendered instead of an icon (project index chips). */
+  badge?: string;
   /** Stay open after running (e.g. copy feedback). */
   keepOpen?: boolean;
   perform: () => void;
 };
+
+const SECTION_ICONS: Record<string, LucideIcon> = {
+  hero: Home,
+  about: User,
+  expertise: Layers,
+  projects: FolderKanban,
+  journey: Milestone,
+  contact: Mail,
+};
+
+const GROUP_ORDER: Group[] = [
+  "Navigate",
+  "Projects",
+  "Expertise",
+  "Actions",
+  "Connect",
+];
+
+/** Every technology, with the domain it belongs to — the searchable index. */
+const TECHNOLOGIES = Array.from(
+  EXPERTISE.reduce((map, category) => {
+    category.technologies.forEach((tech) => {
+      if (!map.has(tech)) map.set(tech, category);
+    });
+    return map;
+  }, new Map<string, (typeof EXPERTISE)[number]>())
+);
 
 function scrollToSection(lenis: ReturnType<typeof useLenis>, id: string) {
   const el = document.getElementById(id);
@@ -70,39 +109,70 @@ export function CommandPalette() {
     restoreFocusRef.current?.focus?.();
   }, []);
 
+  const copyEmail = useCallback(() => {
+    navigator.clipboard?.writeText(EMAIL).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1600);
+    });
+  }, []);
+
+  const askAi = useCallback(() => {
+    window.dispatchEvent(new Event("navdeep:open-chat"));
+  }, []);
+
   const commands = useMemo<Command[]>(() => {
-    const nav: Array<{ id: string; label: string; icon: LucideIcon }> = [
-      { id: "hero", label: "Home", icon: Home },
-      { id: "about", label: "About", icon: User },
-      { id: "expertise", label: "Expertise", icon: Layers },
-      { id: "projects", label: "Projects", icon: FolderKanban },
-      { id: "journey", label: "Experience", icon: Milestone },
-      { id: "contact", label: "Contact", icon: Mail },
-    ];
     return [
-      ...nav.map<Command>(({ id, label, icon }) => ({
+      ...SECTIONS.map<Command>(({ id, label }) => ({
         id: `nav-${id}`,
         group: "Navigate",
         label,
         hint: "Jump to section",
         keywords: `${label} section go jump ${id}`,
-        icon,
+        icon: SECTION_ICONS[id],
         perform: () => scrollToSection(lenis, id),
       })),
+
+      ...PROJECTS.map<Command>((project) => ({
+        id: `project-${project.id}`,
+        group: "Projects",
+        label: project.title,
+        badge: project.index,
+        tag: project.stack[0],
+        keywords: `${project.title} ${project.tagline} ${project.role} ${project.year} ${project.stack.join(" ")} case study project`,
+        perform: () => {
+          window.location.href = `/projects/${project.id}`;
+        },
+      })),
+
+      ...TECHNOLOGIES.map<Command>(([tech, category]) => ({
+        id: `tech-${tech}`,
+        group: "Expertise",
+        label: tech,
+        hint: `${category.label}, ${category.technologies.length} technologies`,
+        keywords: `${tech} ${category.label} technology stack skill`,
+        icon: Code2,
+        perform: () => scrollToSection(lenis, "expertise"),
+      })),
+
+      {
+        id: "ask-ai",
+        group: "Actions",
+        label: `Ask ${PROFILE.firstName}'s AI about my work`,
+        tag: "⌘I",
+        keywords: "ask ai chat assistant bot question nova gemini",
+        icon: Sparkles,
+        perform: askAi,
+      },
       {
         id: "copy-email",
         group: "Actions",
         label: copied ? "Email copied!" : "Copy email address",
         hint: EMAIL,
+        tag: "⌘E",
         keywords: "copy email address mail clipboard contact",
         icon: copied ? Check : Copy,
         keepOpen: true,
-        perform: () => {
-          navigator.clipboard?.writeText(EMAIL).then(() => {
-            setCopied(true);
-            setTimeout(() => setCopied(false), 1600);
-          });
-        },
+        perform: copyEmail,
       },
       {
         id: "email",
@@ -127,17 +197,6 @@ export function CommandPalette() {
         },
       },
       {
-        id: "ask-ai",
-        group: "Actions",
-        label: "Ask Nova",
-        hint: "Navdeep's AI assistant",
-        keywords: "ask ai chat assistant bot question nova gemini",
-        icon: Sparkles,
-        perform: () => {
-          window.dispatchEvent(new Event("navdeep:open-chat"));
-        },
-      },
-      {
         id: "top",
         group: "Actions",
         label: "Back to top",
@@ -145,6 +204,7 @@ export function CommandPalette() {
         icon: ArrowUp,
         perform: () => scrollToSection(lenis, "hero"),
       },
+
       ...SOCIALS.map<Command>((s) => ({
         id: `social-${s.icon}`,
         group: "Connect",
@@ -157,20 +217,25 @@ export function CommandPalette() {
         },
       })),
     ];
-  }, [lenis, copied]);
+  }, [lenis, copied, copyEmail, askAi]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return commands;
-    return commands.filter((c) => c.keywords.toLowerCase().includes(q));
+    // The technology index is long; it earns its place only once you search.
+    if (!q) return commands.filter((c) => c.group !== "Expertise");
+    return commands.filter((c) =>
+      `${c.label} ${c.keywords}`.toLowerCase().includes(q)
+    );
   }, [commands, query]);
 
-  const groups = useMemo(() => {
-    const order: Command["group"][] = ["Navigate", "Actions", "Connect"];
-    return order
-      .map((g) => ({ name: g, items: filtered.filter((c) => c.group === g) }))
-      .filter((g) => g.items.length > 0);
-  }, [filtered]);
+  const groups = useMemo(
+    () =>
+      GROUP_ORDER.map((name) => ({
+        name,
+        items: filtered.filter((c) => c.group === name),
+      })).filter((g) => g.items.length > 0),
+    [filtered]
+  );
 
   // Global shortcut: ⌘K / Ctrl+K toggles, Esc closes.
   useEffect(() => {
@@ -198,18 +263,16 @@ export function CommandPalette() {
     };
   }, [open, close]);
 
-  // Reset + focus + scroll lock while open.
+  // Reset + focus while open; scroll lock is ref-counted (see scroll-lock.ts).
   useEffect(() => {
     if (!open) return;
     setQuery("");
     setSelected(0);
     const t = setTimeout(() => inputRef.current?.focus(), 30);
-    lenis?.stop();
-    document.body.style.overflow = "hidden";
+    const release = holdScroll(lenis);
     return () => {
       clearTimeout(t);
-      lenis?.start();
-      document.body.style.overflow = "";
+      release();
     };
   }, [open, lenis]);
 
@@ -237,7 +300,14 @@ export function CommandPalette() {
   );
 
   const onInputKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "ArrowDown") {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "i") {
+      e.preventDefault();
+      close();
+      window.setTimeout(askAi, 50);
+    } else if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "e") {
+      e.preventDefault();
+      copyEmail();
+    } else if (e.key === "ArrowDown") {
       e.preventDefault();
       setSelected((s) => Math.min(s + 1, filtered.length - 1));
     } else if (e.key === "ArrowUp") {
@@ -259,6 +329,7 @@ export function CommandPalette() {
     }
   };
 
+  const activeId = filtered[selected]?.id;
   let flatIndex = -1;
 
   return (
@@ -269,107 +340,153 @@ export function CommandPalette() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.18 }}
+            transition={{ duration: DUR.micro }}
             className="absolute inset-0 bg-background/70 backdrop-blur-sm"
             onClick={close}
           />
 
           {/* Flex-centered wrapper: framer writes inline transforms, which
               would clobber a -translate-x-1/2 centering class. */}
-          <div className="pointer-events-none absolute inset-x-0 top-[16svh] flex justify-center px-4">
-          <motion.div
-            role="dialog"
-            aria-modal="true"
-            aria-label="Command palette"
-            initial={{ opacity: 0, y: 14, scale: 0.98, filter: "blur(6px)" }}
-            animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-            exit={{ opacity: 0, y: 10, scale: 0.98, filter: "blur(6px)" }}
-            transition={{ duration: 0.22, ease: EASE_OUT }}
-            className="glass-strong pointer-events-auto w-full max-w-[560px] overflow-hidden rounded-2xl border border-border shadow-2xl shadow-black/60"
-          >
-            <div className="flex items-center gap-3 border-b border-border/60 px-4">
-              <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
-              <input
-                ref={inputRef}
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                onKeyDown={onInputKeyDown}
-                placeholder="Type a command or search…"
-                aria-label="Search commands"
-                className="w-full bg-transparent py-4 text-sm text-foreground outline-none placeholder:text-muted-foreground"
-              />
-              <kbd className="rounded-md border border-border bg-foreground/5 px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
-                esc
-              </kbd>
-            </div>
-
-            <div
-              ref={listRef}
-              data-lenis-prevent
-              className="max-h-[46svh] overflow-y-auto p-2"
+          <div className="pointer-events-none absolute inset-x-0 top-[12svh] flex justify-center px-4 sm:top-[16svh]">
+            <motion.div
+              role="dialog"
+              aria-modal="true"
+              aria-label="Command palette"
+              initial={{ opacity: 0, y: 14, scale: 0.98, filter: "blur(6px)" }}
+              animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+              exit={{ opacity: 0, y: 10, scale: 0.98, filter: "blur(6px)" }}
+              transition={{ duration: 0.22, ease: EASE_OUT }}
+              className="glass-strong pointer-events-auto w-full max-w-[38rem] overflow-hidden rounded-3xl border border-border shadow-2xl shadow-black/60"
             >
-              {groups.length === 0 && (
-                <p className="px-3 py-8 text-center text-sm text-muted-foreground">
-                  No results for “{query}”
-                </p>
-              )}
-              {groups.map((group) => (
-                <div key={group.name} className="mb-1">
-                  <p className="px-3 pb-1.5 pt-2 font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
-                    {group.name}
+              <div className="flex items-center gap-3 border-b border-border/60 px-4">
+                <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
+                <input
+                  ref={inputRef}
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  onKeyDown={onInputKeyDown}
+                  placeholder="Search projects, skills, actions…"
+                  aria-label="Search commands"
+                  role="combobox"
+                  aria-expanded
+                  aria-controls="palette-list"
+                  aria-activedescendant={activeId}
+                  autoComplete="off"
+                  className="w-full bg-transparent py-4 text-[15px] text-foreground outline-none placeholder:text-muted-foreground"
+                />
+                <span className="hidden shrink-0 font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground sm:block">
+                  esc to close
+                </span>
+              </div>
+
+              <div
+                ref={listRef}
+                id="palette-list"
+                role="listbox"
+                aria-label="Results"
+                data-lenis-prevent
+                className="max-h-[52svh] overflow-y-auto p-2"
+              >
+                {groups.length === 0 && (
+                  <p className="px-3 py-10 text-center text-sm text-muted-foreground">
+                    No results for “{query}”
                   </p>
-                  {group.items.map((cmd) => {
-                    flatIndex += 1;
-                    const index = flatIndex;
-                    const Icon = cmd.icon;
-                    const active = index === selected;
-                    return (
-                      <button
-                        key={cmd.id}
-                        type="button"
-                        data-index={index}
-                        onClick={() => run(cmd)}
-                        onMouseMove={() => setSelected(index)}
-                        className={cn(
-                          "flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm transition-colors",
-                          active
-                            ? "bg-foreground/[0.08] text-foreground"
-                            : "text-foreground/75"
-                        )}
-                      >
-                        <span
+                )}
+                {groups.map((group) => (
+                  <div key={group.name} className="mb-1">
+                    <p className="px-3 pb-1.5 pt-2 font-mono text-[9px] uppercase tracking-[0.26em] text-muted-foreground">
+                      {group.name}
+                    </p>
+                    {group.items.map((cmd) => {
+                      flatIndex += 1;
+                      const index = flatIndex;
+                      const Icon = cmd.icon;
+                      const active = index === selected;
+                      return (
+                        <button
+                          key={cmd.id}
+                          id={cmd.id}
+                          role="option"
+                          aria-selected={active}
+                          type="button"
+                          data-index={index}
+                          onClick={() => run(cmd)}
+                          onMouseMove={() => setSelected(index)}
                           className={cn(
-                            "grid h-8 w-8 shrink-0 place-items-center rounded-lg border transition-colors",
+                            "flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm transition-colors",
                             active
-                              ? "border-foreground/20 bg-foreground text-background"
-                              : "border-border bg-foreground/5 text-foreground/70"
+                              ? "bg-foreground/[0.08] text-foreground"
+                              : "text-foreground/75"
                           )}
                         >
-                          <Icon className="h-4 w-4" />
-                        </span>
-                        <span className="min-w-0 flex-1 truncate font-medium">
-                          {cmd.label}
-                        </span>
-                        {cmd.hint && (
-                          <span className="hidden truncate font-mono text-[11px] text-muted-foreground sm:block">
-                            {cmd.hint}
+                          {cmd.badge ? (
+                            <span
+                              className={cn(
+                                "grid h-7 w-7 shrink-0 place-items-center rounded-lg font-mono text-[10px] transition-colors",
+                                active
+                                  ? "bg-foreground text-background"
+                                  : "bg-foreground/[0.06] text-foreground/70"
+                              )}
+                            >
+                              {cmd.badge}
+                            </span>
+                          ) : (
+                            Icon && (
+                              <span
+                                className={cn(
+                                  "grid h-7 w-7 shrink-0 place-items-center rounded-lg border transition-colors",
+                                  active
+                                    ? "border-foreground/20 bg-foreground text-background"
+                                    : "border-border bg-foreground/5 text-foreground/70"
+                                )}
+                              >
+                                <Icon className="h-3.5 w-3.5" />
+                              </span>
+                            )
+                          )}
+                          <span className="min-w-0 flex-1 truncate font-medium">
+                            {cmd.label}
+                            {cmd.hint && (
+                              <span className="ml-2 font-normal text-muted-foreground">
+                                {cmd.hint}
+                              </span>
+                            )}
                           </span>
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-              ))}
-            </div>
+                          {cmd.tag && (
+                            <span
+                              className={cn(
+                                "shrink-0 rounded-md px-1.5 py-0.5 font-mono text-[10.5px]",
+                                cmd.tag.startsWith("⌘")
+                                  ? "bg-foreground/[0.07] text-muted-foreground"
+                                  : "text-muted-foreground"
+                              )}
+                            >
+                              {cmd.tag}
+                            </span>
+                          )}
+                          {active && (
+                            <ChevronRight
+                              aria-hidden
+                              className="h-3.5 w-3.5 shrink-0 text-muted-foreground"
+                            />
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                ))}
+              </div>
 
-            <div className="flex items-center justify-between border-t border-border/60 px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground">
-              <span className="flex items-center gap-3">
-                <span>↑↓ Navigate</span>
-                <span>↵ Select</span>
-              </span>
-              <span>Navdeep Bhanderi</span>
-            </div>
-          </motion.div>
+              <div className="flex items-center justify-between border-t border-border/60 bg-foreground/[0.02] px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                <span className="flex items-center gap-4">
+                  <span>↑↓ navigate</span>
+                  <span>↵ open</span>
+                </span>
+                <span>
+                  {filtered.length} result{filtered.length === 1 ? "" : "s"}
+                </span>
+              </div>
+            </motion.div>
           </div>
         </div>
       )}

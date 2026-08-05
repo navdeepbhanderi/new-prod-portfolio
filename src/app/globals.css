@@ -213,14 +213,16 @@
   }
 
   /* Outlined display type lit from below — pairs with the horizon glow. */
+  /* The footer wordmark: a solid fill lit from below by the horizon — dim at
+     the crown, full white where it meets the light. No stroke; an outlined
+     name read as hollow next to the design's solid one. */
   .text-horizon-lit {
     color: transparent;
-    -webkit-text-stroke: 1px hsl(var(--foreground) / 0.55);
     background: linear-gradient(
-      to top,
-      hsl(225 40% 80% / 0.45) 0%,
-      hsl(225 30% 75% / 0.14) 45%,
-      transparent 80%
+      180deg,
+      hsl(0 0% 98% / 0.32) 0%,
+      hsl(226 62% 88% / 0.9) 74%,
+      hsl(0 0% 100%) 100%
     );
     -webkit-background-clip: text;
     background-clip: text;
@@ -252,20 +254,6 @@
   animation: chat-word-in 0.35s ease-out both;
 }
 
-/* Event-horizon glow breathing (see ui/HorizonGlow.tsx) */
-@keyframes horizon-breathe {
-  0%,
-  100% {
-    opacity: 0.85;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-.animate-horizon {
-  animation: horizon-breathe 7s ease-in-out infinite;
-}
-
 /* Shared-element route transitions (next-view-transitions): the project deck
    visual morphs into the case-study hero via matching view-transition-name.
    Groups (the morphing pair) use the site's expo ease; the root crossfade
@@ -287,13 +275,23 @@
   }
 }
 
-/* Film grain overlay */
+/* The mobile nav sheet owns the screen — the floating chat launcher would
+   otherwise sit on top of its footer row. */
+html[data-nav-open="true"] .chat-launcher {
+  display: none;
+}
+
+/* Film grain overlay. It covers the whole viewport and never changes, so it
+   must live on its own compositing layer — left unpromoted it was repainting
+   with the content scrolling beneath it. */
 .grain::after {
   content: "";
   position: fixed;
   inset: 0;
   z-index: 60;
   pointer-events: none;
+  will-change: transform;
+  transform: translateZ(0);
   opacity: 0.022;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }

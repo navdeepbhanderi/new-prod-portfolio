@@ -31,9 +31,16 @@ type Meteor = {
 export function Starfield({
   className,
   density = 0.00012,
+  active = true,
 }: {
   className?: string;
   density?: number;
+  /**
+   * The footer's starfield sits under an opaque <main> for the whole page, so
+   * IntersectionObserver always reports it visible and the loop would repaint
+   * ~250 stars a frame at nobody. Owners pass `false` until it's uncovered.
+   */
+  active?: boolean;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const reduced = usePrefersReducedMotion();
@@ -142,18 +149,19 @@ export function Starfield({
       raf = requestAnimationFrame(loop);
     };
 
+    const animating = !reduced && active;
     build();
-    if (reduced) draw(0);
-    else raf = requestAnimationFrame(loop);
+    if (animating) raf = requestAnimationFrame(loop);
+    else draw(0);
 
     const ro = new ResizeObserver(() => {
       build();
-      if (reduced) draw(0);
+      if (!animating) draw(0);
     });
     ro.observe(canvas);
 
     const io = new IntersectionObserver(([entry]) => {
-      if (reduced) return;
+      if (!animating) return;
       cancelAnimationFrame(raf);
       if (entry.isIntersecting) raf = requestAnimationFrame(loop);
     });
@@ -164,7 +172,7 @@ export function Starfield({
       ro.disconnect();
       io.disconnect();
     };
-  }, [reduced, density]);
+  }, [reduced, density, active]);
 
   return (
     <canvas

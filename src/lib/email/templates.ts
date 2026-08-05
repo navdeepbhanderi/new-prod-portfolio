@@ -34,7 +34,9 @@ function shell(content: string, preheader: string): string {
   <!-- Header -->
   <tr><td style="padding:0 8px 20px;">
     <table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr>
-      <td style="width:36px;height:36px;border:1px solid ${border};border-radius:10px;text-align:center;vertical-align:middle;font-family:${mono};font-size:14px;font-weight:600;color:${fg};">NB</td>
+      <!-- Text mark, not the SVG one: Gmail strips inline SVG and blocks data
+           URIs, so the letterform degrades to type rather than to an empty box. -->
+      <td style="width:36px;height:36px;border:1px solid ${border};border-radius:10px;text-align:center;vertical-align:middle;font-family:${mono};font-size:16px;font-weight:600;color:${fg};">N</td>
       <td style="padding-left:12px;font-family:${font};font-size:14px;font-weight:600;color:${fg};">${PROFILE.name}</td>
     </tr></table>
   </td></tr>

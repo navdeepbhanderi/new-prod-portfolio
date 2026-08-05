@@ -11,6 +11,7 @@ import {
   type ChatAction,
 } from "@/lib/ai/actions";
 import { useLenis } from "@/components/layout/SmoothScroll";
+import { EMAIL } from "@/data/socials";
 import { cn } from "@/lib/utils";
 
 type Message = {
@@ -224,8 +225,20 @@ export function ChatWidget() {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
-        const saved = JSON.parse(raw) as Message[];
-        if (Array.isArray(saved) && saved.length) {
+        // Validate before trusting it. A single malformed entry would throw
+        // inside render (content.replace) and, with no error boundary above
+        // this widget, take the whole route down on every load until the
+        // visitor happens to clear their storage.
+        const parsed: unknown = JSON.parse(raw);
+        const saved = (Array.isArray(parsed) ? parsed : []).filter(
+          (m): m is Message =>
+            !!m &&
+            typeof m === "object" &&
+            typeof (m as Message).content === "string" &&
+            Number.isFinite((m as Message).id) &&
+            ((m as Message).role === "user" || (m as Message).role === "assistant")
+        );
+        if (saved.length) {
           setMessages(saved);
           idRef.current = Math.max(...saved.map((m) => m.id)) + 1;
         }
@@ -347,7 +360,7 @@ export function ChatWidget() {
         const data = await res.json().catch(() => ({}));
         const reply =
           data?.error ??
-          "Sorry, I couldn't reach the assistant just now. You can email Navdeep at navdeepbhanderi1@gmail.com.";
+          `Sorry, I couldn't reach the assistant just now. You can email Navdeep at ${EMAIL}.`;
         setMessages((prev) => [...prev, { id: idRef.current++, role: "assistant", content: reply }]);
         return;
       }
@@ -468,7 +481,7 @@ export function ChatWidget() {
             id: idRef.current++,
             role: "assistant",
             content:
-              "Sorry, I couldn't reach the assistant just now. You can email Navdeep at navdeepbhanderi1@gmail.com.",
+              `Sorry, I couldn't reach the assistant just now. You can email Navdeep at ${EMAIL}.`,
           },
         ]);
       }
@@ -478,8 +491,7 @@ export function ChatWidget() {
         {
           id: idRef.current++,
           role: "assistant",
-          content:
-            "Sorry, something went wrong reaching the assistant. You can email Navdeep at navdeepbhanderi1@gmail.com.",
+          content: `Sorry, something went wrong reaching the assistant. You can email Navdeep at ${EMAIL}.`,
         },
       ]);
     } finally {
@@ -508,7 +520,7 @@ export function ChatWidget() {
   return (
     <>
       {/* Floating button */}
-      <div className="fixed bottom-6 right-6 z-[90] flex items-center gap-3">
+      <div className="chat-launcher fixed bottom-6 right-6 z-[90] flex items-center gap-3">
         {/* hover label (desktop) */}
         <AnimatePresence>
           {!open && (
@@ -585,20 +597,21 @@ export function ChatWidget() {
               className={cn(
                 "glass-strong fixed z-[89] flex flex-col overflow-hidden rounded-3xl border border-border shadow-2xl shadow-black/50",
                 "inset-x-3 bottom-24 top-20 sm:inset-x-auto sm:top-auto",
-                "sm:bottom-24 sm:right-6 sm:h-[600px] sm:max-h-[calc(100dvh-7rem)] sm:w-[400px]"
+                "sm:bottom-24 sm:right-6 sm:h-[38.5rem] sm:max-h-[calc(100dvh-7.5rem)] sm:w-[24.5rem]"
               )}
             >
               {/* header */}
               <div className="flex shrink-0 items-center justify-between border-b border-border/60 bg-background/40 px-4 py-3.5">
                 <div className="flex items-center gap-3">
-                  <span className="grid h-9 w-9 place-items-center rounded-full bg-foreground text-background">
-                    <Sparkles className="h-4 w-4" />
+                  <span className="grid h-[30px] w-[30px] place-items-center rounded-[9px] border border-border bg-foreground/5 text-foreground">
+                    <Sparkles className="h-3.5 w-3.5" />
                   </span>
-                  <div className="flex flex-col">
-                    <span className="text-sm font-semibold">{ASSISTANT_NAME}</span>
-                    <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                      Navdeep&rsquo;s AI assistant
+                  <div className="flex flex-col gap-0.5">
+                    <span className="text-sm font-medium">Ask about my work</span>
+                    {/* Setting the expectation up front is the honest move —
+                        and it's what stops the "can you write my essay" turn. */}
+                    <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-muted-foreground">
+                      Answers from this site only
                     </span>
                   </div>
                 </div>
@@ -630,6 +643,9 @@ export function ChatWidget() {
               <div
                 ref={scrollRef}
                 data-lenis-prevent
+                role="log"
+                aria-live="polite"
+                aria-label={`Conversation with ${ASSISTANT_NAME}`}
                 className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto overscroll-contain px-4 py-5"
               >
                 {messages.map((m, mi) => {
@@ -729,7 +745,7 @@ export function ChatWidget() {
                                 key={q}
                                 type="button"
                                 onClick={() => send(q)}
-                                className="rounded-full border border-border bg-foreground/[0.03] px-3 py-1 text-left text-xs text-muted-foreground transition-colors hover:border-foreground/25 hover:text-foreground"
+                                className="rounded-full border border-dashed border-border bg-transparent px-3 py-1.5 text-left text-xs text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground"
                               >
                                 {q}
                               </button>

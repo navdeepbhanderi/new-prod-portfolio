@@ -8,8 +8,10 @@
 
 **Direction: "Cinematic Editorial Monochrome."** Restrained typographic drama on a
 near-black canvas. The awe comes from choreography, oversized type, and light —
-never from color. One page, one story: preloader → hero → about → expertise →
+never from color. One page, one story: intro → hero → about → expertise →
 projects → journey → contact → earth-horizon footer.
+The name is shown huge exactly **once** — the footer finale. The intro hands it
+to the navbar mark; the hero leads with the claim, not the person.
 
 - Dark-only. Do NOT add a light theme — the starfield/horizon/glass identity depends on dark.
 - Monochrome first: whites at low alphas (`foreground/5..20`) do almost all work.
@@ -35,14 +37,21 @@ never invent new surface styles. Film grain overlay (`.grain`) sits at z-60 over
 ## 3. Typography
 
 - **Geist Sans** for everything; **Geist Mono** for eyebrows, indices, meta, kbd.
-- **Instrument Serif** (italic) is the ONE display-serif accent — reserved for a single
-  emphasis phrase inside a section heading (`SectionHeading` → `TextReveal`). Mark it in
-  the title string with `*asterisks*` (e.g. `Projects built *like products*`); the reveal
-  strips them (aria-label included) and renders the word(s) with `.text-accent-italic`.
-  Never in body/UI, never in the char-level hero/contact/footer finales, never more than
-  one phrase per heading.
-- Display sizes are fluid clamps: hero name `clamp(3.5rem,11vw,8.5rem)`, footer name
-  `clamp(3.5rem,14vw,13rem)`, section numerals `clamp(8rem,22vw,18rem)`.
+- **Instrument Serif** (italic) is the ONE display-serif accent. Mark it in the string
+  with `*asterisks*` (e.g. `Projects built *like products*`); `TextReveal` strips them
+  (aria-label included) and renders the word(s) with `.text-accent-italic`. The closing
+  marker may sit before punctuation — `*product*,` is parsed correctly.
+  Allowed in exactly three places, one phrase each: a **section heading**
+  (`SectionHeading`), the **hero claim** (`PROFILE.claim`), and the **case-study
+  outcome pull-quote** (upright `font-display`, not italic — it's a quote, not an accent).
+  Never in body/UI, never more than one phrase per heading.
+- Display sizes are fluid clamps: hero claim `clamp(2.375rem,6.4vw,5.75rem)`, intro name
+  `clamp(2.4rem,8.6vw,7.5rem)`, footer name `clamp(3.5rem,16.5vw,15rem)`, section
+  numerals `clamp(8rem,22vw,18rem)`.
+- **Custom font sizes must be registered with tailwind-merge** (`src/lib/utils.ts`).
+  It only knows Tailwind's built-in scale, so an unregistered `text-fluid-h2` is filed
+  as a *colour* and a trailing `text-foreground` silently deletes it — which is exactly
+  how every section heading once shipped at 16px.
 - Eyebrow pattern: mono, `text-xs uppercase tracking-[0.2em..0.3em] text-muted-foreground`,
   usually preceded by a `h-px w-6 bg-foreground/30` dash.
 - Outlined display type: `.text-stroke-border` (numerals), `.text-stroke-strong` (MORE card),
@@ -64,6 +73,9 @@ never invent new surface styles. Film grain overlay (`.grain`) sits at z-60 over
 | `fadeUpBlur(delay,y)` | opacity+y+blur variant | The core entrance |
 | `staggerContainer(stagger,delay)` | parent orchestrator | Lists/menus |
 | `chipPop` | scale+y pop | Chips/pills |
+| `STAGGER` | chip .04 / char .025 / meta .04 / menu .05 / card .07 | The rhythm, named |
+| `INTRO` | intro beats in seconds | Preloader timeline positions |
+| `GSAP_EASE_IN_OUT` | `power4.inOut` | Curtain lift |
 
 Rules:
 - Never hardcode an easing tuple or duration inline — import from motion.ts.
@@ -91,6 +103,13 @@ Rules:
 - Scroll-velocity effects (`VelocityMarquee`): targets are pushed by Lenis velocity and decay
   back in a `gsap.ticker` loop — effects must always settle to rest on their own. Hover slows
   the row to a readable crawl (timeScale →0.12, hover-capable pointers only).
+- The projects deck carries a **position rail** (`DeckRail`, `xl+`, in the section's right
+  gutter): a thumb driven straight off the deck's `scrollYProgress` — no state per frame.
+- **Case-study routes are warmed on idle** (`RoutePrefetch`, after the intro hands over,
+  skipped under Save-Data / 2g). Next only prefetches a `<Link>` once it scrolls into view,
+  and because the navigation runs inside `startViewTransition` an un-warmed route shows a
+  *frozen* page rather than a spinner. (A slow click-through in `next dev` is a compile, not
+  a regression — dev does no prefetching at all.)
 - Case studies get a **reading rail** (`ReadingRail`, fixed right, `xl+` only): one dot per
   narrative block (`#cs-*` ids on `Block`), active dot stretches to a labelled bar via
   IntersectionObserver (`useActiveSection`), click = `lenis.scrollTo(el, { offset: -110 })`.
@@ -113,23 +132,36 @@ Rules:
   zero React renders on mousemove). 3D tilt via `Tilt` (max 4–6°, sheen via motion template).
   Hover-scale discipline: parent `overflow-hidden`, child `group-hover:scale-[1.03]`,
   700ms — never scale the card container (that's Tilt's job, ≤1.02).
-- **Navbar:** active-section pill (`layoutId="nav-active"`, `SPRING_SNAPPY`, IntersectionObserver
-  rootMargin `-35% 0px -60% 0px`), hide-on-scroll-down past 160px / reveal on any up-delta,
-  focus-within always reveals. Link hover = underline sweep origin-right→left, also on focus-visible.
-- **Command palette:** ⌘K/Ctrl+K, top-center at `16svh`, max-w 560px. Framer transforms
-  clobber CSS translate centering — center overlays with a flex wrapper, never `-translate-x-1/2`.
+- **Navbar:** three states on one `layout`-animated element — wide and transparent at the
+  top, condensed glass pill once scrolled (`lg+`), compact bar + full-screen sheet below `lg`.
+  The active indicator carries one `layoutId="nav-active"` across states, so the underline at
+  the top *grows into* the pill as the bar condenses. Hide-on-scroll-down, focus-within always
+  reveals. The mark is `#nav-mark` — the intro's flight target.
+- **Overlays share one lock:** `src/lib/scroll-lock.ts` is ref-counted. Never set
+  `body.style.overflow` directly; closing one overlay would unlock the page under another.
+- **Command palette:** ⌘K/Ctrl+K, top-center, max-w 38rem. Results are grouped
+  (Navigate · Projects · Expertise · Actions · Connect); the technology index only appears
+  once there's a query. It is a real combobox — `role="combobox"` + `aria-activedescendant`
+  on the input, `role="listbox"/"option"` on the rows — plus ⌘I (ask AI) and ⌘E (copy email).
+  Framer transforms clobber CSS translate centering — center overlays with a flex wrapper.
 
 ## 7. Signature moments (do not duplicate their techniques elsewhere)
 
-1. **Preloader** (once per session, `nv-intro-done` in sessionStorage + pre-paint `<head>`
-   script sets `data-intro="done"` on `<html>` — keep `suppressHydrationWarning` there):
-   counter 000→100 + hairline, outlined name fills with light in sync, then the name
-   **drifts toward `#hero-name`** (travel capped ±110/90px, scale 0.94, dissolve — a lean,
-   never a full flight) as the double curtain lifts (`power4.inOut`); `intro.complete()`
-   fires at curtain-start so the hero reveal rises underneath.
-2. **Hero:** char-reveal first name (gradient) over outlined surname (`.hero-surname-char`),
-   3-depth pointer parallax (bg ×-36 inverted, copy ×12, portrait ×22 + ≤2.5° rotate);
-   below `lg` the portrait becomes a small glass-ringed circle above the badge.
+1. **Intro** (once per session, `nv-intro-done` in sessionStorage + pre-paint `<head>`
+   script sets `data-intro="done"` on `<html>` — keep `suppressHydrationWarning` there).
+   A loading *manifest*, not a centred word: corner registration marks, top meta row,
+   left-aligned outlined name, boot log, and the counter as the largest number on screen.
+   **The counter is the real progress value** — `document.fonts.ready` and the hero
+   portrait's decode report in, and the name's light sweep is the same number as a
+   `clip-path`. Never fake it: warm assets finish early (floor `MIN_MS` so the sweep is
+   seen), a stalled network still leaves at `MAX_MS`, and any key or tap skips.
+   The name then **drifts toward `#nav-mark`** (travel capped ±110/90px, scale 0.94,
+   dissolve — a lean, never a full flight) as the double curtain lifts;
+   `intro.complete()` fires at curtain-start so the hero rises underneath.
+2. **Hero:** a full-bleed portrait column (`md+`) or top band (below `md`) that hands over
+   to the canvas through axis-specific scrims; the claim reveals word-by-word on the
+   intro hand-off (`TextReveal trigger="manual"`), and a fact ledger sits on a hairline at
+   the floor. 3-depth pointer parallax (bg ×-36 inverted, copy ×12, portrait ×22).
    **Exit choreography:** scrubbed to scroll-out — copy drifts −70px, portrait −130px
    (deeper layer exits faster), both fading; framer motion values on wrapper layers
    OUTSIDE the pointer-parallax wrappers, gated by `usePrefersReducedMotion`.
@@ -140,12 +172,16 @@ Rules:
    visual is one of: a real product screenshot, an NDA-safe architecture diagram +
    metrics, or a generic mock (`ProductMock`, precedence image → diagram → mock); the
    index numeral parallaxes behind it. Card height follows the visual so nothing clips.
-4. **Expertise grid:** six domain cards (Frontend · Backend · Databases · Languages · AI ·
-   Tools) with a cursor-following glow (`GlassCard`); below it, two velocity-reactive
-   `VelocityMarquee` rows (decorative, `aria-hidden` — the cards carry the real text).
+4. **Expertise grid:** *weighted*, and weighted by data (`ExpertiseCategory.weight`, never
+   by index) — `primary` is a tall hero panel, `utility` a full-width strip, the rest compact
+   cards. Below `md` it becomes the primary panel plus an accordion ledger. Under it, two
+   velocity-reactive `VelocityMarquee` rows (decorative, `aria-hidden`).
 5. **Footer finale:** sticky-bottom uncover (`<main>` is opaque z-10 and lifts away; footer
-   `sticky bottom-0 z-0` — z must stay ≥0 or it becomes unclickable), starfield with rare
-   shooting stars (~every 9–18s, thin gradient streak, none under reduced motion) + `HorizonGlow`.
+   `sticky bottom-0 z-0` — z must stay ≥0 or it becomes unclickable). Upper half carries the
+   ask (closing line + email) and a three-column sitemap. Starfield with rare shooting stars
+   (~every 9–18s, none under reduced motion) + `HorizonGlow` — the canvas is `active` only
+   once the footer is uncovered, because a sticky footer always "intersects" the viewport
+   and would otherwise repaint ~250 stars a frame under an opaque `<main>` all session.
    **Finale scrub** (one GSAP timeline over the last 0.7 viewport): `.footer-horizon`
    rises (yPercent 22→0), the inner content settles, and `.footer-name` brightens last
    (opacity 0.3→1 starting at t=0.3) — the sunrise happens because the visitor scrolled.
@@ -154,14 +190,18 @@ Rules:
 
 ## 8. Z-index map (keep sacred)
 
-`main` 10 · footer 0 (below main, never negative) · grain 60 · navbar 75 · cursor 80 ·
-palette 85 · chat 88–90 · preloader 95.
+`main` 10 · footer 0 (below main, never negative) · grain 60 · navbar 75 · nav sheet 76 ·
+cursor 80 · palette 85 · chat 88–90 · intro 95.
+The chat launcher floats at 90, so it is hidden via `html[data-nav-open]` while the sheet is open.
 
 ## 9. Accessibility (non-negotiable)
 
 - Every framer animation respects reduced motion via `<MotionConfig reducedMotion="user">`
   (mounted in layout). CSS animations are killed by the global media query. GSAP/imperative
   code must check `usePrefersReducedMotion()` and no-op or render static.
+- **MotionConfig strips transforms but keeps delays.** Any staged entrance must collapse its
+  own delays under reduced motion (see the hero's `at()`), or those visitors sit watching an
+  empty section while the choreography "plays" invisibly.
 - Reduced-motion states: no preloader, project deck becomes plain flow, numerals/marquees
   static, tilt/parallax/cursor/magnetic off, starfield renders one static frame.
 - Touch devices (`useIsTouch`): no custom cursor, tilt, or magnetic; sticky deck keeps
@@ -178,7 +218,24 @@ palette 85 · chat 88–90 · preloader 95.
   paint-only exception, contained with `contain: paint`).
 - Zero React state per mousemove: motion values, CSS custom properties, or delegated
   boundary events (`pointerover`) only.
-- All listeners `{ passive: true }`. No hand-sprinkled `will-change` (framer manages it).
+- All listeners `{ passive: true }`.
+- **`will-change` on scroll-linked transforms is required, not optional.** Framer only sets
+  it for *running animations*; an element driven by a scroll `useTransform` gets no hint, so
+  it re-rasterises its whole surface every frame instead of compositing. The projects deck's
+  scaled card carries it explicitly — adding it moved p95 from 133ms to 50ms.
+- **Never put `backdrop-filter` inside anything that transforms per frame.** The deck card
+  scales continuously; the mock inside it used `.glass-strong`, and every frame paid for a
+  fresh backdrop blur. Over an opaque surface the blur is invisible anyway — use a solid
+  translucent background.
+- **Perpetual animation must be gated to visibility.** A looping blur/opacity animation
+  repaints for the life of the page whether or not it is on screen. The skill marquees
+  (`gsap.ticker` + skew), the footer starfield and the horizon breathe are all gated by
+  IntersectionObserver or by the footer's uncover state; the hero's drifting blob was
+  simply made static.
+- **Full-viewport fixed overlays must be promoted** (`.grain::after` carries
+  `will-change: transform`), or they repaint against the content scrolling underneath.
+- Measure before optimising: drive real wheel events, sample rAF deltas under 4x CPU
+  throttle, and A/B one suspect at a time. Guessing picks the wrong effect.
 - Canvas effects (Starfield): one rAF loop, DPR capped at 2, paused via IntersectionObserver
   when offscreen.
 - Images through `next/image` (AVIF/WebP) with `sizes`; hero portrait is `priority` (LCP).
@@ -188,10 +245,18 @@ palette 85 · chat 88–90 · preloader 95.
 
 - Identity/copy: `src/lib/profile.ts` · canonical origin: `src/lib/site.ts`
 - Sections data: `src/data/{projects,expertise,skills,timeline,socials}.ts`
+- The section list itself: `src/data/navigation.ts` — the navbar, footer sitemap, command
+  palette and 404 all read from it. Don't re-declare it locally.
 - Projects support optional `links: { live, repo }` — buttons render automatically.
+- Brand: the **N-mark** (`src/components/brand/Logo.tsx`, `currentColor`, framed only when
+  standalone). Icons are generated from it — `app/icon.tsx` (192) and `app/apple-icon.tsx`
+  (180) via `ImageResponse`; `src/lib/og-mark.ts` carries the data-URI form for OG images.
+  Email templates degrade to a text "N" (Gmail strips inline SVG and blocks data URIs).
 - SEO: JSON-LD @graph (Person/WebSite/ProfilePage) in profile.ts; metadata/manifest/robots/
-  sitemap all derive from `SITE_URL`. Real favicons live in `src/app/` (favicon.ico,
-  icon.png 192, apple-icon.png 180).
+  sitemap all derive from `SITE_URL`.
+- **No unverifiable numbers.** The timeline is deliberately dateless (it carries `stage`
+  labels, not years) and there is no "N years of experience" counter anywhere. Don't add
+  one without the real figure.
 
 ## 12. Do / Don't quick list
 

@@ -6,6 +6,12 @@ export type ExpertiseCategory = {
   blurb: string;
   icon: LucideIcon;
   technologies: string[];
+  /**
+   * Drives the weighted grid: `primary` renders as the tall hero panel,
+   * `utility` as the full-width strip at the bottom, the rest as compact cards.
+   * Layout follows the data — never the array index.
+   */
+  weight: "primary" | "standard" | "utility";
 };
 
 export type Project = {
@@ -52,6 +58,15 @@ export type TimelineItem = {
   subtitle: string;
   description: string;
   status: "past" | "present" | "future";
+  /**
+   * Rail label. Dates are deliberately omitted from the timeline, so the rail
+   * carries the phase of the journey instead of a year.
+   */
+  stage: "Start" | "Education" | "Industry" | "Present";
+  /** Right-hand meta column — the one thing that entry changed. */
+  aside?: { label: string; value: string };
+  /** "Working in" chips — the present role's panel only. */
+  stack?: string[];
 };
 
 export type Social = {

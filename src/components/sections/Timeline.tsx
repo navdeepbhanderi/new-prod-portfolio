@@ -5,17 +5,141 @@ import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { TIMELINE } from "@/data/timeline";
+import type { TimelineItem } from "@/types";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ParallaxNumeral } from "@/components/ui/ParallaxNumeral";
 import { cn } from "@/lib/utils";
 import { EASE_OUT } from "@/lib/motion";
 import { usePrefersReducedMotion } from "@/hooks/use-media-query";
 
-const statusStyles: Record<string, string> = {
-  past: "border-border bg-muted text-muted-foreground",
-  present: "border-foreground/30 bg-foreground text-background",
-  future: "border-dashed border-foreground/30 bg-background text-foreground/70",
-};
+/**
+ * Newest first. A recruiter reads the current role and stops — making them
+ * scroll past three educational entries to reach it buries the lede.
+ */
+const ENTRIES = [...TIMELINE].reverse();
+
+/**
+ * The rail sits in its own grid column, so the track's x is the centre of that
+ * column: 10px on mobile (20px column), 162px at sm+ (128px label + 24px gap
+ * + half of the 20px column).
+ */
+const TRACK_X = "left-[10px] sm:left-[162px]";
+
+function Node({ present }: { present: boolean }) {
+  return (
+    <span className="flex justify-center pt-1.5 sm:pt-2">
+      <span
+        aria-hidden
+        className="tl-node grid h-[15px] w-[15px] place-items-center rounded-full bg-background"
+      >
+        {present ? (
+          <span className="relative flex h-[9px] w-[9px]">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent/60" />
+            <span className="relative h-[9px] w-[9px] rounded-full bg-foreground" />
+          </span>
+        ) : (
+          <span className="h-[7px] w-[7px] rounded-full border border-foreground/35 bg-background" />
+        )}
+      </span>
+    </span>
+  );
+}
+
+function Stage({ item, className }: { item: TimelineItem; className?: string }) {
+  return (
+    <span
+      className={cn(
+        "font-mono text-[10px] uppercase tracking-[0.24em]",
+        item.status === "present" ? "text-foreground" : "text-muted-foreground",
+        className
+      )}
+    >
+      {item.stage}
+    </span>
+  );
+}
+
+/** The current role carries the weight — everything else is the path to it. */
+function PresentEntry({ item }: { item: TimelineItem }) {
+  return (
+    <div className="glass grid gap-7 rounded-3xl p-6 sm:p-8 lg:grid-cols-[minmax(0,1fr)_17rem] lg:gap-11">
+      <div className="flex flex-col items-start">
+        <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/[0.12] px-3 py-1.5 font-mono text-[9.5px] uppercase tracking-[0.22em] text-emerald-300">
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/70" />
+            <span className="relative h-1.5 w-1.5 rounded-full bg-emerald-400" />
+          </span>
+          Current role
+        </span>
+        <h3 className="mt-5 text-[clamp(1.5rem,3.2vw,2.375rem)] font-semibold leading-tight tracking-tight">
+          {item.title}
+        </h3>
+        <span className="mt-2 text-base text-muted-foreground">{item.subtitle}</span>
+        <p className="mt-4 max-w-2xl leading-relaxed text-foreground/70">
+          {item.description}
+        </p>
+      </div>
+
+      <div className="flex flex-col gap-5 border-t border-foreground/[0.09] pt-6 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0">
+        {item.aside && (
+          <div className="flex flex-col gap-2">
+            <span className="font-mono text-[9.5px] uppercase tracking-[0.26em] text-muted-foreground">
+              {item.aside.label}
+            </span>
+            <span className="text-[15px] leading-snug text-foreground/85">
+              {item.aside.value}
+            </span>
+          </div>
+        )}
+        {item.stack && (
+          <div className="flex flex-col gap-2.5">
+            <span className="font-mono text-[9.5px] uppercase tracking-[0.26em] text-muted-foreground">
+              Working in
+            </span>
+            <span className="flex flex-wrap gap-2">
+              {item.stack.map((tech) => (
+                <span
+                  key={tech}
+                  className="rounded-full border border-foreground/20 bg-foreground/[0.06] px-3 py-1.5 text-xs text-foreground"
+                >
+                  {tech}
+                </span>
+              ))}
+            </span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function PastEntry({ item }: { item: TimelineItem }) {
+  return (
+    <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_17rem] lg:gap-11">
+      <div>
+        <h3 className="text-xl font-semibold leading-tight tracking-tight sm:text-2xl">
+          {item.title}
+        </h3>
+        <span className="mt-2 block text-[15px] text-muted-foreground">
+          {item.subtitle}
+        </span>
+        <p className="mt-3.5 max-w-2xl leading-relaxed text-muted-foreground">
+          {item.description}
+        </p>
+      </div>
+      {item.aside && (
+        <div className="flex flex-col gap-2 lg:border-l lg:border-border lg:pl-8">
+          <span className="font-mono text-[9.5px] uppercase tracking-[0.26em] text-muted-foreground">
+            {item.aside.label}
+          </span>
+          <span className="text-[15px] leading-snug text-foreground/75">
+            {item.aside.value}
+          </span>
+        </div>
+      )}
+    </div>
+  );
+}
 
 export function Timeline() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -53,7 +177,7 @@ export function Timeline() {
             scale: 1,
             duration: 0.55,
             ease: "back.out(2.2)",
-            scrollTrigger: { trigger: node, start: "top 72%" },
+            scrollTrigger: { trigger: node, start: "top 78%" },
           }
         );
       });
@@ -71,64 +195,52 @@ export function Timeline() {
       <div className="container-px">
         <SectionHeading
           eyebrow="Experience"
-          title="From fundamentals to *production*"
+          title="From coursework to *owning* delivery"
           description="Education and industry, side by side — a degree completed while shipping real software."
         />
 
-        <div ref={containerRef} className="relative mt-16">
-          {/* track — sits behind the nodes; left value matches each node's centre */}
-          <div className="absolute bottom-10 left-[19px] top-5 w-px bg-border sm:left-[27px]" />
+        <div ref={containerRef} className="relative mt-14 sm:mt-16">
+          {/* the track, and the lit length drawn over it */}
+          <div
+            aria-hidden
+            className={cn("absolute inset-y-3 w-px bg-border", TRACK_X)}
+          />
           <div
             ref={lineRef}
-            className="absolute bottom-10 left-[19px] top-5 w-px origin-top bg-gradient-to-b from-foreground via-foreground/70 to-transparent sm:left-[27px]"
+            aria-hidden
+            className={cn(
+              "absolute inset-y-3 w-px origin-top bg-gradient-to-b from-foreground via-foreground/50 to-transparent",
+              TRACK_X
+            )}
             style={{ transform: "scaleY(0)" }}
           />
 
-          <div className="flex flex-col gap-12 sm:gap-16">
-            {TIMELINE.map((item, i) => (
-              <motion.div
+          <ol className="flex flex-col gap-12 sm:gap-16">
+            {ENTRIES.map((item, i) => (
+              <motion.li
                 key={item.id}
-                initial={{ opacity: 0, x: 24, filter: "blur(8px)" }}
+                initial={{ opacity: 0, x: 20, filter: "blur(8px)" }}
                 whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
                 viewport={{ once: true, margin: "-80px" }}
                 transition={{ duration: 0.6, ease: EASE_OUT, delay: i * 0.05 }}
-                className="relative flex gap-6 pl-12 sm:pl-20"
+                className="grid grid-cols-[1.25rem_minmax(0,1fr)] gap-x-5 sm:grid-cols-[8rem_1.25rem_minmax(0,1fr)] sm:gap-x-6"
               >
-                {/* node */}
-                <span
-                  className={cn(
-                    "tl-node absolute left-0 top-0 z-10 grid h-10 w-10 place-items-center rounded-full border font-mono text-[10px] sm:h-[3.4rem] sm:w-[3.4rem] sm:text-xs",
-                    statusStyles[item.status]
-                  )}
-                >
+                <Stage
+                  item={item}
+                  className="hidden pt-2 text-right sm:block"
+                />
+                <Node present={item.status === "present"} />
+                <div className="min-w-0">
+                  <Stage item={item} className="mb-2.5 block sm:hidden" />
                   {item.status === "present" ? (
-                    <span className="relative flex h-2.5 w-2.5">
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-background/80" />
-                      <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-background" />
-                    </span>
+                    <PresentEntry item={item} />
                   ) : (
-                    // Sequential step index (dates intentionally omitted)
-                    String(i + 1).padStart(2, "0")
+                    <PastEntry item={item} />
                   )}
-                </span>
-
-                <div className="flex flex-col gap-1.5 pb-2">
-                  {item.period && (
-                    <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                      {item.period}
-                    </span>
-                  )}
-                  <h3 className="text-xl font-semibold tracking-tight sm:text-2xl">
-                    {item.title}
-                  </h3>
-                  <p className="text-sm font-medium text-foreground/70">{item.subtitle}</p>
-                  <p className="mt-1 max-w-xl leading-relaxed text-muted-foreground">
-                    {item.description}
-                  </p>
                 </div>
-              </motion.div>
+              </motion.li>
             ))}
-          </div>
+          </ol>
         </div>
       </div>
     </section>

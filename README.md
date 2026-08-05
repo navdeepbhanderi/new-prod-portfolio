@@ -31,25 +31,30 @@ build.
 
 ## Highlights
 
-- **Cinematic layer** — once-per-session preloader (counter + light-fill name +
-  curtain lift over a starfield), character-level hero reveal with 3-depth mouse
+- **Cinematic layer** — once-per-session intro built as a loading manifest
+  (registration marks, boot log, and a counter wired to *real* asset progress that
+  drives the name's light sweep), a full-bleed portrait hero with 3-depth mouse
   parallax, sticky stacking project deck, parallax section numerals,
   velocity-reactive skill marquees, and an "earth from space" footer finale.
-- **Interaction language** — contextual custom cursor, active-section navbar pill
-  with hide-on-scroll, 3D tilt cards, text-swap buttons, ⌘K command palette.
+- **Interaction language** — contextual custom cursor, a navbar that collapses from
+  a wide bar into a condensed glass pill (and into a full-screen sheet on phones),
+  3D tilt cards, text-swap buttons, and a ⌘K palette that searches projects,
+  technologies and actions.
 - **Case studies** — `/projects/[slug]` pages (problem → approach → outcome)
   with per-page SEO and JSON-LD. Project visuals adapt per project: a real
   product screenshot, an NDA-safe architecture diagram + metrics, or a stylised
   fallback (see `ProductMock`).
-- **Nova (Ask AI)** — chat assistant (streamed Gemini replies when configured,
-  local knowledge base fallback) with tappable action buttons, lazy-loaded on
-  idle, rate-limited.
+- **Ask AI** — chat panel (streamed Gemini replies when configured, local knowledge
+  base fallback) that says up front it only answers from this site, with tappable
+  action buttons, lazy-loaded on idle, rate-limited.
 - **Contact pipeline** — validated form with honeypot + rate limiting; sends an
   owner notification **and** a themed auto-reply via Gmail SMTP.
-- **SEO** — Person/WebSite/ProfilePage JSON-LD graph, manifest + full favicon
-  set, sitemap incl. case studies, canonical URLs, `next/image` LCP portrait.
-- **Performance** — LCP ~190 ms, CLS 0, zero long tasks (measured on the
-  production build). Every effect has reduced-motion and touch fallbacks.
+- **SEO** — Person/WebSite/ProfilePage JSON-LD graph, manifest + icons generated
+  from the N-mark, sitemap incl. case studies, canonical URLs, `next/image` LCP portrait.
+- **Performance** — transform/opacity only, zero React state per mousemove, canvas
+  work paused when it isn't visible. Every effect has reduced-motion and touch
+  fallbacks. (Re-measure Core Web Vitals against a production build after changes —
+  the last published figures predate the redesign.)
 
 ---
 

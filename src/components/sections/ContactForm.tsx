@@ -4,7 +4,6 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUpRight, Check, LoaderCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { GlassCard } from "@/components/ui/GlassCard";
 import { cn } from "@/lib/utils";
 import { EASE_OUT } from "@/lib/motion";
 
@@ -63,7 +62,7 @@ function Field({
 
 const inputClasses = (invalid: boolean) =>
   cn(
-    "w-full rounded-xl border bg-background/50 px-3.5 py-2.5 text-sm text-foreground outline-none transition-colors",
+    "w-full rounded-2xl border bg-background/50 px-4 text-[15px] text-foreground outline-none transition-colors",
     "placeholder:text-muted-foreground/70",
     invalid
       ? "border-red-400/40 focus:border-red-400/70"
@@ -122,7 +121,7 @@ export function ContactForm() {
   };
 
   return (
-    <GlassCard className="rounded-3xl p-5 sm:p-6">
+    <div className="glass rounded-[1.75rem] p-5 sm:p-7">
       <AnimatePresence mode="wait" initial={false}>
         {status === "success" ? (
           <motion.div
@@ -167,6 +166,16 @@ export function ContactForm() {
             noValidate
             className="flex flex-col gap-4"
           >
+            <div className="mb-2 flex items-center justify-between gap-4">
+              <span className="text-lg font-medium tracking-tight">
+                Send a message
+              </span>
+              <span className="inline-flex items-center gap-2 font-mono text-[9.5px] uppercase tracking-[0.2em] text-muted-foreground">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                Replies within 24h
+              </span>
+            </div>
+
             <div className="grid gap-4 sm:grid-cols-2">
               <Field label="Name" htmlFor="cf-name" error={errors.name}>
                 <input
@@ -179,7 +188,7 @@ export function ContactForm() {
                   onChange={set("name")}
                   aria-invalid={Boolean(errors.name)}
                   placeholder="Jane Founder"
-                  className={inputClasses(Boolean(errors.name))}
+                  className={cn(inputClasses(Boolean(errors.name)), "h-[52px]")}
                 />
               </Field>
 
@@ -194,7 +203,7 @@ export function ContactForm() {
                   onChange={set("email")}
                   aria-invalid={Boolean(errors.email)}
                   placeholder="jane@company.com"
-                  className={inputClasses(Boolean(errors.email))}
+                  className={cn(inputClasses(Boolean(errors.email)), "h-[52px]")}
                 />
               </Field>
             </div>
@@ -203,13 +212,13 @@ export function ContactForm() {
               <textarea
                 id="cf-message"
                 name="message"
-                rows={4}
+                rows={5}
                 maxLength={3000}
                 value={values.message}
                 onChange={set("message")}
                 aria-invalid={Boolean(errors.message)}
                 placeholder="A project, a role, or an idea worth building…"
-                className={cn(inputClasses(Boolean(errors.message)), "resize-none")}
+                className={cn(inputClasses(Boolean(errors.message)), "resize-none py-3.5 leading-relaxed")}
               />
             </Field>
 
@@ -233,11 +242,12 @@ export function ContactForm() {
               )}
             </AnimatePresence>
 
-            <div className="mt-1 flex items-center justify-between gap-4">
-              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70">
-                Replies within 24h
+            <div className="mt-2 flex items-center justify-between gap-5 border-t border-border pt-5">
+              <span className="max-w-[15rem] text-xs leading-relaxed text-muted-foreground">
+                Roughly what you&rsquo;re building and the timeline is plenty to
+                start.
               </span>
-              <Button type="submit" disabled={status === "submitting"}>
+              <Button type="submit" size="lg" disabled={status === "submitting"}>
                 {status === "submitting" ? (
                   <>
                     <LoaderCircle className="h-4 w-4 animate-spin" />
@@ -254,6 +264,6 @@ export function ContactForm() {
           </motion.form>
         )}
       </AnimatePresence>
-    </GlassCard>
+    </div>
   );
 }

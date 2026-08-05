@@ -26,9 +26,11 @@ function ChromeBar({ id, lg }: { id: string; lg?: boolean }) {
 function ArchitectureBody({
   diagram,
   lg,
+  metrics = true,
 }: {
   diagram: NonNullable<Project["diagram"]>;
   lg?: boolean;
+  metrics?: boolean;
 }) {
   // Owned layers render solid; the consumed external system renders dashed and
   // dimmed so the boundary of what was actually built is unmistakable.
@@ -51,12 +53,17 @@ function ArchitectureBody({
         </span>
       )}
 
-      {/* Layered flow: owned layers → consumed backend boundary.
-          Hidden on phones (too cramped for 4 nodes); the scope label, note,
-          and metrics carry the story there. */}
-      <div className={cn("hidden items-stretch sm:flex", lg ? "gap-1.5" : "gap-1")}>
+      {/* Layered flow: owned layers → consumed backend boundary. On phones the
+          arrows would be a pixel wide, so the layers stack into a grid and the
+          arrows drop out — the boundary still reads from the dashed node. */}
+      <div
+        className={cn(
+          "grid grid-cols-2 items-stretch sm:flex",
+          lg ? "gap-1.5" : "gap-1"
+        )}
+      >
         {nodes.map((node, i) => (
-          <div key={node.label} className={cn("flex flex-1 items-center", lg ? "gap-1.5" : "gap-1")}>
+          <div key={node.label} className={cn("flex items-center sm:flex-1", lg ? "gap-1.5" : "gap-1")}>
             <span
               className={cn(
                 "flex flex-1 items-center justify-center rounded-lg text-center font-mono leading-tight",
@@ -71,7 +78,10 @@ function ArchitectureBody({
             {i < nodes.length - 1 && (
               <ArrowRight
                 aria-hidden
-                className={cn("shrink-0 text-foreground/30", lg ? "h-3.5 w-3.5" : "h-2.5 w-2.5")}
+                className={cn(
+                  "hidden shrink-0 text-foreground/30 sm:block",
+                  lg ? "h-3.5 w-3.5" : "h-2.5 w-2.5"
+                )}
               />
             )}
           </div>
@@ -84,7 +94,7 @@ function ArchitectureBody({
         </p>
       )}
 
-      {diagram.metrics && diagram.metrics.length > 0 && (
+      {metrics && diagram.metrics && diagram.metrics.length > 0 && (
         <div className={cn("flex", lg ? "gap-2" : "gap-1.5")}>
           {diagram.metrics.map((m) => (
             <div
@@ -128,9 +138,15 @@ function GenericBody({ lg }: { lg?: boolean }) {
 export function ProductMock({
   project,
   size = "sm",
+  className,
+  metrics = true,
 }: {
   project: Project;
   size?: "sm" | "lg";
+  /** Lets a card override the max-width so the mock can bleed to its edge. */
+  className?: string;
+  /** Off where the surrounding card already states the numbers. */
+  metrics?: boolean;
 }) {
   const lg = size === "lg";
 
@@ -138,8 +154,12 @@ export function ProductMock({
     <div
       aria-hidden
       className={cn(
-        "glass-strong w-full shadow-2xl shadow-black/40",
-        lg ? "max-w-2xl rounded-2xl p-4" : "max-w-md rounded-xl p-3"
+        // Deliberately NOT .glass-strong: the mock always sits on an opaque
+        // gradient, so the backdrop blur bought nothing visually and cost a
+        // full re-raster every frame the deck card scaled under it.
+        "w-full border border-white/[0.08] bg-[hsl(240_6%_8%/0.92)] shadow-2xl shadow-black/40",
+        lg ? "max-w-2xl rounded-2xl p-4" : "max-w-md rounded-xl p-3",
+        className
       )}
     >
       <ChromeBar id={project.id} lg={lg} />
@@ -155,7 +175,7 @@ export function ProductMock({
           />
         </div>
       ) : project.diagram ? (
-        <ArchitectureBody diagram={project.diagram} lg={lg} />
+        <ArchitectureBody diagram={project.diagram} lg={lg} metrics={metrics} />
       ) : (
         <GenericBody lg={lg} />
       )}
