@@ -176,12 +176,17 @@ export function Hero() {
                   </Link>
                 </Button>
               </Magnetic>
+              {/* The résumé, not a second route to contact. Contact is already
+                  reachable from the navbar, the mobile sheet, its own section
+                  and the footer — while the one document a recruiter opens
+                  first sat at the bottom of the page, below the fold twice
+                  over. */}
               <Magnetic className="w-full sm:w-auto">
                 <Button asChild size="lg" variant="outline" className="w-full sm:w-auto">
-                  <Link href="#contact" scroll={false}>
-                    <SwapText>Contact me</SwapText>
+                  <a href={PROFILE.resume} target="_blank" rel="noopener noreferrer">
+                    <SwapText>View resume</SwapText>
                     <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5" />
-                  </Link>
+                  </a>
                 </Button>
               </Magnetic>
             </motion.div>
