@@ -108,7 +108,13 @@ export function Hero() {
             sizes="(min-width: 1695px) 576px, (min-width: 1280px) 34vw, (min-width: 768px) 38vw, 100vw"
             className="md:[object-position:50%_20%]"
           />
-          <div aria-hidden className={`absolute inset-0 ${SCRIM_BAND} ${SCRIM_COLUMN}`} />
+          {/* md:-left-8 overshoots the column boundary so the compositing
+              layer's own edge is painted over — no hairline seam at any
+              parallax offset. */}
+          <div
+            aria-hidden
+            className={`absolute inset-0 md:-left-8 ${SCRIM_BAND} ${SCRIM_COLUMN}`}
+          />
           <div aria-hidden className={`absolute inset-0 ${SCRIM_FLOOR}`} />
         </motion.div>
       </motion.div>
