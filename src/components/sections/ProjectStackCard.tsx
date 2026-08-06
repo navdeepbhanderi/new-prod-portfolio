@@ -32,7 +32,7 @@ function ProjectVisual({ project }: { project: Project }) {
       ref={ref}
       href={`/projects/${project.id}`}
       aria-label={`${project.title} — read the case study`}
-      className="group relative z-20 block min-h-[12rem] overflow-hidden sm:min-h-[17rem] lg:min-h-[28.5rem]"
+      className="group relative z-20 block min-h-[10rem] overflow-hidden sm:min-h-[17rem] lg:min-h-[28.5rem]"
       data-cursor="view"
       data-cursor-label="Open"
       // Shared element: morphs into the case-study banner on navigation.
@@ -51,7 +51,7 @@ function ProjectVisual({ project }: { project: Project }) {
       </motion.span>
       <motion.div
         style={reduced ? undefined : { y }}
-        className="absolute inset-x-5 top-6 sm:inset-x-9 sm:top-10 lg:left-[3.25rem] lg:right-12 lg:top-[3.25rem]"
+        className="absolute inset-x-4 top-5 sm:inset-x-9 sm:top-10 lg:left-[3.25rem] lg:right-12 lg:top-[3.25rem]"
       >
         <ProductMock
           project={project}
@@ -68,7 +68,7 @@ function Metrics({ project }: { project: Project }) {
   const metrics = project.diagram?.metrics;
   if (!metrics?.length) return null;
   return (
-    <div className="mt-[1.125rem] grid grid-cols-3 gap-4 border-y border-border py-4 sm:mt-6 sm:gap-5 sm:py-5">
+    <div className="mt-3.5 grid grid-cols-3 gap-4 border-y border-border py-3 sm:mt-6 sm:gap-5 sm:py-5">
       {metrics.map((metric) => (
         <div key={metric.label} className="flex flex-col gap-1.5">
           <span className="text-[17px] font-semibold tracking-tight sm:text-[1.375rem]">
@@ -154,7 +154,11 @@ export function ProjectCardContent({ project }: { project: Project }) {
     <div className="grid lg:grid-cols-[1.05fr_1fr]">
       <ProjectVisual project={project} />
 
-      <div className="relative z-20 flex flex-col p-5 sm:p-8 lg:p-[3.25rem]">
+      {/* Compact below sm: the card pins under the deck's sticky top, so on a
+          phone everything above the CTA has to fit inside one short viewport.
+          The description and stack chips only render from sm up — the tagline
+          carries the hook and the stack lives in the case study. */}
+      <div className="relative z-20 flex flex-col p-4 sm:p-8 lg:p-[3.25rem]">
         <div className="flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground sm:text-[11px]">
           <span className="text-foreground/85">{project.index}</span>
           <span aria-hidden className="h-px w-5 bg-border" />
@@ -163,21 +167,21 @@ export function ProjectCardContent({ project }: { project: Project }) {
           <span>{project.role}</span>
         </div>
 
-        <h3 className="mt-4 text-[clamp(1.75rem,3.4vw,2.625rem)] font-semibold leading-[1.06] tracking-tight sm:mt-5">
+        <h3 className="mt-3 text-2xl font-semibold leading-[1.1] tracking-tight sm:mt-5 sm:text-[clamp(1.75rem,3.4vw,2.625rem)] sm:leading-[1.06]">
           {project.title}
         </h3>
-        <p className="mt-2.5 text-base text-foreground/75 sm:mt-3 sm:text-lg">
+        <p className="mt-2 text-[15px] text-foreground/75 sm:mt-3 sm:text-lg">
           {project.tagline}
         </p>
 
         {/* Overview only — the full story lives in the case study. */}
-        <p className="mt-4 line-clamp-3 text-[15px] leading-relaxed text-muted-foreground sm:mt-5 sm:line-clamp-4 sm:text-base">
+        <p className="hidden text-base leading-relaxed text-muted-foreground sm:mt-5 sm:line-clamp-4 sm:block">
           {project.description}
         </p>
 
         <Metrics project={project} />
 
-        <div className="mt-4 flex flex-wrap gap-2 sm:mt-5">
+        <div className="hidden flex-wrap gap-2 sm:mt-5 sm:flex">
           {project.stack.map((tech) => (
             <span
               key={tech}
@@ -190,15 +194,15 @@ export function ProjectCardContent({ project }: { project: Project }) {
 
         {/* Explicit z: interactive elements must win hit-testing inside the
             scaled card shell (its transform reorders paint layers). */}
-        <div className="relative z-20 mt-auto flex items-center gap-2.5 pt-5 sm:pt-7">
-          <Button asChild size="lg" className="flex-1 sm:flex-none">
+        <div className="relative z-20 mt-auto flex items-center gap-2.5 pt-4 sm:pt-7">
+          <Button asChild size="lg" className="h-12 flex-1 sm:h-14 sm:flex-none">
             <Link href={`/projects/${project.id}`}>
               Read case study
               <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5" />
             </Link>
           </Button>
           {project.links?.live && (
-            <Button asChild size="lg" variant="outline">
+            <Button asChild size="lg" variant="outline" className="h-12 sm:h-14">
               <a href={project.links.live} target="_blank" rel="noopener noreferrer">
                 Live demo
                 <ArrowUpRight className="h-4 w-4" />
@@ -206,7 +210,12 @@ export function ProjectCardContent({ project }: { project: Project }) {
             </Button>
           )}
           {project.links?.repo && (
-            <Button asChild size="icon" variant="outline" className="h-14 w-14 shrink-0">
+            <Button
+              asChild
+              size="icon"
+              variant="outline"
+              className="h-12 w-12 shrink-0 sm:h-14 sm:w-14"
+            >
               <a
                 href={project.links.repo}
                 target="_blank"
