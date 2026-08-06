@@ -163,7 +163,10 @@ export function CaseStudy({
         <div className="container-px absolute inset-x-0 top-24 flex items-center justify-between gap-4 sm:top-28">
           <Link
             href="/#projects"
-            className="group inline-flex items-center gap-2.5 rounded-full border border-foreground/[0.16] bg-background/40 px-4 py-2.5 font-mono text-[10.5px] uppercase tracking-[0.2em] text-foreground/85 backdrop-blur-md transition-colors hover:border-foreground/35 hover:text-foreground lg:border-transparent lg:bg-transparent lg:px-0 lg:py-0 lg:backdrop-blur-none"
+            // lg strips the pill down to a bare text link, so the hover border
+            // has to go with it — otherwise it reappears on hover wrapped tight
+            // around the text, with the padding already removed underneath it.
+            className="group inline-flex items-center gap-2.5 rounded-full border border-foreground/[0.16] bg-background/40 px-4 py-2.5 font-mono text-[10.5px] uppercase tracking-[0.2em] text-foreground/85 backdrop-blur-md transition-colors hover:border-foreground/35 hover:text-foreground lg:border-transparent lg:bg-transparent lg:px-0 lg:py-0 lg:backdrop-blur-none lg:hover:border-transparent"
           >
             <ArrowLeft className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-x-1" />
             All projects
