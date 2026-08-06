@@ -18,7 +18,7 @@ function clientValidate(values: { name: string; email: string; message: string }
   if (!EMAIL_RE.test(values.email.trim()))
     errors.email = "That email address doesn't look right.";
   if (values.message.trim().length < 10)
-    errors.message = "Give me a little more to go on — at least 10 characters.";
+    errors.message = "Give me a little more to go on - at least 10 characters.";
   return errors;
 }
 
@@ -112,11 +112,11 @@ export function ContactForm() {
       if (data.errors) setErrors(data.errors);
       setServerError(
         data.error ??
-          "Something went wrong sending your message — please try again."
+          "Something went wrong sending your message - please try again."
       );
       setStatus("error");
     } catch {
-      setServerError("Network error — please check your connection and try again.");
+      setServerError("Network error - please check your connection and try again.");
       setStatus("error");
     }
   };
@@ -141,7 +141,7 @@ export function ContactForm() {
                 Message sent
               </h3>
               <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed text-muted-foreground">
-                Thanks, {values.name.trim().split(/\s+/)[0]} — it&rsquo;s in my
+                Thanks, {values.name.trim().split(/\s+/)[0]} - it&rsquo;s in my
                 inbox. A confirmation is on its way to you, and I&rsquo;ll reply
                 within 24 hours.
               </p>
@@ -243,7 +243,7 @@ export function ContactForm() {
               )}
             </AnimatePresence>
 
-            {/* On phones the hint has no room next to the button — drop it and
+            {/* On phones the hint has no room next to the button - drop it and
                 let the button span the row. */}
             <div className="mt-2 flex items-center justify-between gap-5 border-t border-border pt-5">
               <span className="hidden max-w-[15rem] text-xs leading-relaxed text-muted-foreground sm:block">

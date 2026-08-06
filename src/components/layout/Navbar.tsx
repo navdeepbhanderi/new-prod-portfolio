@@ -160,16 +160,16 @@ export function Navbar() {
             <Link
               href={href("#hero")}
               scroll={false}
-              aria-label={`${PROFILE.name} — home`}
+              aria-label={`${PROFILE.name} - home`}
               className="flex items-center gap-2.5 text-foreground"
             >
               {/* id: the intro's name flies to this mark as the curtain lifts. */}
               <span id="nav-mark" className="flex items-center">
-                {/* Bare at every width — 4b and 4c draw the nav mark as a
+                {/* Bare at every width - 4b and 4c draw the nav mark as a
                     plain glyph with no container, in both nav states. */}
                 <NMark size={scrolled ? 26 : 30} />
               </span>
-              {/* No width animation on collapsing labels — the nav's `layout`
+              {/* No width animation on collapsing labels - the nav's `layout`
                   closes the gap. */}
               <AnimatePresence initial={false} mode="popLayout">
                 {!scrolled && (
@@ -231,7 +231,7 @@ export function Navbar() {
             <button
               type="button"
               onClick={openPalette}
-              aria-label="Search — open the command palette"
+              aria-label="Search - open the command palette"
               aria-keyshortcuts={isMac ? "Meta+K" : "Control+K"}
               className={cn(
                 "hidden items-center gap-2 rounded-full border border-border text-sm transition-colors hover:border-foreground/25 hover:text-foreground lg:flex",
@@ -286,7 +286,7 @@ export function Navbar() {
             <button
               type="button"
               onClick={openPalette}
-              aria-label="Search — open the command palette"
+              aria-label="Search - open the command palette"
               className="grid h-11 w-11 place-items-center rounded-full border border-border bg-background/80 text-foreground/75 transition-colors hover:text-foreground lg:hidden"
             >
               <Search className="h-4 w-4" />
@@ -330,7 +330,7 @@ export function Navbar() {
                 href={href("#hero")}
                 scroll={false}
                 onClick={closeSheet}
-                aria-label={`${PROFILE.name} — home`}
+                aria-label={`${PROFILE.name} - home`}
                 className="flex items-center gap-2.5"
               >
                 <NMark size={26} />

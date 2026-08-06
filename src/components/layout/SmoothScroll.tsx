@@ -20,7 +20,7 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null);
   lenisRef.current = lenis;
 
-  // Route changes must land at the top (or at the hash target) — Next's own
+  // Route changes must land at the top (or at the hash target) - Next's own
   // scroll reset gets overridden by Lenis's animation loop otherwise.
   const pathname = usePathname();
   const firstRouteRef = useRef(true);

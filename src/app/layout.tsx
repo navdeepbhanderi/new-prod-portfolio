@@ -30,11 +30,11 @@ import { SITE_URL } from "@/lib/site";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Navdeep Bhanderi — Senior Frontend Engineer",
-    template: "%s — Navdeep Bhanderi",
+    default: "Navdeep Bhanderi - Senior Frontend Engineer",
+    template: "%s - Navdeep Bhanderi",
   },
   description:
-    "Frontend engineer with full-stack range — building and leading frontend delivery across Next.js, React, Angular, and Node.js, from requirement to release.",
+    "Frontend engineer with full-stack range - building and leading frontend delivery across Next.js, React, Angular, and Node.js, from requirement to release.",
   keywords: [
     "Navdeep Bhanderi",
     "Senior Frontend Engineer",
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
   authors: [{ name: "Navdeep Bhanderi", url: SITE_URL }],
   creator: "Navdeep Bhanderi",
   publisher: "Navdeep Bhanderi",
-  applicationName: "Navdeep Bhanderi — Portfolio",
+  applicationName: "Navdeep Bhanderi - Portfolio",
   category: "technology",
   formatDetection: { telephone: false },
   alternates: { canonical: "/" },
@@ -60,15 +60,15 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: SITE_URL,
     siteName: "Navdeep Bhanderi",
-    title: "Navdeep Bhanderi — Senior Frontend Engineer",
+    title: "Navdeep Bhanderi - Senior Frontend Engineer",
     description:
-      "Frontend engineer with full-stack range — leading frontend delivery across React, Angular, Next.js, and Node.js.",
+      "Frontend engineer with full-stack range - leading frontend delivery across React, Angular, Next.js, and Node.js.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Navdeep Bhanderi — Senior Frontend Engineer",
+    title: "Navdeep Bhanderi - Senior Frontend Engineer",
     description:
-      "Frontend engineer with full-stack range — requirement to release, backend included when needed.",
+      "Frontend engineer with full-stack range - requirement to release, backend included when needed.",
     creator: "@NavdeepBhanderi",
   },
   robots: {
@@ -82,7 +82,7 @@ export const viewport: Viewport = {
   themeColor: "#0a0a0b",
   colorScheme: "dark",
   // Resize the layout viewport when the on-screen keyboard opens
-  // (Android/Chrome) so fixed inputs — the chat panel's — stay visible.
+  // (Android/Chrome) so fixed inputs - the chat panel's - stay visible.
   // iOS ignores this; the chat handles it with visualViewport.
   interactiveWidget: "resizes-content",
 };
@@ -100,7 +100,7 @@ export default function RootLayout({
       <head>
         {/* Pre-paint gate: kill the preloader before first paint on repeat
             visits (sessionStorage). Attribute lives on <html>, which React
-            does not reconcile — no hydration mismatch. */}
+            does not reconcile - no hydration mismatch. */}
         <script
           dangerouslySetInnerHTML={{
             __html: `try{if(sessionStorage.getItem("nv-intro-done"))document.documentElement.setAttribute("data-intro","done")}catch(e){}`,

@@ -20,11 +20,11 @@ export async function generateMetadata({
   const project = PROJECTS.find((p) => p.id === slug);
   if (!project) return {};
   return {
-    title: `${project.title} — Case Study`,
+    title: `${project.title} - Case Study`,
     description: `${project.tagline} ${project.description}`.slice(0, 160),
     alternates: { canonical: `/projects/${project.id}` },
     openGraph: {
-      title: `${project.title} — Case Study`,
+      title: `${project.title} - Case Study`,
       description: project.tagline,
       url: `${SITE_URL}/projects/${project.id}`,
       type: "article",

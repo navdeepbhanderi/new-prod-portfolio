@@ -8,7 +8,7 @@ import { useIntroDone } from "@/lib/intro";
 /**
  * Corrects the landing position on full loads with a hash (/#contact from a
  * case-study page, chat actions, palette fallbacks). The browser's native
- * anchor jump fires before hydration — then Lenis mounts, fonts land, and
+ * anchor jump fires before hydration - then Lenis mounts, fonts land, and
  * ScrollTrigger refreshes, shifting the layout so the visitor ends up
  * stranded mid-page. Once the intro releases scroll and layout settles,
  * jump to the real target.

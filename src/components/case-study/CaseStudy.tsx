@@ -85,7 +85,7 @@ function FactsRail({ project }: { project: Project }) {
           </dd>
         </div>
 
-        {/* Desktop only — on phones these live in the sticky bar at the foot. */}
+        {/* Desktop only - on phones these live in the sticky bar at the foot. */}
         {hasLinks && (
           <div className="hidden flex-col gap-2.5 border-t border-border pt-6 lg:flex">
             {project.links?.live && (
@@ -164,7 +164,7 @@ export function CaseStudy({
           <Link
             href="/#projects"
             // lg strips the pill down to a bare text link, so the hover border
-            // has to go with it — otherwise it reappears on hover wrapped tight
+            // has to go with it - otherwise it reappears on hover wrapped tight
             // around the text, with the padding already removed underneath it.
             className="group inline-flex items-center gap-2.5 rounded-full border border-foreground/[0.16] bg-background/40 px-4 py-2.5 font-mono text-[10.5px] uppercase tracking-[0.2em] text-foreground/85 backdrop-blur-md transition-colors hover:border-foreground/35 hover:text-foreground lg:border-transparent lg:bg-transparent lg:px-0 lg:py-0 lg:backdrop-blur-none lg:hover:border-transparent"
           >
@@ -274,7 +274,7 @@ export function CaseStudy({
             <BlurReveal delay={0.05}>
               <blockquote className="max-w-3xl rounded-3xl border border-foreground/[0.09] bg-gradient-to-br from-foreground/[0.05] to-foreground/[0.015] p-6 sm:p-8">
                 {/* Geist Sans, not the display serif. Instrument Serif is a
-                    headline face — at ~27px over four lines of real copy its
+                    headline face - at ~27px over four lines of real copy its
                     strokes go thin and the rhythm breaks up, which is the one
                     place on the site the serif was asked to carry a paragraph
                     rather than a phrase. */}
@@ -330,7 +330,7 @@ export function CaseStudy({
                 href={project.links.repo}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={`${project.title} — view the code`}
+                aria-label={`${project.title} - view the code`}
               >
                 <Code2 className="h-4 w-4" />
                 {!project.links?.live && "View code"}

@@ -4,7 +4,7 @@ import type { Project } from "@/types";
 import { cn } from "@/lib/utils";
 
 /**
- * Stylised product mocks — placeholders until real screenshots land in
+ * Stylised product mocks - placeholders until real screenshots land in
  * public/projects/. Monochrome tokens only.
  */
 
@@ -148,7 +148,7 @@ export function ProductMock({
     <div
       aria-hidden
       className={cn(
-        // Opaque background — backdrop blur here cost a full re-raster every
+        // Opaque background - backdrop blur here cost a full re-raster every
         // frame the deck card scaled under it.
         "w-full border border-white/[0.08] bg-[hsl(240_6%_8%/0.92)] shadow-2xl shadow-black/40",
         lg ? "max-w-2xl rounded-2xl p-4" : "max-w-md rounded-xl p-3",

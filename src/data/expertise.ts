@@ -10,7 +10,7 @@ export const EXPERTISE: ExpertiseCategory[] = [
     id: "frontend",
     label: "Frontend",
     blurb:
-      "Where most of the day-to-day work happens — architecture, state, performance, and the last 10% that makes an interface feel finished.",
+      "Where most of the day-to-day work happens - architecture, state, performance, and the last 10% that makes an interface feel finished.",
     icon: Layers,
     technologies: ["Angular", "React", "Next.js", "JavaScript", "TypeScript", "TailwindCSS"],
     weight: "primary",

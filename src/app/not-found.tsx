@@ -9,7 +9,7 @@ import { SECTIONS } from "@/data/navigation";
 import { PROJECTS } from "@/data/projects";
 
 export const metadata: Metadata = {
-  title: "404 — Page not found",
+  title: "404 - Page not found",
   robots: { index: false },
 };
 
@@ -18,7 +18,7 @@ const RESCUE = SECTIONS.filter((s) => s.id !== "hero");
 export default function NotFound() {
   return (
     <section className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden py-32">
-      {/* Stars only — the footer below already carries the horizon. */}
+      {/* Stars only - the footer below already carries the horizon. */}
       <div aria-hidden className="absolute inset-0 -z-10">
         <Starfield density={0.0001} className="opacity-80" />
       </div>
@@ -40,11 +40,11 @@ export default function NotFound() {
       <div className="container-px flex flex-col items-start">
         <span className="inline-flex items-center gap-2.5 font-mono text-[10.5px] uppercase tracking-[0.28em] text-muted-foreground">
           <span aria-hidden className="h-px w-5 bg-foreground/30" />
-          Error — lost in space
+          Error - lost in space
         </span>
 
         <h1
-          aria-label="404 — page not found"
+          aria-label="404 - page not found"
           className="text-stroke-strong mt-6 select-none font-mono text-[clamp(5rem,22vw,15rem)] font-bold leading-[0.85] tracking-tight"
         >
           404

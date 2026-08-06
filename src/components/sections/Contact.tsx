@@ -49,7 +49,7 @@ export function Contact() {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      /* clipboard unavailable — the mailto link still works */
+      /* clipboard unavailable - the mailto link still works */
     }
   };
 
@@ -84,7 +84,7 @@ export function Contact() {
         <BlurReveal delay={0.1}>
           <p className="mt-7 max-w-xl text-fluid-lead leading-relaxed text-muted-foreground">
             Have a project, a role, or an idea worth building? Tell me what
-            you&rsquo;re working on — I reply to everything within 24 hours.
+            you&rsquo;re working on - I reply to everything within 24 hours.
           </p>
         </BlurReveal>
 

@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { usePrefersReducedMotion } from "@/hooks/use-media-query";
 
 /**
- * Oversized outlined section index that drifts slower than the content —
+ * Oversized outlined section index that drifts slower than the content -
  * absolutely position it inside a `relative overflow-hidden` section.
  */
 export function ParallaxNumeral({

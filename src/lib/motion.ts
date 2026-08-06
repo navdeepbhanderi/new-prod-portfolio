@@ -30,7 +30,7 @@ export const STAGGER = {
 
 /**
  * Intro sequence beats (seconds on the preloader timeline). The counter is
- * driven by real asset progress, so these are the *latest* each beat may fire —
+ * driven by real asset progress, so these are the *latest* each beat may fire -
  * when assets land early the timeline is fast-forwarded from `handoff`.
  */
 export const INTRO = {
@@ -44,14 +44,14 @@ export const INTRO = {
   curtainOffset: 0.06,
 } as const;
 
-/** UI-state spring — nav pill, cursor size, toggles. */
+/** UI-state spring - nav pill, cursor size, toggles. */
 export const SPRING_SNAPPY = {
   type: "spring",
   stiffness: 400,
   damping: 30,
 } as const;
 
-/** Soft physical spring — tilt, magnetic attraction. */
+/** Soft physical spring - tilt, magnetic attraction. */
 export const SPRING_SOFT = {
   type: "spring",
   stiffness: 150,

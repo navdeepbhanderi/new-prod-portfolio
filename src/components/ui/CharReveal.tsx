@@ -7,7 +7,7 @@ import { usePrefersReducedMotion } from "@/hooks/use-media-query";
 
 type CharRevealProps = {
   text: string;
-  /** Accessible name override — defaults to `text`. */
+  /** Accessible name override - defaults to `text`. */
   label?: string;
   as?: "h1" | "h2" | "h3" | "p" | "span";
   className?: string;

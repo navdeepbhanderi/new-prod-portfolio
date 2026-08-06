@@ -24,14 +24,14 @@ function ProjectVisual({ project }: { project: Project }) {
     offset: ["start end", "end start"],
   });
   const y = useTransform(scrollYProgress, [0, 1], ["-4%", "4%"]);
-  // Numeral drifts opposite the mock — two depths inside one card.
+  // Numeral drifts opposite the mock - two depths inside one card.
   const numeralY = useTransform(scrollYProgress, [0, 1], ["12%", "-12%"]);
 
   return (
     <Link
       ref={ref}
       href={`/projects/${project.id}`}
-      aria-label={`${project.title} — read the case study`}
+      aria-label={`${project.title} - read the case study`}
       className="group relative z-20 block min-h-[10rem] overflow-hidden sm:min-h-[17rem] lg:min-h-[22rem]"
       data-cursor="view"
       data-cursor-label="Open"
@@ -50,7 +50,7 @@ function ProjectVisual({ project }: { project: Project }) {
         {project.index}
       </motion.span>
       {/* Centred, not top-anchored. The two mocks have very different intrinsic
-          heights — 01 is a short architecture diagram, 02 a tall screenshot —
+          heights - 01 is a short architecture diagram, 02 a tall screenshot -
           and pinning both to the ceiling of a card sized for the taller one
           left 01 floating over a void. Centring shares one axis with the text
           column beside it, so the halves read as a pair at any card height. */}
@@ -129,7 +129,7 @@ export function StackCard({ index, total, progress, children, className }: Stack
     >
       <motion.div
         // Framer only sets will-change for running animations, not
-        // scroll-linked values — without the hint the card re-rasterises
+        // scroll-linked values - without the hint the card re-rasterises
         // every frame instead of compositing.
         style={
           scrub
@@ -155,26 +155,26 @@ export function StackCard({ index, total, progress, children, className }: Stack
   );
 }
 
-/** The full project card — visual bleeding left, the case for it on the right. */
+/** The full project card - visual bleeding left, the case for it on the right. */
 export function ProjectCardContent({ project }: { project: Project }) {
   return (
     // Uniform height below lg. Every card pins at the same 9svh there, so a
-    // taller card's bottom — its CTA row — pokes out beneath the shorter card
-    // covering it — so equal heights are the only robust fix. But the height
+    // taller card's bottom - its CTA row - pokes out beneath the shorter card
+    // covering it - so equal heights are the only robust fix. But the height
     // also has to keep that CTA on screen: a card pins at 9svh, plus up to
     // 3.5rem of stagger at lg, so anything past ~85svh pushes the button off
     // the bottom. One viewport-relative value satisfies both at every size;
     // per-breakpoint pixel heights (68svh / 45rem) satisfied them at exactly
     // the two sizes they were measured on and broke tablets in between.
     //
-    // 82svh binds everywhere because the content now fits under it — which is
+    // 82svh binds everywhere because the content now fits under it - which is
     // what dropping the metrics strip bought.
     <div className="grid min-h-[min(80svh,46rem)] lg:grid-cols-[1.05fr_1fr]">
       <ProjectVisual project={project} />
 
       {/* Compact below sm: the card pins under the deck's sticky top, so on a
           phone everything above the CTA has to fit inside one short viewport.
-          The description and stack chips only render from sm up — the tagline
+          The description and stack chips only render from sm up - the tagline
           carries the hook and the stack lives in the case study. */}
       <div className="relative z-20 flex flex-col justify-center p-4 sm:p-8 lg:p-10">
         <div className="flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground sm:text-[11px]">
@@ -192,7 +192,7 @@ export function ProjectCardContent({ project }: { project: Project }) {
           {project.tagline}
         </p>
 
-        {/* Overview only — the full story lives in the case study. */}
+        {/* Overview only - the full story lives in the case study. */}
         <p className="hidden text-base leading-relaxed text-muted-foreground sm:mt-5 sm:line-clamp-3 sm:block">
           {project.description}
         </p>
@@ -237,7 +237,7 @@ export function ProjectCardContent({ project }: { project: Project }) {
                 href={project.links.repo}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={`${project.title} — view the code`}
+                aria-label={`${project.title} - view the code`}
               >
                 <Code2 className="h-4 w-4" />
               </a>

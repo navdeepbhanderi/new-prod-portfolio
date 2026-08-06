@@ -192,7 +192,7 @@ export function Timeline() {
         <SectionHeading
           eyebrow="Experience"
           title="From coursework to *owning* delivery"
-          description="Education and industry, side by side — a degree completed while shipping real software."
+          description="Education and industry, side by side - a degree completed while shipping real software."
         />
 
         <div ref={containerRef} className="relative mt-14 sm:mt-16">

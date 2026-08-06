@@ -12,7 +12,7 @@ const FACTS = [
   { icon: BadgeCheck, label: "Status", value: "Open to opportunities" },
 ] as const;
 
-/** Manifesto strip — the one place the written bio appears on the page. */
+/** Manifesto strip - the one place the written bio appears on the page. */
 export function About() {
   return (
     <section id="about" className="relative scroll-mt-24 py-24 sm:py-28">
@@ -25,7 +25,7 @@ export function About() {
         </BlurReveal>
 
         <div>
-          {/* Kinetic manifesto — each word brightens as it scrolls past. */}
+          {/* Kinetic manifesto - each word brightens as it scrolls past. */}
           <KineticText
             text={PROFILE.summary}
             className="max-w-4xl text-[clamp(1.35rem,2.6vw,2.1rem)] font-medium leading-snug tracking-tight text-foreground/90"

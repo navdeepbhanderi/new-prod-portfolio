@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "meta": {
-    "title": "Navdeep Bhanderi — Portfolio Information",
+    "title": "Navdeep Bhanderi - Portfolio Information",
     "description": "Structured, single-file export of the entire portfolio's content and technical profile. Generated from the site's data sources (src/lib/profile.ts, src/data/*, src/lib/site.ts).",
     "siteUrl": "https://navdeepbhanderi.dev",
     "generatedFrom": [
@@ -21,8 +21,8 @@
     "surname": "Bhanderi",
     "title": "Senior Frontend Engineer",
     "headline": "Frontend engineer with full-stack range.",
-    "tagline": "Own frontend delivery end to end — requirement to release, backend included when needed.",
-    "summary": "Frontend engineer who reads a requirement all the way through before writing code, then builds and delivers it end to end. Comfortable enough on the backend (Node.js) to build and reason about the system behind the UI, not just consume it. Also bring team-leadership experience — coordinating delivery and keeping the team on track.",
+    "tagline": "Own frontend delivery end to end - requirement to release, backend included when needed.",
+    "summary": "Frontend engineer who reads a requirement all the way through before writing code, then builds and delivers it end to end. Comfortable enough on the backend (Node.js) to build and reason about the system behind the UI, not just consume it. Also bring team-leadership experience - coordinating delivery and keeping the team on track.",
     "location": {
       "city": "Junagadh",
       "region": "Gujarat",
@@ -76,7 +76,7 @@
     {
       "id": "frontend",
       "label": "Frontend",
-      "blurb": "Where most of the day-to-day work happens — architecture, state, performance, and the last 10% that makes an interface feel finished.",
+      "blurb": "Where most of the day-to-day work happens - architecture, state, performance, and the last 10% that makes an interface feel finished.",
       "technologies": [
         "Angular",
         "React",
@@ -213,7 +213,7 @@
       "company": "Softrefine Technology Pvt. Ltd.",
       "period": "",
       "status": "past",
-      "description": "First real industry work — moved from coursework to shipping production code on live client projects across the stack."
+      "description": "First real industry work - moved from coursework to shipping production code on live client projects across the stack."
     },
     {
       "id": "softrefine",
@@ -221,7 +221,7 @@
       "company": "Softrefine Technology Pvt. Ltd.",
       "period": "Present",
       "status": "present",
-      "description": "Lead the frontend side of a client engagement. Start from the full requirement, not just the ticket, then split and deliver the build across the team. Own my own work end to end — including backend pieces when the feature calls for it — and stay close enough to the rest of the team's to catch issues before they reach QA."
+      "description": "Lead the frontend side of a client engagement. Start from the full requirement, not just the ticket, then split and deliver the build across the team. Own my own work end to end - including backend pieces when the feature calls for it - and stay close enough to the rest of the team's to catch issues before they reach QA."
     }
   ],
   "timeline": [
@@ -230,7 +230,7 @@
       "period": "",
       "title": "Diploma in Computer Engineering",
       "subtitle": "Dr. Subhash Technical Campus",
-      "description": "Built the fundamentals — programming, systems, and the engineering principles that still shape how I work.",
+      "description": "Built the fundamentals - programming, systems, and the engineering principles that still shape how I work.",
       "status": "past",
       "stage": "Start",
       "aside": {
@@ -243,7 +243,7 @@
       "period": "",
       "title": "B.Tech, Information Technology",
       "subtitle": "Dr. Subhash University",
-      "description": "Deepened into modern software engineering and full-stack development — completed while already working in the industry.",
+      "description": "Deepened into modern software engineering and full-stack development - completed while already working in the industry.",
       "status": "past",
       "stage": "Education",
       "aside": {
@@ -256,7 +256,7 @@
       "period": "",
       "title": "Software Developer Intern",
       "subtitle": "Softrefine Technology Pvt. Ltd.",
-      "description": "First real industry work — moved from coursework to shipping production code on live client projects across the stack.",
+      "description": "First real industry work - moved from coursework to shipping production code on live client projects across the stack.",
       "status": "past",
       "stage": "Industry",
       "aside": {
@@ -269,7 +269,7 @@
       "period": "Present",
       "title": "Senior Frontend Engineer",
       "subtitle": "Softrefine Technology Pvt. Ltd.",
-      "description": "Leading the frontend side of a client build — starting from the full requirement, splitting delivery across the team, and shipping my own share of it end to end, backend work included where it's needed.",
+      "description": "Leading the frontend side of a client build - starting from the full requirement, splitting delivery across the team, and shipping my own share of it end to end, backend work included where it's needed.",
       "status": "present",
       "stage": "Present",
       "aside": {
@@ -292,10 +292,10 @@
       "year": "2024",
       "role": "Frontend Engineer",
       "url": "https://navdeepbhanderi.dev/projects/travel-commerce-platform",
-      "description": "A B2B SaaS platform that lets travel agencies, tour operators, and travel businesses build complete, custom travel packages — flights, hotels, activities, transfers, insurance — instead of selling them one at a time. Agents assemble an itinerary from live supplier inventory and it re-prices automatically as they customize it, then goes out under the agency's own brand.",
+      "description": "A B2B SaaS platform that lets travel agencies, tour operators, and travel businesses build complete, custom travel packages - flights, hotels, activities, transfers, insurance - instead of selling them one at a time. Agents assemble an itinerary from live supplier inventory and it re-prices automatically as they customize it, then goes out under the agency's own brand.",
       "highlights": [
-        "Post-booking modification flow — swap a hotel, shift dates, or upgrade a flight on an existing booking, with pricing, taxes, and availability recalculated without rebuilding the package",
-        "Package reusability — clone and edit an existing itinerary to requote a similar trip in minutes instead of building from scratch",
+        "Post-booking modification flow - swap a hotel, shift dates, or upgrade a flight on an existing booking, with pricing, taxes, and availability recalculated without rebuilding the package",
+        "Package reusability - clone and edit an existing itinerary to requote a similar trip in minutes instead of building from scratch",
         "Quotation, itinerary, invoice, and voucher PDF generation, branded per agency",
         "Migrated the codebase across seven major versions, Angular 12 to 19, while shipping feature work in parallel"
       ],
@@ -331,7 +331,7 @@
         ]
       },
       "caseStudy": {
-        "problem": "Travel businesses — agencies, tour operators, DMCs, airlines — need to sell complete, custom trip packages under their own brand rather than individual flights or hotels. Assembling a multi-supplier itinerary by hand doesn't scale past a handful of bookings a day, and once a customer had booked, even a small change like a different hotel or a shifted date usually meant cancelling and rebuilding the whole package.",
+        "problem": "Travel businesses - agencies, tour operators, DMCs, airlines - need to sell complete, custom trip packages under their own brand rather than individual flights or hotels. Assembling a multi-supplier itinerary by hand doesn't scale past a handful of bookings a day, and once a customer had booked, even a small change like a different hotel or a shifted date usually meant cancelling and rebuilding the whole package.",
         "approach": [
           {
             "title": "Dynamic package builder",
@@ -339,7 +339,7 @@
           },
           {
             "title": "Post-booking modifications",
-            "detail": "Built the flow for changing an existing booking — new hotel, new dates, an upgraded flight — without cancelling and recreating it, keeping pricing, taxes, and availability in sync with the change."
+            "detail": "Built the flow for changing an existing booking - new hotel, new dates, an upgraded flight - without cancelling and recreating it, keeping pricing, taxes, and availability in sync with the change."
           },
           {
             "title": "Package reusability",
@@ -347,10 +347,10 @@
           },
           {
             "title": "Angular 12 → 19 migration",
-            "detail": "Migrated the codebase across seven major Angular versions — build tooling, deprecated APIs, component patterns — while the app kept shipping feature work in parallel."
+            "detail": "Migrated the codebase across seven major Angular versions - build tooling, deprecated APIs, component patterns - while the app kept shipping feature work in parallel."
           }
         ],
-        "outcome": "A production platform that lets travel businesses build, price, customize, and modify complex multi-city packages in real time under their own brand — kept on a current, maintainable Angular version throughout rather than left to drift."
+        "outcome": "A production platform that lets travel businesses build, price, customize, and modify complex multi-city packages in real time under their own brand - kept on a current, maintainable Angular version throughout rather than left to drift."
       }
     },
     {
@@ -365,11 +365,11 @@
       "links": {
         "repo": "https://github.com/navdeepbhanderi/student-attandance-admin-panle-php"
       },
-      "description": "A team project built at Smart India Hackathon: an attendance system that verifies student check-ins against the campus WiFi network instead of a manual roll call. I built the admin panel — managing faculty and student records, running weekly lecture scheduling per class, and a live classroom dashboard pulled straight from the database.",
+      "description": "A team project built at Smart India Hackathon: an attendance system that verifies student check-ins against the campus WiFi network instead of a manual roll call. I built the admin panel - managing faculty and student records, running weekly lecture scheduling per class, and a live classroom dashboard pulled straight from the database.",
       "highlights": [
         "Admin panel for managing faculty and student records across classes",
         "Weekly lecture scheduling with a day-by-day timetable per class",
-        "Live classroom dashboard — WiFi-verified attendance and progress (done / in progress / to-do) pulled directly from the database",
+        "Live classroom dashboard - WiFi-verified attendance and progress (done / in progress / to-do) pulled directly from the database",
         "Built and shipped my scope solo within the hackathon's timeframe"
       ],
       "stack": [
@@ -379,15 +379,15 @@
         "PHP"
       ],
       "caseStudy": {
-        "problem": "Manual roll call burns lecture time and doesn't stop proxy attendance — one student signing in for a friend who isn't in the room. Biometrics or extra hardware fix it but add cost and friction. Built as a team project at Smart India Hackathon, the system verifies attendance through the campus WiFi network instead — my part was the admin panel that runs and surfaces it.",
+        "problem": "Manual roll call burns lecture time and doesn't stop proxy attendance - one student signing in for a friend who isn't in the room. Biometrics or extra hardware fix it but add cost and friction. Built as a team project at Smart India Hackathon, the system verifies attendance through the campus WiFi network instead - my part was the admin panel that runs and surfaces it.",
         "approach": [
           {
             "title": "Team concept: WiFi as the proof",
-            "detail": "The system validates a student's attendance only when their device is verifiably on the campus network — no biometrics, no extra hardware. The panel below is the piece I built."
+            "detail": "The system validates a student's attendance only when their device is verifiably on the campus network - no biometrics, no extra hardware. The panel below is the piece I built."
           },
           {
             "title": "Admin panel as the control center",
-            "detail": "Built the admin panel end to end — managing faculty and student records, assigning classes, and running weekly lecture scheduling."
+            "detail": "Built the admin panel end to end - managing faculty and student records, assigning classes, and running weekly lecture scheduling."
           },
           {
             "title": "Live attendance, not end-of-day reports",
@@ -398,7 +398,7 @@
             "detail": "Scoped and built the admin panel end to end within the hackathon's timeframe, as my contribution to a team project."
           }
         ],
-        "outcome": "An admin panel that gives faculty and coordinators full control over classes, scheduling, and live, WiFi-verified attendance — built as my share of a team project at Smart India Hackathon."
+        "outcome": "An admin panel that gives faculty and coordinators full control over classes, scheduling, and live, WiFi-verified attendance - built as my share of a team project at Smart India Hackathon."
       }
     }
   ],
@@ -422,7 +422,7 @@
       "provider": "Google Gemini (streamed) with a local knowledge-base fallback",
       "defaultModel": "gemini-2.5-flash"
     },
-    "designDirection": "Cinematic Editorial Monochrome — dark-only, restrained typography, motion over color",
+    "designDirection": "Cinematic Editorial Monochrome - dark-only, restrained typography, motion over color",
     "sections": [
       "Hero",
       "About",
@@ -432,7 +432,7 @@
       "Contact",
       "Footer"
     ],
-    "brandMark": "The N-mark — one continuous stroke, with the dot as the release.",
+    "brandMark": "The N-mark - one continuous stroke, with the dot as the release.",
     "notes": "The timeline is deliberately dateless and the site states no years-of-experience figure; both are omitted rather than estimated."
   }
 }

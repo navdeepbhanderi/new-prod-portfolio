@@ -45,7 +45,7 @@ type Command = {
   group: Group;
   label: string;
   hint?: string;
-  /** Right-aligned mono tag — a stack name or a keyboard shortcut. */
+  /** Right-aligned mono tag - a stack name or a keyboard shortcut. */
   tag?: string;
   keywords: string;
   icon?: LucideIcon | (typeof BRAND_ICONS)[keyof typeof BRAND_ICONS];
@@ -73,7 +73,7 @@ const GROUP_ORDER: Group[] = [
   "Connect",
 ];
 
-/** Every technology, with the domain it belongs to — the searchable index. */
+/** Every technology, with the domain it belongs to - the searchable index. */
 const TECHNOLOGIES = Array.from(
   EXPERTISE.reduce((map, category) => {
     category.technologies.forEach((tech) => {
@@ -97,7 +97,7 @@ export function CommandPalette() {
   const scrollToSection = useCallback(
     (id: string) => {
       const el = document.getElementById(id);
-      // On sub-pages (case studies) the section doesn't exist — route home.
+      // On sub-pages (case studies) the section doesn't exist - route home.
       if (!el) {
         router.push(`/#${id}`);
         return;
@@ -338,7 +338,7 @@ export function CommandPalette() {
       const cmd = filtered[selected];
       if (cmd) run(cmd);
     } else if (e.key === "Tab") {
-      // Single-control dialog — keep focus on the input.
+      // Single-control dialog - keep focus on the input.
       e.preventDefault();
     }
   };
@@ -386,7 +386,7 @@ export function CommandPalette() {
                   aria-controls="palette-list"
                   aria-activedescendant={activeId}
                   autoComplete="off"
-                  // text-base below sm — sub-16px fonts make iOS zoom on focus.
+                  // text-base below sm - sub-16px fonts make iOS zoom on focus.
                   className="w-full bg-transparent py-4 text-base text-foreground outline-none placeholder:text-muted-foreground sm:text-[15px]"
                 />
                 <span className="hidden shrink-0 font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground sm:block">

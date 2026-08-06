@@ -1,10 +1,10 @@
-# Navdeep Bhanderi — Portfolio
+# Navdeep Bhanderi - Portfolio
 
 Award-site-tier personal portfolio: cinematic monochrome design, scroll-driven
 storytelling, per-project case studies, an AI assistant, and a real contact
-pipeline — live at **[navdeepbhanderi.dev](https://navdeepbhanderi.dev)**.
+pipeline - live at **[navdeepbhanderi.dev](https://navdeepbhanderi.dev)**.
 
-> Design & animation standards live in **[DESIGN.md](./DESIGN.md)** — read it
+> Design & animation standards live in **[DESIGN.md](./DESIGN.md)** - read it
 > (or paste it into an AI prompt) before changing any visual or motion code.
 > A machine-readable export of all site content lives in
 > **[portfolio-info.json](./portfolio-info.json)**.
@@ -13,8 +13,8 @@ pipeline — live at **[navdeepbhanderi.dev](https://navdeepbhanderi.dev)**.
 
 ## About
 
-**Navdeep Bhanderi** — Frontend engineer with full-stack range, based in
-Junagadh, Gujarat, India. Owns frontend delivery end to end — requirement to
+**Navdeep Bhanderi** - Frontend engineer with full-stack range, based in
+Junagadh, Gujarat, India. Owns frontend delivery end to end - requirement to
 release, backend included when needed. Currently a **Senior Frontend Engineer
 at Softrefine Technology Pvt. Ltd.**, leading the frontend side of a client
 build.
@@ -31,29 +31,29 @@ build.
 
 ## Highlights
 
-- **Cinematic layer** — once-per-session intro built as a loading manifest
+- **Cinematic layer** - once-per-session intro built as a loading manifest
   (registration marks, boot log, and a counter wired to *real* asset progress that
   drives the name's light sweep), a full-bleed portrait hero with 3-depth mouse
   parallax, sticky stacking project deck, parallax section numerals,
   velocity-reactive skill marquees, and an "earth from space" footer finale.
-- **Interaction language** — contextual custom cursor, a navbar that collapses from
+- **Interaction language** - contextual custom cursor, a navbar that collapses from
   a wide bar into a condensed glass pill (and into a full-screen sheet on phones),
   3D tilt cards, text-swap buttons, and a ⌘K palette that searches projects,
   technologies and actions.
-- **Case studies** — `/projects/[slug]` pages (problem → approach → outcome)
+- **Case studies** - `/projects/[slug]` pages (problem → approach → outcome)
   with per-page SEO and JSON-LD. Project visuals adapt per project: a real
   product screenshot, an NDA-safe architecture diagram + metrics, or a stylised
   fallback (see `ProductMock`).
-- **Ask AI** — chat panel (streamed Gemini replies when configured, local knowledge
+- **Ask AI** - chat panel (streamed Gemini replies when configured, local knowledge
   base fallback) that says up front it only answers from this site, with tappable
   action buttons, lazy-loaded on idle, rate-limited.
-- **Contact pipeline** — validated form with honeypot + rate limiting; sends an
+- **Contact pipeline** - validated form with honeypot + rate limiting; sends an
   owner notification **and** a themed auto-reply via Gmail SMTP.
-- **SEO** — Person/WebSite/ProfilePage JSON-LD graph, manifest + icons generated
+- **SEO** - Person/WebSite/ProfilePage JSON-LD graph, manifest + icons generated
   from the N-mark, sitemap incl. case studies, canonical URLs, `next/image` LCP portrait.
-- **Performance** — transform/opacity only, zero React state per mousemove, canvas
+- **Performance** - transform/opacity only, zero React state per mousemove, canvas
   work paused when it isn't visible. Every effect has reduced-motion and touch
-  fallbacks. (Re-measure Core Web Vitals against a production build after changes —
+  fallbacks. (Re-measure Core Web Vitals against a production build after changes -
   the last published figures predate the redesign.)
 
 ---
@@ -104,7 +104,7 @@ src/
 npm install
 cp .env.example .env.local   # then fill in the values below
 npm run dev                  # http://localhost:3000
-npm run build && npm start   # production build (stop `dev` first — shared .next)
+npm run build && npm start   # production build (stop `dev` first - shared .next)
 ```
 
 ---
@@ -114,9 +114,9 @@ npm run build && npm start   # production build (stop `dev` first — shared .ne
 | Variable | Purpose |
 |---|---|
 | `GMAIL_USER` | Sender account for the contact form (`work.navdeepbhanderi@gmail.com`) |
-| `GMAIL_APP_PASSWORD` | Gmail **App Password** — create at [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords) (needs 2FA) |
+| `GMAIL_APP_PASSWORD` | Gmail **App Password** - create at [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords) (needs 2FA) |
 | `CONTACT_TO` | Where inquiry notifications land (`navdeepbhanderi1@gmail.com`) |
-| `GEMINI_API_KEY` | Enables real AI chat — free key at [aistudio.google.com/apikey](https://aistudio.google.com/apikey); without it the widget uses the built-in knowledge base |
+| `GEMINI_API_KEY` | Enables real AI chat - free key at [aistudio.google.com/apikey](https://aistudio.google.com/apikey); without it the widget uses the built-in knowledge base |
 | `GEMINI_MODEL` | Optional, defaults to `gemini-2.5-flash` |
 
 ---
@@ -137,7 +137,7 @@ npm run build && npm start   # production build (stop `dev` first — shared .ne
 ## 🚀 Launch checklist (do these before/at deploy)
 
 - [ ] **Add the Gmail App Password** to env (`GMAIL_APP_PASSWORD`) and send a
-      test message through the form — both emails should arrive styled.
+      test message through the form - both emails should arrive styled.
 - [ ] **Add `GEMINI_API_KEY`** so Nova gives real answers
       (the `x-chat-source: gemini` response header on `/api/chat` confirms it).
 - [ ] Deploy to Vercel, attach **navdeepbhanderi.dev**, set all env vars.
@@ -150,38 +150,38 @@ npm run build && npm start   # production build (stop `dev` first — shared .ne
 
 ---
 
-## 📈 Roadmap — highest-impact improvements next
+## 📈 Roadmap - highest-impact improvements next
 
-1. ⚠️ **Replace `public/resume.pdf`** — it is currently the WRONG file (a
+1. ⚠️ **Replace `public/resume.pdf`** - it is currently the WRONG file (a
    scanned appointment PDF, not a resume) and every Resume CTA serves it. Drop
    the real resume at the same path. **Highest priority.**
-2. ~~**Real project visuals**~~ — done; the Attendance project uses a real
+2. ~~**Real project visuals**~~ - done; the Attendance project uses a real
    screenshot (`public/projects/…`), the (NDA) Travel Commerce Platform uses an
    architecture-diagram + metrics visual. Add shots for future non-NDA work.
-3. ~~**Project proof links**~~ — done for Attendance (public GitHub repo →
+3. ~~**Project proof links**~~ - done for Attendance (public GitHub repo →
    "View code"). Add `links: { live, repo }` for future projects.
-4. **A third real project** — the "MORE → GitHub" archive card carries the deck
+4. **A third real project** - the "MORE → GitHub" archive card carries the deck
    today; a third genuine project (ideally a React/Next.js build) beats two.
-5. **Analytics** — Vercel Analytics or Plausible to see what recruiters read.
-6. **"Book a call"** — cal.com/Calendly link beside the email CTA for serious
+5. **Analytics** - Vercel Analytics or Plausible to see what recruiters read.
+6. **"Book a call"** - cal.com/Calendly link beside the email CTA for serious
    inbound.
-7. **Nova "JD-fit" mode** — let a recruiter paste a job description and have the
+7. **Nova "JD-fit" mode** - let a recruiter paste a job description and have the
    assistant map Navdeep's fit; extends the existing Gemini + context pipeline.
-8. **Live GitHub activity strip** — pinned repos / contribution graph via the
+8. **Live GitHub activity strip** - pinned repos / contribution graph via the
    GitHub API; self-updating proof of shipping.
-9. **Blog (MDX)** — the biggest long-term SEO lever; only commit if you'll
+9. **Blog (MDX)** - the biggest long-term SEO lever; only commit if you'll
    write a few posts a year.
 
 **Deliberately not planned:** light mode (the identity is built for dark),
-PWA/offline, i18n, and more animation — the current density is the sweet spot.
+PWA/offline, i18n, and more animation - the current density is the sweet spot.
 
 ---
 
 ## Verification habits
 
-- `npm run lint` + `npm run build` must stay clean — CI
+- `npm run lint` + `npm run build` must stay clean - CI
   (`.github/workflows/ci.yml`) enforces lint, typecheck, and build on every
   push and PR.
-- Never run `npm run build` while `next dev` is running — they share `.next`.
+- Never run `npm run build` while `next dev` is running - they share `.next`.
 - Walk the site after visual changes: preloader (fresh session), hero, deck,
-  case studies, footer horizon, ⌘K palette, contact form states — desktop + mobile.
+  case studies, footer horizon, ⌘K palette, contact form states - desktop + mobile.

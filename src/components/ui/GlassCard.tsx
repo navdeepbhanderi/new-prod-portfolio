@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 
 /**
  * Glass surface with a cursor-following border glow. The pointer position is
- * written to CSS custom properties on the element — zero React renders per
+ * written to CSS custom properties on the element - zero React renders per
  * mousemove; hover visibility is pure CSS.
  */
 export function GlassCard({

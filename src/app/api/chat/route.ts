@@ -26,7 +26,7 @@ function localReply(messages: ChatMessage[]): {
   const lastUser = [...messages].reverse().find((m) => m.role === "user");
   if (!lastUser) {
     return {
-      answer: "Hi! Ask me anything about Navdeep — his skills, projects, or how to reach him.",
+      answer: "Hi! Ask me anything about Navdeep - his skills, projects, or how to reach him.",
       related: [],
       actions: [],
     };
@@ -147,7 +147,7 @@ export async function POST(req: Request) {
 
   const apiKey = process.env.GEMINI_API_KEY;
 
-  // No key configured — fall back to the built-in knowledge base.
+  // No key configured - fall back to the built-in knowledge base.
   if (!apiKey) {
     const { answer, related, actions } = localReply(trimmed);
     return textResponse(answer, "local", related, actions);

@@ -1,13 +1,13 @@
-# Redesign log — 2026-08-05
+# Redesign log - 2026-08-05
 
 A record of the redesign pass: what changed, what was decided, what broke, and
-how it was verified. **[DESIGN.md](./DESIGN.md) is the living standard** — if
+how it was verified. **[DESIGN.md](./DESIGN.md) is the living standard** - if
 the two ever disagree, DESIGN.md wins. This file is history and rationale.
 
 Source of truth for the visuals: `pdesign/Hero + Contact Redesign.dc.html`, a
 10-turn design exploration. Its frames are fixed-width, absolutely-positioned
 mockups (1440 / 834 / 390 canvases with hardcoded copy). They were **not** copied
-as markup — the page has to be fluid and driven by `src/data/*`. What *was*
+as markup - the page has to be fluid and driven by `src/data/*`. What *was*
 copied verbatim: gradients, sizes, colours, letter-spacing, timings.
 
 ---
@@ -17,7 +17,7 @@ copied verbatim: gradients, sizes, colours, letter-spacing, timings.
 | Section | Desktop | Mobile |
 |---|---|---|
 | Intro / preloader | 3c + 6a sequence | 6b |
-| Logo | 4a option 01 — "The N-mark" | — |
+| Logo | 4a option 01 - "The N-mark" | - |
 | Navbar | 4b (top / condensed pill / sheet) | 4b |
 | Hero | 3b full-bleed frame | 4c |
 | Expertise | 2b weighted grid | 5a |
@@ -26,7 +26,7 @@ copied verbatim: gradients, sizes, colours, letter-spacing, timings.
 | Case study | 3f **minus** its "On this page" column | 7b |
 | Contact | 1c | 5b |
 | Footer | 3g | 5c |
-| Command palette | 10a | — |
+| Command palette | 10a | - |
 | Ask AI | 10b panel | 10b |
 
 **Not built** (user's call): 10c "How I work", 10d Archive table, the 9a/9b/3d
@@ -34,19 +34,19 @@ experience variants, the 1a/1b/3a hero variants, 2a expertise ledger.
 
 ## 2. Decisions that reshape the identity
 
-1. **The hero no longer carries the name.** Per 3b the H1 is the claim —
-   *"Frontend built like product, not like tickets."* — and the name drops to a
+1. **The hero no longer carries the name.** Per 3b the H1 is the claim -
+   *"Frontend built like product, not like tickets."* - and the name drops to a
    byline. The intro's name therefore flies to the **navbar mark** (`#nav-mark`),
    not `#hero-name`, and the giant wordmark appears exactly once: the footer.
 2. **No unverifiable numbers.** Every "2.5+ years in production" stat and every
    timeline year in the mocks was dropped. The timeline is dateless and carries
-   `stage` labels (Start · Education · Industry · Present). `Portfolio — {year}`
+   `stage` labels (Start · Education · Industry · Present). `Portfolio - {year}`
    survives because it's `new Date().getFullYear()`, not a claim. Where 3b's
    ledger had an Experience cell it became **Currently**.
 3. **The case study keeps the existing `ReadingRail`.** 3f's "On this page"
    column was not built; the fixed right-edge dot rail (xl+) is the on-page nav,
    so the `#cs-*` block ids must be preserved.
-4. **Reverse-chronological experience.** 8a puts Present first — a recruiter
+4. **Reverse-chronological experience.** 8a puts Present first - a recruiter
    reads the current role and stops.
 
 ## 3. New files
@@ -69,33 +69,33 @@ experience variants, the 1a/1b/3a hero variants, 2a expertise ledger.
   `text-fluid-h2` as a *colour*; the trailing `text-foreground` in the same
   string then deleted it. Fixed by registering the `fluid-*` scale with
   `extendTailwindMerge` in `src/lib/utils.ts`. Measured 16px → 60px to confirm.
-- **The emphasis parser dropped its closing marker before punctuation** —
+- **The emphasis parser dropped its closing marker before punctuation** -
   `*product*,` rendered a literal asterisk. `TextReveal` now ends the span on
   "an asterisk anywhere after the first character".
-- **Overlays fought over `body.style.overflow`** — closing the palette unlocked
+- **Overlays fought over `body.style.overflow`** - closing the palette unlocked
   the page while the mobile menu was still open. Now ref-counted.
-- **The chat crashed the route on corrupt `localStorage`** — an entry missing
+- **The chat crashed the route on corrupt `localStorage`** - an entry missing
   `content` threw inside render, and with no error boundary above the widget it
   took down the whole page on every load until storage was cleared. The restore
   now validates shape.
-- **The command palette's selection was invisible to screen readers** — no
+- **The command palette's selection was invisible to screen readers** - no
   combobox semantics. Now `role="combobox"` + `aria-activedescendant` +
   `role="listbox"/"option"`.
-- **Chat replies were never announced** — the transcript now has `aria-live`.
+- **Chat replies were never announced** - the transcript now has `aria-live`.
 
 **Introduced during the redesign, then fixed:**
 
 - Reduced-motion users sat through the hero's entrance *delays* watching an
   empty screen (MotionConfig strips transforms but keeps delays).
 - The mobile nav sheet was overlapped by the floating chat launcher (z-76 vs
-  z-90) — now hidden via `html[data-nav-open]`.
+  z-90) - now hidden via `html[data-nav-open]`.
 - The card metrics rendered twice: once in the mock's architecture diagram and
   again in the new card strip.
 
 ## 5. Performance
 
 The redesign **did** regress scroll performance; it was measured, not guessed.
-A Chrome trace showed the cost was paint, not JavaScript — **4,504ms of
+A Chrome trace showed the cost was paint, not JavaScript - **4,504ms of
 RasterTask across 7,053 tasks** in a 7-second scroll.
 
 | | p50 | p95 | frames >50ms |
@@ -113,7 +113,7 @@ Five causes, each A/B-verified in isolation:
 2. **`backdrop-filter` inside that scaling card** (`ProductMock` used
    `.glass-strong`). Over an opaque gradient the blur was invisible and cost a
    fresh backdrop blur per frame.
-3. **The film-grain overlay wasn't promoted** — a full-viewport fixed layer
+3. **The film-grain overlay wasn't promoted** - a full-viewport fixed layer
    repainting against the content scrolling beneath it.
 4. **The hero's blurred blob drifted on an infinite loop**, repainting long
    after the hero had scrolled away. Now static.
@@ -127,13 +127,13 @@ Also: **the case-study "2–3s to open" was a dev-mode artifact.** Next compiles
 `/projects/[slug]` on demand in dev (1,862ms); in production it's prerendered and
 navigates in 124ms. The real gap was that Next only prefetches a `<Link>` once it
 scrolls into view, so opening a project from the palette or footer still paid for
-the fetch — and inside `startViewTransition` that's a *frozen page*, not a
+the fetch - and inside `startViewTransition` that's a *frozen page*, not a
 spinner. `RoutePrefetch` warms both routes on idle (151ms cold nav from the top).
 
 ### Re-running the measurements
 
 Throwaway harnesses, run from a scratch dir with `puppeteer-core` installed
-against `npm run start` (never `next dev` — it doesn't prefetch and compiles on
+against `npm run start` (never `next dev` - it doesn't prefetch and compiles on
 demand):
 
 - **Scroll jank**: drive real wheel events (so Lenis handles them), sample rAF
@@ -149,7 +149,7 @@ relative comparison is the trustworthy part.
 
 ## 6. Verification performed
 
-- `tsc --noEmit`, `eslint`, `next build` — all clean.
+- `tsc --noEmit`, `eslint`, `next build` - all clean.
 - Audited **390 / 834 / 1280 / 1920** across `/`, `/projects/[slug]` and the 404:
   no horizontal overflow, no console errors.
 - Reduced motion: no intro, deck falls to plain flow, marquees/numerals static.
@@ -160,7 +160,7 @@ relative comparison is the trustworthy part.
 - API routes: `/api/chat` streams from Gemini, `/api/contact` returns field
   errors and silently absorbs the honeypot.
 
-⚠️ **Never run `npm run build` while a dev or prod server is running** — they
+⚠️ **Never run `npm run build` while a dev or prod server is running** - they
 share `.next` and it corrupts. It happened twice during this work and produced
 a page serving 400s for every static asset (and a bogus "perfect" perf reading,
 because nothing was rendering). Symptom: `Refused to apply style … MIME type
@@ -170,7 +170,7 @@ because nothing was rendering). Symptom: `Refused to apply style … MIME type
 
 - **No `favicon.ico`.** Browsers use the generated `/icon`; a true `.ico` for
   legacy crawlers would need exporting by hand.
-- **README's Core Web Vitals figures predate the redesign** — they were replaced
+- **README's Core Web Vitals figures predate the redesign** - they were replaced
   with principles plus a note to re-measure. Worth an actual Lighthouse run.
 - **The portrait** works in all three hero frames (column / narrow column / top
   band), but a second crop would frame better on phones.

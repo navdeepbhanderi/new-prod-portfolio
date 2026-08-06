@@ -17,16 +17,16 @@ import { useIntroDone } from "@/lib/intro";
 import { useMouseParallax } from "@/hooks/use-mouse-parallax";
 import { usePrefersReducedMotion } from "@/hooks/use-media-query";
 
-/** Portrait scrims — the fade axis differs per layout (top band vs column). */
+/** Portrait scrims - the fade axis differs per layout (top band vs column). */
 const SCRIM_BAND =
   "bg-[linear-gradient(to_bottom,hsl(var(--background)/0.72)_0%,hsl(var(--background)/0.12)_30%,hsl(var(--background)/0.55)_68%,hsl(var(--background))_100%)]";
 // The layer overshoots the column by 32px (md:-left-8) so the portrait's left
 // edge is always covered. That overshoot used to start fully opaque, which cut
-// a vertical line through the accent glow behind it — invisible at the top of
+// a vertical line through the accent glow behind it - invisible at the top of
 // the hero, ~12 luminance units by the floor, where the glow is brightest.
 //
 // It now fades in across the overshoot instead, and holds opaque from 24px to
-// 44px so the portrait edge (32px in, and fixed relative to this layer — both
+// 44px so the portrait edge (32px in, and fixed relative to this layer - both
 // sit inside the same parallax wrapper) still never surfaces. Those two stops
 // are px, not %, because the column is 38vw / 34vw / max 36rem depending on
 // width: as a percentage the hold would reorder against the 15% stop on
@@ -54,7 +54,7 @@ export function Hero() {
   const state = done ? "visible" : "hidden";
   const reduced = usePrefersReducedMotion();
 
-  // MotionConfig strips transforms under reduced motion but keeps delays —
+  // MotionConfig strips transforms under reduced motion but keeps delays -
   // collapse them so the hero isn't blank while an invisible stagger plays.
   const at = (delay: number) => (reduced ? 0 : delay);
 
@@ -93,7 +93,7 @@ export function Hero() {
         className="absolute -inset-10 -z-10"
       >
         <div className="absolute inset-0 bg-grid-lines mask-hero-grid opacity-60" />
-        {/* Static — the pointer parallax on this layer supplies the movement. */}
+        {/* Static - the pointer parallax on this layer supplies the movement. */}
         <div className="absolute -left-20 top-1/3 h-72 w-72 rounded-full bg-foreground/[0.04] blur-3xl" />
         <div className="absolute bottom-0 left-1/2 h-[520px] w-[1100px] -translate-x-1/2 translate-y-1/3 rounded-full bg-[radial-gradient(ellipse_at_center,hsl(var(--accent)/0.16),transparent_65%)] blur-3xl" />
       </motion.div>
@@ -112,7 +112,7 @@ export function Hero() {
         >
           {/* One crop for both layouts. There used to be a
               `md:[object-position:50%_20%]` here, but ProfileImage sets
-              object-position as an inline style, which always beats a class —
+              object-position as an inline style, which always beats a class -
               so md never applied and both the band and the column have always
               rendered at 16%. The portrait-aspect source frames well there, so
               the dead override is gone rather than made to work. */}
@@ -123,7 +123,7 @@ export function Hero() {
             sizes="(min-width: 1695px) 576px, (min-width: 1280px) 34vw, (min-width: 768px) 38vw, 100vw"
           />
           {/* md:-left-8 overshoots the column boundary so the compositing
-              layer's own edge is painted over — no hairline seam at any
+              layer's own edge is painted over - no hairline seam at any
               parallax offset. */}
           <div
             aria-hidden
@@ -164,7 +164,7 @@ export function Hero() {
               className="mt-4 max-w-xl text-[15px] leading-relaxed text-muted-foreground sm:mt-8 sm:text-lg"
             >
               <span className="text-foreground/85">
-                {PROFILE.name} — {PROFILE.title} at {PROFILE.companyShort}.
+                {PROFILE.name} - {PROFILE.title} at {PROFILE.companyShort}.
               </span>{" "}
               {PROFILE.byline}
             </motion.p>

@@ -2,7 +2,7 @@
 
 /**
  * Hover text swap: two stacked copies slide up together on group hover /
- * focus. Pure CSS transforms — the global reduced-motion kill covers it.
+ * focus. Pure CSS transforms - the global reduced-motion kill covers it.
  * Requires a `group/btn` ancestor (Button adds one).
  */
 export function SwapText({

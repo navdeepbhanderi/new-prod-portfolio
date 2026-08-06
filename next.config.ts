@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-// Production only — dev needs eval for HMR. 'unsafe-inline' covers the
+// Production only - dev needs eval for HMR. 'unsafe-inline' covers the
 // pre-paint intro script and Next's own hydration scripts (no nonce infra).
 const CSP = [
   "default-src 'self'",
@@ -21,7 +21,7 @@ const nextConfig: NextConfig = {
   allowedDevOrigins: ["192.168.1.*"],
   images: {
     formats: ["image/avif", "image/webp"],
-    // The hero portrait is the LCP element and a face — q75 (the default)
+    // The hero portrait is the LCP element and a face - q75 (the default)
     // shows on skin tones. Next 15 requires every quality used to be declared.
     qualities: [75, 90],
   },

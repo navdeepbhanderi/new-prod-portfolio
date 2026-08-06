@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 /**
  * The horizon: one lit line across the foot of the frame with a soft glow
  * rising off it. At md+ it's a very wide rounded rectangle pushed mostly
- * below the frame — border-radius clamps to half the shorter side, so the
+ * below the frame - border-radius clamps to half the shorter side, so the
  * flat top run is `width - height` and the rounded ends bend the line down
  * inside the viewport. Width drives height as a ratio so the curve holds at
  * any viewport width; only the apex is anchored (container % for the footer,

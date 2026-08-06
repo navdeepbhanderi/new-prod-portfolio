@@ -32,12 +32,12 @@ export type Project = {
     scope?: string;
     /** The layers you actually built, left → right. */
     flow: string[];
-    /** External system you integrate with (rendered dashed — consumed, not built). */
+    /** External system you integrate with (rendered dashed - consumed, not built). */
     consumes?: string;
     note?: string;
     metrics?: { value: string; label: string }[];
   };
-  /** Optional proof links — buttons render only when provided. */
+  /** Optional proof links - buttons render only when provided. */
   links?: { live?: string; repo?: string };
   /** Long-form content for the /projects/[slug] case study page. */
   caseStudy: {
@@ -54,11 +54,11 @@ export type TimelineItem = {
   subtitle: string;
   description: string;
   status: "past" | "present" | "future";
-  /** Rail label — the phase of the journey rather than a year. */
+  /** Rail label - the phase of the journey rather than a year. */
   stage: "Start" | "Education" | "Industry" | "Present";
   /** Right-hand meta column. */
   aside?: { label: string; value: string };
-  /** "Working in" chips — the present role's panel only. */
+  /** "Working in" chips - the present role's panel only. */
   stack?: string[];
 };
 
@@ -74,6 +74,6 @@ export type Intent = {
   keywords: string[];
   answer: string;
   related?: string[];
-  /** Keys into CHAT_ACTIONS — tappable buttons attached to the answer. */
+  /** Keys into CHAT_ACTIONS - tappable buttons attached to the answer. */
   actions?: string[];
 };

@@ -23,7 +23,7 @@ type TiltProps = {
 };
 
 /**
- * Pointer-driven 3D tilt with an optional moving sheen. Motion values only —
+ * Pointer-driven 3D tilt with an optional moving sheen. Motion values only -
  * zero React renders per mousemove. Renders a plain div on touch / reduced motion.
  */
 export function Tilt({

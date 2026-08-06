@@ -36,7 +36,7 @@ function validate(body: Record<string, unknown>): {
     errors.email = "That email address doesn't look right.";
 
   if (message.length < LIMITS.message.min)
-    errors.message = "Give me a little more to go on — at least 10 characters.";
+    errors.message = "Give me a little more to go on - at least 10 characters.";
   else if (message.length > LIMITS.message.max)
     errors.message = `Message must be under ${LIMITS.message.max} characters.`;
 
@@ -59,7 +59,7 @@ type Mail = {
 /**
  * Delivery backends, preferred first:
  * - Resend (RESEND_API_KEY + MAIL_FROM): sends from the custom domain with
- *   SPF/DKIM alignment — the reliable way to stay out of spam.
+ *   SPF/DKIM alignment - the reliable way to stay out of spam.
  * - Gmail SMTP (GMAIL_USER + GMAIL_APP_PASSWORD): works out of the box but a
  *   personal address has weaker sender reputation.
  */
@@ -141,7 +141,7 @@ export async function POST(req: Request) {
 
   if (rateLimited(clientIp(req))) {
     return NextResponse.json(
-      { ok: false, error: "Too many messages — please try again in a while." },
+      { ok: false, error: "Too many messages - please try again in a while." },
       { status: 429 }
     );
   }
@@ -156,7 +156,7 @@ export async function POST(req: Request) {
     return NextResponse.json(
       {
         ok: false,
-        error: `Email delivery isn't configured yet — please write to ${PROFILE.email} directly.`,
+        error: `Email delivery isn't configured yet - please write to ${PROFILE.email} directly.`,
       },
       { status: 503 }
     );
@@ -173,7 +173,7 @@ export async function POST(req: Request) {
 
   try {
     // The owner notification must succeed. No custom Message-ID or priority
-    // headers — the provider's own Message-ID stays aligned with the sender.
+    // headers - the provider's own Message-ID stays aligned with the sender.
     await deliver(transport, {
       from: fromAddress,
       to,
@@ -191,14 +191,14 @@ export async function POST(req: Request) {
     return NextResponse.json(
       {
         ok: false,
-        error: `Something went wrong sending your message — please email ${PROFILE.email} directly.`,
+        error: `Something went wrong sending your message - please email ${PROFILE.email} directly.`,
       },
       { status: 502 }
     );
   }
 
   try {
-    // Auto-reply is best-effort — the lead is already delivered.
+    // Auto-reply is best-effort - the lead is already delivered.
     await deliver(transport, {
       from: fromAddress,
       to: data.email,

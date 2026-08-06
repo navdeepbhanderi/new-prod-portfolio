@@ -11,7 +11,7 @@ const ChatWidget = dynamic(
 
 /**
  * Defers the chat widget (UI + logic) out of the critical bundle: it loads
- * on browser idle, or instantly if the user asks for it first — in which
+ * on browser idle, or instantly if the user asks for it first - in which
  * case the open event is re-dispatched once the widget has mounted.
  */
 export function ChatWidgetLazy() {
@@ -23,7 +23,7 @@ export function ChatWidgetLazy() {
 
     const onOpenRequest = (e: Event) => {
       setReady(true);
-      // The widget wasn't mounted to hear this event — replay it (with any
+      // The widget wasn't mounted to hear this event - replay it (with any
       // handed-over question in `detail`) once it is.
       const detail = (e as CustomEvent).detail;
       window.setTimeout(

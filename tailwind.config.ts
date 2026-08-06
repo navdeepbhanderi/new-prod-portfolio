@@ -19,7 +19,7 @@ const config: Config = {
     },
     extend: {
       screens: {
-        // Landscape phones — barely any vertical room.
+        // Landscape phones - barely any vertical room.
         short: { raw: "(orientation: landscape) and (max-height: 500px)" },
       },
       colors: {

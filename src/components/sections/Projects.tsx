@@ -62,7 +62,7 @@ function ArchiveCardContent({ index }: { index: string }) {
     // Matches the project cards' 68svh so the whole deck is one height below lg.
     <div className="relative flex min-h-[min(80svh,46rem)] flex-col items-center justify-center gap-8 p-6 text-center sm:p-10 lg:p-14">
       <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
-        {index} — The archive
+        {index} - The archive
       </span>
       <span
         aria-hidden
@@ -71,7 +71,7 @@ function ArchiveCardContent({ index }: { index: string }) {
         MORE
       </span>
       <p className="max-w-md text-muted-foreground">
-        Experiments, hackathon builds, and works in progress — the rest of the
+        Experiments, hackathon builds, and works in progress - the rest of the
         story lives on GitHub.
       </p>
       <Magnetic>
@@ -104,7 +104,7 @@ export function Projects() {
           <SectionHeading
             eyebrow="Selected work"
             title="Projects built *like products*"
-            description="Each one is a small case study — the problem, the approach, and what makes it work."
+            description="Each one is a small case study - the problem, the approach, and what makes it work."
           />
           <BlurReveal>
             <span className="hidden whitespace-nowrap font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground sm:block">

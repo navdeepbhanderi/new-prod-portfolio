@@ -6,7 +6,7 @@ import { PROFILE } from "@/lib/profile";
  * The fixed catalog of actions the chat assistant may attach to a reply.
  * Local intents reference these by key; Gemini is given the exact tokens in
  * its system prompt. The widget only renders actions whose href appears in
- * ALLOWED_ACTION_HREFS — a hallucinated or injected link is dropped, never
+ * ALLOWED_ACTION_HREFS - a hallucinated or injected link is dropped, never
  * rendered.
  */
 

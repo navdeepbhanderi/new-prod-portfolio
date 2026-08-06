@@ -4,7 +4,7 @@ import { CHAT_ACTIONS } from "@/lib/ai/actions";
 
 /**
  * Local knowledge base for the portfolio assistant. Intents are matched by
- * keyword overlap in engine.ts — no API cost, deterministic answers.
+ * keyword overlap in engine.ts - no API cost, deterministic answers.
  */
 export const INTENTS: Intent[] = [
   {
@@ -21,7 +21,7 @@ export const INTENTS: Intent[] = [
       "summary",
     ],
     answer:
-      "Navdeep Bhanderi is a software engineer based in Junagadh, Gujarat, India, currently working as a Senior Frontend Engineer at Softrefine Technology. He leads the frontend side of delivery and builds across the full stack — Next.js, React, Angular, and Node.js — when the product needs it, and is going deeper into applied AI. He cares about clean architecture, thoughtful UX, and shipping high-quality products.",
+      "Navdeep Bhanderi is a software engineer based in Junagadh, Gujarat, India, currently working as a Senior Frontend Engineer at Softrefine Technology. He leads the frontend side of delivery and builds across the full stack - Next.js, React, Angular, and Node.js - when the product needs it, and is going deeper into applied AI. He cares about clean architecture, thoughtful UX, and shipping high-quality products.",
     related: ["What's his work experience?", "Why should I hire him?"],
   },
   {
@@ -60,7 +60,7 @@ export const INTENTS: Intent[] = [
       "intelligent",
     ],
     answer:
-      "AI shows up in Navdeep's work where it genuinely earns a place rather than as a headline feature. He works with Generative AI and LLM tooling to build practical, production-ready features — this portfolio's own assistant is one example — and is going deeper into applied AI and generative-AI workflows.",
+      "AI shows up in Navdeep's work where it genuinely earns a place rather than as a headline feature. He works with Generative AI and LLM tooling to build practical, production-ready features - this portfolio's own assistant is one example - and is going deeper into applied AI and generative-AI workflows.",
     related: ["What projects has he built?", "What technologies does he use?"],
   },
   {
@@ -81,7 +81,7 @@ export const INTENTS: Intent[] = [
       "hackathon",
     ],
     answer:
-      "Two featured projects: (1) Travel Commerce Platform — a B2B SaaS platform where travel businesses build complete, custom travel packages (flights, hotels, activities, transfers, insurance) under their own brand, with real-time pricing, post-booking modifications, package reuse, and branded PDF generation; he also migrated it across Angular 12 to 19. (2) Attendance Admin Panel — his contribution to a team project at Smart India Hackathon, where attendance is verified through the campus WiFi network; he built the admin panel for managing faculty and student records, weekly lecture scheduling, and a live classroom dashboard pulled from the database.",
+      "Two featured projects: (1) Travel Commerce Platform - a B2B SaaS platform where travel businesses build complete, custom travel packages (flights, hotels, activities, transfers, insurance) under their own brand, with real-time pricing, post-booking modifications, package reuse, and branded PDF generation; he also migrated it across Angular 12 to 19. (2) Attendance Admin Panel - his contribution to a team project at Smart India Hackathon, where attendance is verified through the campus WiFi network; he built the admin panel for managing faculty and student records, weekly lecture scheduling, and a live classroom dashboard pulled from the database.",
     related: ["Tell me about his experience.", "How can I contact him?"],
     actions: ["case-travel-commerce-platform", "case-attendance"],
   },
@@ -102,7 +102,7 @@ export const INTENTS: Intent[] = [
       "school",
     ],
     answer:
-      "Navdeep earned a Diploma in Computer Engineering from Dr. Subhash Technical Campus, then a B.Tech in Information Technology from Dr. Subhash University — completing the degree while already working in the industry at Softrefine Technology.",
+      "Navdeep earned a Diploma in Computer Engineering from Dr. Subhash Technical Campus, then a B.Tech in Information Technology from Dr. Subhash University - completing the degree while already working in the industry at Softrefine Technology.",
     related: ["What's his work experience?", "Why should I hire him?"],
     actions: ["resume"],
   },
@@ -124,7 +124,7 @@ export const INTENTS: Intent[] = [
       "years",
     ],
     answer:
-      "Navdeep is a Senior Frontend Engineer at Softrefine Technology Pvt. Ltd. — he joined the core team after a six-month internship there. He leads the frontend side of client builds, taking features from requirement to release and building backend pieces when a feature needs it, and completed his B.Tech while working. His resume has the full picture.",
+      "Navdeep is a Senior Frontend Engineer at Softrefine Technology Pvt. Ltd. - he joined the core team after a six-month internship there. He leads the frontend side of client builds, taking features from requirement to release and building backend pieces when a feature needs it, and completed his B.Tech while working. His resume has the full picture.",
     related: ["What projects has he built?", "Why should I hire him?"],
     actions: ["resume", "linkedin"],
   },
@@ -143,7 +143,7 @@ export const INTENTS: Intent[] = [
       "convince",
     ],
     answer:
-      "Hire Navdeep if you want an engineer who blends product thinking with technical depth. He has professional experience shipping production software at Softrefine Technology, leads frontend delivery across the full stack (Next.js, React, Angular, Node.js), and brings AI capabilities into real features. He cares about quality, clean architecture, and great user experience — and he's pragmatic about delivering results.",
+      "Hire Navdeep if you want an engineer who blends product thinking with technical depth. He has professional experience shipping production software at Softrefine Technology, leads frontend delivery across the full stack (Next.js, React, Angular, Node.js), and brings AI capabilities into real features. He cares about quality, clean architecture, and great user experience - and he's pragmatic about delivering results.",
     related: ["What's his work experience?", "How can I contact him?"],
     actions: ["resume", "email"],
   },
@@ -191,7 +191,7 @@ export const INTENTS: Intent[] = [
       "vision",
     ],
     answer:
-      "Navdeep is passionate about building scalable, user-friendly products and going deeper into applied AI — generative AI workflows and LLM-powered features — with a long-term focus on advanced, intelligent systems that scale.",
+      "Navdeep is passionate about building scalable, user-friendly products and going deeper into applied AI - generative AI workflows and LLM-powered features - with a long-term focus on advanced, intelligent systems that scale.",
     related: ["Tell me about his AI experience.", "What does he specialize in?"],
   },
   {
@@ -214,7 +214,7 @@ for (const intent of INTENTS) {
 }
 
 export const FALLBACK_ANSWER =
-  "I'm focused on Navdeep — his skills, projects, AI experience, education, and contact details. Try asking something like “What technologies does he specialize in?”, “Tell me about his AI experience,” or “Why should I hire him?”";
+  "I'm focused on Navdeep - his skills, projects, AI experience, education, and contact details. Try asking something like “What technologies does he specialize in?”, “Tell me about his AI experience,” or “Why should I hire him?”";
 
 export const SUGGESTED_QUESTIONS: string[] = [
   "Who is Navdeep?",
@@ -225,9 +225,9 @@ export const SUGGESTED_QUESTIONS: string[] = [
 ];
 
 /**
- * One label for the assistant everywhere it is named — the launcher, the
+ * One label for the assistant everywhere it is named - the launcher, the
  * navbar, the panel header, the command palette.
  */
 export const ASSISTANT_LABEL = "Ask AI";
 
-export const GREETING_MESSAGE = `Hi — I'm ${PROFILE.firstName}'s AI assistant. Ask me anything about his work, skills, or how to reach him.`;
+export const GREETING_MESSAGE = `Hi - I'm ${PROFILE.firstName}'s AI assistant. Ask me anything about his work, skills, or how to reach him.`;

@@ -23,7 +23,7 @@ type Message = {
   content: string;
   /** Follow-up question chips (local knowledge-base answers only). */
   related?: string[];
-  /** Tappable action buttons — validated against the fixed catalog. */
+  /** Tappable action buttons - validated against the fixed catalog. */
   actions?: ChatAction[];
 };
 
@@ -49,7 +49,7 @@ function parseActionTokens(text: string): ChatAction[] {
 
 const OPEN_EVENT = OPEN_CHAT_EVENT;
 const STORAGE_KEY = "navdeep-chat-v1";
-// Keep in sync with MAX_MESSAGES / MAX_MESSAGE_CHARS in app/api/chat/route.ts —
+// Keep in sync with MAX_MESSAGES / MAX_MESSAGE_CHARS in app/api/chat/route.ts -
 // the server discards anything beyond these anyway.
 const MAX_SENT_MESSAGES = 12;
 const MAX_INPUT_CHARS = 1000;
@@ -102,7 +102,7 @@ function parseBlocks(content: string): Block[] {
 
 /**
  * Streaming words: index-keyed spans so React preserves already-mounted
- * words across re-renders — only the newly appended word mounts and plays
+ * words across re-renders - only the newly appended word mounts and plays
  * its fade-in. Whitespace (incl. newlines) is passed through untouched.
  */
 function StreamWords({ text }: { text: string }) {
@@ -139,7 +139,7 @@ function MessageContent({ content, caret = false }: { content: string; caret?: b
   if (blocks.length === 0) return <div>{caretEl}</div>;
 
   // While streaming, words fade in; the finished message swaps to the full
-  // inline treatment (bold, links) — same text, so the swap is invisible.
+  // inline treatment (bold, links) - same text, so the swap is invisible.
   const renderText = (text: string) => (caret ? <StreamWords text={text} /> : renderInline(text));
 
   return (
@@ -212,7 +212,7 @@ export function ChatWidget() {
 
   // Section actions ("/#contact") can't rely on plain hash links: on the home
   // page Lenis owns scrolling, and on case-study pages the section doesn't
-  // exist — route home to it instead (same pattern as navbar/palette).
+  // exist - route home to it instead (same pattern as navbar/palette).
   const goToSection = (href: string) => {
     const id = href.slice(2);
     setOpen(false);
@@ -232,7 +232,7 @@ export function ChatWidget() {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
-        // Validate before trusting it — a malformed entry would throw inside
+        // Validate before trusting it - a malformed entry would throw inside
         // render on every load until the visitor clears storage.
         const parsed: unknown = JSON.parse(raw);
         const saved = (Array.isArray(parsed) ? parsed : []).filter(
@@ -254,18 +254,18 @@ export function ChatWidget() {
     setHydrated(true);
   }, []);
 
-  // Persist history whenever it changes (after hydration) — but not on the
+  // Persist history whenever it changes (after hydration) - but not on the
   // per-frame updates while a reply streams; once when it settles.
   useEffect(() => {
     if (!hydrated || streamingId !== null) return;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
     } catch {
-      /* storage full / unavailable — non-fatal */
+      /* storage full / unavailable - non-fatal */
     }
   }, [messages, hydrated, streamingId]);
 
-  // Allow other components (navbar, palette, terminal) to open the chat —
+  // Allow other components (navbar, palette, terminal) to open the chat -
   // optionally with a question to submit on arrival (CustomEvent detail).
   useEffect(() => {
     const handler = (e: Event) => {
@@ -277,7 +277,7 @@ export function ChatWidget() {
     return () => window.removeEventListener(OPEN_EVENT, handler);
   }, []);
 
-  // Close on Escape — unless a stacked overlay (palette, nav sheet) is open
+  // Close on Escape - unless a stacked overlay (palette, nav sheet) is open
   // and owns the key.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -290,7 +290,7 @@ export function ChatWidget() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // Below sm the panel covers the screen — lock the page behind it.
+  // Below sm the panel covers the screen - lock the page behind it.
   const isFullScreen = useMediaQuery("(max-width: 639px)");
   useEffect(
     () => (open && isFullScreen ? holdScroll(lenis) : undefined),
@@ -298,7 +298,7 @@ export function ChatWidget() {
   );
 
   // iOS doesn't resize the layout viewport for the on-screen keyboard (the
-  // viewport meta's resizes-content covers Android) — track the visual
+  // viewport meta's resizes-content covers Android) - track the visual
   // viewport and lift the panel above the keyboard.
   const [kbInset, setKbInset] = useState(0);
   useEffect(() => {
@@ -350,7 +350,7 @@ export function ChatWidget() {
     });
   };
 
-  // Focus the input once per open — not on every message update.
+  // Focus the input once per open - not on every message update.
   useEffect(() => {
     if (open) {
       const t = setTimeout(() => inputRef.current?.focus(), 250);
@@ -359,7 +359,7 @@ export function ChatWidget() {
   }, [open]);
 
   // Follow the conversation. While a reply streams, stick to the bottom
-  // instantly — re-triggering a smooth scroll on every chunk makes the
+  // instantly - re-triggering a smooth scroll on every chunk makes the
   // viewport rubber-band.
   useEffect(() => {
     if (open) scrollToBottom(streamingId === null);
@@ -419,12 +419,12 @@ export function ChatWidget() {
           );
         }
       } catch {
-        /* malformed header — skip chips/actions */
+        /* malformed header - skip chips/actions */
       }
 
       // The reply streams as plain text, but upstream chunks arrive in big
       // multi-sentence bursts. Buffer them and reveal at a smooth typewriter
-      // rate instead — the pace adapts to how far behind the buffer we are,
+      // rate instead - the pace adapts to how far behind the buffer we are,
       // so it never lags the stream yet never jumps whole paragraphs.
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
@@ -460,7 +460,7 @@ export function ChatWidget() {
             // backlogs), revealed at word granularity with a fade-in per word.
             const rate = 50 + Math.min(250, backlog * 0.3);
             shown = Math.min(visible.length, shown + rate * dt);
-            // Snap forward to the end of the current word — whole words only.
+            // Snap forward to the end of the current word - whole words only.
             let cut = Math.floor(shown);
             if (cut > 0 && cut < visible.length) {
               const rel = visible.slice(cut).search(/\s/);
@@ -489,7 +489,7 @@ export function ChatWidget() {
             }
             acc += decoder.decode();
           } catch {
-            /* stream interrupted — reveal whatever arrived */
+            /* stream interrupted - reveal whatever arrived */
           }
           streamDone = true;
         })();
@@ -577,7 +577,7 @@ export function ChatWidget() {
           ref={launcherRef}
           type="button"
           onClick={() => setOpen((v) => !v)}
-          aria-label={open ? "Close chat" : `${ASSISTANT_LABEL} — Navdeep's AI assistant`}
+          aria-label={open ? "Close chat" : `${ASSISTANT_LABEL} - Navdeep's AI assistant`}
           aria-expanded={open}
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -624,7 +624,7 @@ export function ChatWidget() {
               ref={dialogRef}
               role="dialog"
               aria-modal="true"
-              aria-label={`${ASSISTANT_LABEL} — Navdeep's AI assistant`}
+              aria-label={`${ASSISTANT_LABEL} - Navdeep's AI assistant`}
               onKeyDown={trapFocus}
               data-cursor="hidden"
               initial={{ opacity: 0, y: 24, scale: 0.96 }}
@@ -677,7 +677,7 @@ export function ChatWidget() {
                 </div>
               </div>
 
-              {/* messages — min-h-0 lets this flex child shrink so overflow scrolls;
+              {/* messages - min-h-0 lets this flex child shrink so overflow scrolls;
                   data-lenis-prevent stops the page's smooth-scroll from eating wheel events */}
               <div
                 ref={scrollRef}
@@ -714,11 +714,11 @@ export function ChatWidget() {
                         </div>
                       </div>
 
-                      {/* Action buttons — the assistant as navigator. */}
+                      {/* Action buttons - the assistant as navigator. */}
                       {m.role === "assistant" && !!m.actions?.length && (
                         <div className="flex flex-wrap gap-2 pl-9">
                           {m.actions.map((action) => {
-                            // Static files (resume.pdf) open in a new tab —
+                            // Static files (resume.pdf) open in a new tab -
                             // they're not client routes.
                             const isExternal =
                               action.href.startsWith("http") ||
@@ -829,7 +829,7 @@ export function ChatWidget() {
                   placeholder="Ask about Navdeep…"
                   autoComplete="off"
                   maxLength={MAX_INPUT_CHARS}
-                  // text-base below sm — sub-16px fonts make iOS zoom on focus.
+                  // text-base below sm - sub-16px fonts make iOS zoom on focus.
                   className="h-10 w-full rounded-full border border-border bg-background/60 px-4 text-base outline-none transition-colors placeholder:text-muted-foreground focus:border-foreground/30 sm:text-sm"
                 />
                 <button

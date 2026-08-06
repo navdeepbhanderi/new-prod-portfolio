@@ -30,7 +30,7 @@ export const intro = {
     try {
       sessionStorage.setItem(INTRO_KEY, "1");
     } catch {
-      /* private mode — in-memory flag still works */
+      /* private mode - in-memory flag still works */
     }
     listeners.forEach((cb) => cb());
   },

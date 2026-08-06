@@ -88,7 +88,7 @@ export function Preloader() {
       mark("fonts");
     });
 
-    // "Scene" is the hero portrait — the LCP element. Watch the <img> the
+    // "Scene" is the hero portrait - the LCP element. Watch the <img> the
     // page actually renders: fetching the asset separately would download the
     // full-size original alongside next/image's optimized variant.
     const settleScene = () => {
@@ -97,7 +97,7 @@ export function Preloader() {
     };
     const sceneImg = document.querySelector<HTMLImageElement>("#hero img");
     if (!sceneImg) {
-      // No portrait on this route — nothing to wait for.
+      // No portrait on this route - nothing to wait for.
       settleScene();
     } else if (sceneImg.complete && sceneImg.naturalWidth > 0) {
       settleScene();
@@ -118,7 +118,7 @@ export function Preloader() {
 
     const ctx = gsap.context(() => {
       // Entrance. Hidden states are inline on the JSX so the first paint never
-      // flashes the finished frame — these animate *to* the visible state.
+      // flashes the finished frame - these animate *to* the visible state.
       const entrance = gsap.timeline();
       entrance.to(".pl-mark", {
         opacity: 1,
@@ -276,7 +276,7 @@ export function Preloader() {
       aria-hidden
       className="fixed inset-0 z-[95] overflow-hidden"
     >
-      {/* Follower panel — briefly visible as the main curtain lifts. */}
+      {/* Follower panel - briefly visible as the main curtain lifts. */}
       <div className="pl-panel-follow absolute inset-0 bg-muted" />
 
       {/* Main curtain carries the content up with it. */}
@@ -316,7 +316,7 @@ export function Preloader() {
               NAVDEEP <br className="sm:hidden" />
               BHANDERI
             </span>
-            {/* Fill layer — clipped to the real progress value. */}
+            {/* Fill layer - clipped to the real progress value. */}
             <span
               ref={fillRef}
               className="pl-fill text-name-gradient absolute inset-0 block"

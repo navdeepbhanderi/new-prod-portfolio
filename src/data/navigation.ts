@@ -1,5 +1,5 @@
 /**
- * The page's sections in document order — one source for the navbar, footer
+ * The page's sections in document order - one source for the navbar, footer
  * sitemap, command palette, and 404 links.
  */
 export const SECTIONS = [
@@ -18,6 +18,6 @@ export const NAV_SECTIONS = SECTIONS.filter(
   (s) => s.id !== "hero" && s.id !== "contact"
 );
 
-/** Everything the active-section observer watches — the ends included, so the
+/** Everything the active-section observer watches - the ends included, so the
  *  navbar pill clears at the top and bottom of the page. */
 export const SECTION_IDS = SECTIONS.map((s) => s.id);

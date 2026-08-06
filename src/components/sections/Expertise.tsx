@@ -18,7 +18,7 @@ const PRIMARY = EXPERTISE.find((c) => c.weight === "primary")!;
 const STANDARD = EXPERTISE.filter((c) => c.weight === "standard");
 const UTILITY = EXPERTISE.find((c) => c.weight === "utility")!;
 
-/** Position in the section's numbering — the data's order, one-based. */
+/** Position in the section's numbering - the data's order, one-based. */
 const indexOf = (category: ExpertiseCategory) =>
   String(EXPERTISE.indexOf(category) + 1).padStart(2, "0");
 
@@ -201,7 +201,7 @@ export function Expertise() {
           <BlurReveal delay={0.1}>
             <p className="max-w-sm leading-relaxed text-muted-foreground lg:text-right">
               {EXPERTISE_TOTALS.domains} domains,{" "}
-              {EXPERTISE_TOTALS.technologies} technologies — arranged by how much
+              {EXPERTISE_TOTALS.technologies} technologies - arranged by how much
               of the delivery actually leans on them.
             </p>
           </BlurReveal>
@@ -244,7 +244,7 @@ export function Expertise() {
         </div>
       </div>
 
-      {/* full-bleed technology marquee — speed reacts to scroll velocity */}
+      {/* full-bleed technology marquee - speed reacts to scroll velocity */}
       <div className="mt-16 flex flex-col gap-3">
         <VelocityMarquee items={SKILL_MARQUEE.slice(0, Math.ceil(SKILL_MARQUEE.length / 2))} />
         <VelocityMarquee items={SKILL_MARQUEE.slice(Math.ceil(SKILL_MARQUEE.length / 2))} reverse />

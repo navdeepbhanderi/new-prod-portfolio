@@ -20,7 +20,7 @@ import { useLenis } from "@/components/layout/SmoothScroll";
 
 const NAME = PROFILE.firstName.toUpperCase();
 
-// Home is omitted — the giant name below goes there.
+// Home is omitted - the giant name below goes there.
 const SECTION_LINKS = SECTIONS.filter((s) => s.id !== "hero");
 
 function LocalTime() {
@@ -74,7 +74,7 @@ const linkClass =
 
 /**
  * Sticky-bottom uncover: <main> (opaque, z-10) lifts away as the page ends,
- * revealing this footer beneath it. Pure CSS positioning — degrades to a
+ * revealing this footer beneath it. Pure CSS positioning - degrades to a
  * normal footer without JS; only the inner "settle" drift is scripted.
  */
 export function Footer() {
@@ -235,7 +235,7 @@ export function Footer() {
             href={href("#hero")}
             scroll={false}
             onClick={scrollToTop}
-            aria-label={`${PROFILE.name} — back to top`}
+            aria-label={`${PROFILE.name} - back to top`}
             className="footer-name group flex select-none justify-center overflow-hidden"
           >
             {Array.from(NAME).map((char, i) => (

@@ -16,7 +16,7 @@ function Pill({ label }: { label: string }) {
 }
 
 /**
- * Infinite marquee whose speed and skew react to scroll velocity —
+ * Infinite marquee whose speed and skew react to scroll velocity -
  * flick-scroll and the row rushes and shears, then settles back.
  */
 export function VelocityMarquee({
@@ -63,7 +63,7 @@ export function VelocityMarquee({
       tween.timeScale(speed);
       gsap.set(row, { skewX: skew });
     };
-    // Run the ticker only while the row is visible — the skew forces a
+    // Run the ticker only while the row is visible - the skew forces a
     // re-raster every frame.
     let running = false;
     const start = () => {
@@ -117,7 +117,7 @@ export function VelocityMarquee({
   if (reduced) {
     return (
       // Decorative: every skill is already real, accessible text in the
-      // Expertise cards above — hide this duplicate row from assistive tech.
+      // Expertise cards above - hide this duplicate row from assistive tech.
       <div aria-hidden className="flex flex-wrap justify-center gap-3 px-6">
         {items.map((item) => (
           <Pill key={item} label={item} />
@@ -127,13 +127,13 @@ export function VelocityMarquee({
   }
 
   // The tween loops the track by -50%, so it must be two identical halves and
-  // each half has to outspan any viewport — otherwise wide screens see the
+  // each half has to outspan any viewport - otherwise wide screens see the
   // track end mid-row. Four copies per half (~32 chips) covers up to 4K.
   const half = Array.from({ length: 4 }, () => items).flat();
 
   return (
     // Decorative infinite ticker (items repeated 8×); the real, accessible
-    // skill list lives in the Expertise cards above — hide it from AT.
+    // skill list lives in the Expertise cards above - hide it from AT.
     <div aria-hidden className="mask-x overflow-hidden">
       <div ref={rowRef} className={cn("flex")}>
         <div ref={trackRef} className="flex shrink-0 gap-3 pr-3">

@@ -13,10 +13,10 @@ export const PROFILE = {
   timezone: "IST",
   email: EMAIL,
   tagline:
-    "Own frontend delivery end to end — requirement to release, backend included when needed.",
+    "Own frontend delivery end to end - requirement to release, backend included when needed.",
   /**
    * The hero's claim. `*asterisks*` mark the one Instrument Serif emphasis
-   * phrase — `TextReveal` strips them from the rendered text and the aria-label.
+   * phrase - `TextReveal` strips them from the rendered text and the aria-label.
    */
   claim: "Frontend built like *product*, not like tickets.",
   byline:
@@ -25,7 +25,7 @@ export const PROFILE = {
   currently: "Leading the frontend of a client build",
   coreStack: ["Angular", "React", "Next.js", "Node.js"],
   summary:
-    "Frontend engineer who reads a requirement all the way through before writing code, then builds and delivers it end to end. Comfortable enough on the backend (Node.js) to build and reason about the system behind the UI, not just consume it. Also bring team-leadership experience — coordinating delivery and keeping the team on track.",
+    "Frontend engineer who reads a requirement all the way through before writing code, then builds and delivers it end to end. Comfortable enough on the backend (Node.js) to build and reason about the system behind the UI, not just consume it. Also bring team-leadership experience - coordinating delivery and keeping the team on track.",
   company: "Softrefine Technology Pvt. Ltd.",
   /** Short form for running copy. */
   companyShort: "Softrefine",
@@ -39,7 +39,7 @@ export const PROFILE = {
 } as const;
 
 /**
- * One @graph with cross-referenced Person, WebSite, and ProfilePage nodes —
+ * One @graph with cross-referenced Person, WebSite, and ProfilePage nodes -
  * richer for search engines than a lone Person, and rendered once in layout.
  */
 export const SITE_JSON_LD = {
@@ -84,7 +84,7 @@ export const SITE_JSON_LD = {
       "@type": "WebSite",
       "@id": `${SITE_URL}/#website`,
       url: SITE_URL,
-      name: `${PROFILE.name} — Portfolio`,
+      name: `${PROFILE.name} - Portfolio`,
       description: PROFILE.tagline,
       publisher: { "@id": `${SITE_URL}/#person` },
       inLanguage: "en",
@@ -93,7 +93,7 @@ export const SITE_JSON_LD = {
       "@type": "ProfilePage",
       "@id": `${SITE_URL}/#profilepage`,
       url: SITE_URL,
-      name: `${PROFILE.name} — ${PROFILE.title}`,
+      name: `${PROFILE.name} - ${PROFILE.title}`,
       isPartOf: { "@id": `${SITE_URL}/#website` },
       about: { "@id": `${SITE_URL}/#person` },
       mainEntity: { "@id": `${SITE_URL}/#person` },

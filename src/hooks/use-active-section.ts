@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 /**
  * Which of the given section ids is currently in view. IntersectionObserver
- * (not ScrollTrigger) — Lenis drives native scroll, so IO stays accurate and
+ * (not ScrollTrigger) - Lenis drives native scroll, so IO stays accurate and
  * decoupled from GSAP's lifecycle.
  */
 export function useActiveSection(ids: string[]): string | null {

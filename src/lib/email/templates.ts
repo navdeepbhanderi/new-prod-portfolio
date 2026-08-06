@@ -3,12 +3,12 @@ import { SITE_URL } from "@/lib/site";
 
 /**
  * Inline-styled, table-layout email templates matching the site's dark visual
- * language. No webfonts, no SVG, no gradients — hairlines and type weight
+ * language. No webfonts, no SVG, no gradients - hairlines and type weight
  * carry the identity, which every client renders.
  *
  * Deliverability notes: no hidden preheader (hidden text is a spam signal),
  * no priority/bulk headers, plain-text part kept in sync with the HTML, and
- * the auto-reply stays transactional — no marketing CTAs.
+ * the auto-reply stays transactional - no marketing CTAs.
  */
 
 const bg = "#0a0a0b"; // --background
@@ -98,7 +98,7 @@ function shell(content: string): string {
 </html>`;
 }
 
-/** Quoted message: one cell with a 2px left border — survives every client. */
+/** Quoted message: one cell with a 2px left border - survives every client. */
 function messageQuote(message: string): string {
   return `<table role="presentation" border="0" width="100%" cellpadding="0" cellspacing="0">
   <tr>
@@ -151,7 +151,7 @@ export function ownerNotificationEmail(input: {
   `);
 
   return {
-    subject: `Portfolio inquiry — ${input.name}`,
+    subject: `Portfolio inquiry - ${input.name}`,
     html,
     text: `New message from ${input.name} <${input.email}> (${when} IST)\n\n${input.message}`,
   };
@@ -189,6 +189,6 @@ export function autoReplyEmail(input: {
   return {
     subject: `Thanks for your message, ${rawFirst}`,
     html,
-    text: `Thanks for reaching out, ${rawFirst}!\n\nYour message is in my inbox — I'll get back to you within 24 hours.\n\nYour message:\n${input.message}\n\n— ${PROFILE.name}\n${PROFILE.title}\n${SITE_URL}`,
+    text: `Thanks for reaching out, ${rawFirst}!\n\nYour message is in my inbox - I'll get back to you within 24 hours.\n\nYour message:\n${input.message}\n\n- ${PROFILE.name}\n${PROFILE.title}\n${SITE_URL}`,
   };
 }

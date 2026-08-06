@@ -11,7 +11,7 @@ const CommandPalette = dynamic(
 
 /**
  * Defers the command palette out of the critical bundle: it loads on browser
- * idle, or immediately on ⌘K / an open event — in which case the trigger is
+ * idle, or immediately on ⌘K / an open event - in which case the trigger is
  * replayed once the palette has mounted.
  */
 export function CommandPaletteLazy() {

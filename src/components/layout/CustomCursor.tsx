@@ -53,7 +53,7 @@ export function CustomCursor() {
   useEffect(() => {
     if (isTouch || reduced) return;
 
-    // Position: motion values only — no React state per mousemove.
+    // Position: motion values only - no React state per mousemove.
     const move = (e: MouseEvent) => {
       x.set(e.clientX);
       y.set(e.clientY);

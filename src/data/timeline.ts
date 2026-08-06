@@ -8,7 +8,7 @@ export const TIMELINE: TimelineItem[] = [
     title: "Diploma in Computer Engineering",
     subtitle: "Dr. Subhash Technical Campus",
     description:
-      "Built the fundamentals — programming, systems, and the engineering principles that still shape how I work.",
+      "Built the fundamentals - programming, systems, and the engineering principles that still shape how I work.",
     status: "past",
     aside: { label: "Foundation", value: "Programming · Systems" },
   },
@@ -19,7 +19,7 @@ export const TIMELINE: TimelineItem[] = [
     title: "B.Tech, Information Technology",
     subtitle: "Dr. Subhash University",
     description:
-      "Deepened into modern software engineering and full-stack development — completed while already working in the industry.",
+      "Deepened into modern software engineering and full-stack development - completed while already working in the industry.",
     status: "past",
     aside: { label: "Alongside", value: "Studied while working full-time" },
   },
@@ -30,7 +30,7 @@ export const TIMELINE: TimelineItem[] = [
     title: "Software Developer Intern",
     subtitle: "Softrefine Technology Pvt. Ltd.",
     description:
-      "First real industry work — moved from coursework to shipping production code on live client projects across the stack.",
+      "First real industry work - moved from coursework to shipping production code on live client projects across the stack.",
     status: "past",
     aside: { label: "Turning point", value: "Coursework → production" },
   },
@@ -41,7 +41,7 @@ export const TIMELINE: TimelineItem[] = [
     title: "Senior Frontend Engineer",
     subtitle: "Softrefine Technology Pvt. Ltd.",
     description:
-      "Leading the frontend side of a client build — starting from the full requirement, splitting delivery across the team, and shipping my own share of it end to end, backend work included where it's needed.",
+      "Leading the frontend side of a client build - starting from the full requirement, splitting delivery across the team, and shipping my own share of it end to end, backend work included where it's needed.",
     status: "present",
     aside: { label: "Scope", value: "Requirement → architecture → release" },
     stack: ["Angular", "TypeScript", "Node.js"],

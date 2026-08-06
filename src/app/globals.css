@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    /* Monochrome system — HSL channel values (used with hsl(var(--x))) */
+    /* Monochrome system - HSL channel values (used with hsl(var(--x))) */
     --background: 240 6% 4%;
     --foreground: 0 0% 98%;
 
@@ -13,7 +13,7 @@
 
     --border: 240 5% 16%;
 
-    /* Restrained cool accent — used sparingly for focus / glow */
+    /* Restrained cool accent - used sparingly for focus / glow */
     --accent: 230 60% 66%;
     --accent-foreground: 0 0% 98%;
 
@@ -47,7 +47,7 @@
     scroll-behavior: auto !important;
   }
   /* hidden, not clip: clip is not a scroll container, and scrollbar-gutter
-     only applies to scroll containers — clip would collapse the reserved
+     only applies to scroll containers - clip would collapse the reserved
      gutter whenever Lenis stops. */
   .lenis.lenis-stopped {
     overflow: hidden;
@@ -58,7 +58,7 @@
     color: hsl(var(--foreground));
     font-family: var(--font-sans), system-ui, sans-serif;
     overflow-x: hidden;
-    /* See the note on `html` — this is the declaration that actually reaches
+    /* See the note on `html` - this is the declaration that actually reaches
        the viewport, because `overflow-x: hidden` makes body the propagation
        source. */
     scrollbar-gutter: stable;
@@ -150,7 +150,7 @@
     color: transparent;
   }
 
-  /* Italic serif emphasis inside section headings — one phrase per title.
+  /* Italic serif emphasis inside section headings - one phrase per title.
      Slight right padding so the italic overhang isn't clipped by the
      word-reveal's overflow box. */
   .text-accent-italic {
@@ -212,13 +212,13 @@
     color: transparent;
     -webkit-text-stroke: 1px hsl(var(--foreground) / 0.45);
   }
-  /* The intro's unfilled name — lighter than text-stroke-strong so it reads
+  /* The intro's unfilled name - lighter than text-stroke-strong so it reads
      as the empty half of a filling meter. */
   .text-stroke-intro {
     color: transparent;
     -webkit-text-stroke: 1px hsl(var(--foreground) / 0.3);
   }
-  /* Hero surname — a crisp hairline outline with a faint bottom-lit fill.
+  /* Hero surname - a crisp hairline outline with a faint bottom-lit fill.
      1px keeps the stroke sharp; the fill fades out by mid-glyph so the
      letters stay airy instead of flat gray. Applied per-character via
      CharReveal's charClassName prop. */
@@ -294,7 +294,7 @@
   }
 }
 
-/* The mobile nav sheet owns the screen — the floating chat launcher would
+/* The mobile nav sheet owns the screen - the floating chat launcher would
    otherwise sit on top of its footer row. */
 html[data-nav-open="true"] .chat-launcher {
   display: none;
