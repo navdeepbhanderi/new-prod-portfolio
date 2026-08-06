@@ -168,11 +168,11 @@ export function ContactForm() {
             className="flex flex-col gap-4"
           >
             <div className="mb-2 flex items-center justify-between gap-4">
-              <span className="text-lg font-medium tracking-tight">
+              <span className="shrink-0 whitespace-nowrap text-lg font-medium tracking-tight">
                 Send a message
               </span>
-              <span className="inline-flex items-center gap-2 font-mono text-[9.5px] uppercase tracking-[0.2em] text-muted-foreground">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+              <span className="inline-flex items-center gap-2 text-right font-mono text-[9.5px] uppercase tracking-[0.2em] text-muted-foreground">
+                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400" />
                 Replies within 24h
               </span>
             </div>
@@ -243,12 +243,19 @@ export function ContactForm() {
               )}
             </AnimatePresence>
 
+            {/* On phones the hint has no room next to the button — drop it and
+                let the button span the row. */}
             <div className="mt-2 flex items-center justify-between gap-5 border-t border-border pt-5">
-              <span className="max-w-[15rem] text-xs leading-relaxed text-muted-foreground">
+              <span className="hidden max-w-[15rem] text-xs leading-relaxed text-muted-foreground sm:block">
                 Roughly what you&rsquo;re building and the timeline is plenty to
                 start.
               </span>
-              <Button type="submit" size="lg" disabled={status === "submitting"}>
+              <Button
+                type="submit"
+                size="lg"
+                className="w-full sm:w-auto"
+                disabled={status === "submitting"}
+              >
                 {status === "submitting" ? (
                   <>
                     <LoaderCircle className="h-4 w-4 animate-spin" />
