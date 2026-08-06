@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+import { OPEN_CHAT_EVENT } from "@/lib/events";
 
 const ChatWidget = dynamic(
   () => import("./ChatWidget").then((m) => ({ default: m.ChatWidget })),
@@ -26,11 +27,11 @@ export function ChatWidgetLazy() {
       // handed-over question in `detail`) once it is.
       const detail = (e as CustomEvent).detail;
       window.setTimeout(
-        () => window.dispatchEvent(new CustomEvent("navdeep:open-chat", { detail })),
+        () => window.dispatchEvent(new CustomEvent(OPEN_CHAT_EVENT, { detail })),
         350
       );
     };
-    window.addEventListener("navdeep:open-chat", onOpenRequest, { once: true });
+    window.addEventListener(OPEN_CHAT_EVENT, onOpenRequest, { once: true });
 
     const load = () => setReady(true);
     if (typeof window.requestIdleCallback === "function") {
@@ -40,7 +41,7 @@ export function ChatWidgetLazy() {
     }
 
     return () => {
-      window.removeEventListener("navdeep:open-chat", onOpenRequest);
+      window.removeEventListener(OPEN_CHAT_EVENT, onOpenRequest);
       if (idleId !== undefined) window.cancelIdleCallback?.(idleId);
       if (timeoutId !== undefined) window.clearTimeout(timeoutId);
     };

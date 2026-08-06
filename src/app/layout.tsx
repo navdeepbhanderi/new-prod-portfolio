@@ -18,7 +18,7 @@ import { HashScroll } from "@/components/layout/HashScroll";
 import { RoutePrefetch } from "@/components/layout/RoutePrefetch";
 import { MotionProvider } from "@/components/layout/MotionProvider";
 import { Preloader } from "@/components/layout/Preloader";
-import { CommandPalette } from "@/components/layout/CommandPalette";
+import { CommandPaletteLazy } from "@/components/layout/CommandPaletteLazy";
 import { CustomCursor } from "@/components/layout/CustomCursor";
 import { ScrollProgress } from "@/components/layout/ScrollProgress";
 import { Navbar } from "@/components/layout/Navbar";
@@ -119,7 +119,7 @@ export default function RootLayout({
             <HashScroll />
             <RoutePrefetch />
             <Preloader />
-            <CommandPalette />
+            <CommandPaletteLazy />
             <CustomCursor />
             <ScrollProgress />
             <Navbar />

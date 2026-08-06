@@ -13,6 +13,7 @@ import {
 import { useLenis } from "@/components/layout/SmoothScroll";
 import { holdScroll } from "@/lib/scroll-lock";
 import { useMediaQuery } from "@/hooks/use-media-query";
+import { OPEN_CHAT_EVENT } from "@/lib/events";
 import { EMAIL } from "@/data/socials";
 import { cn } from "@/lib/utils";
 
@@ -46,7 +47,7 @@ function parseActionTokens(text: string): ChatAction[] {
   return actions.slice(0, 3);
 }
 
-const OPEN_EVENT = "navdeep:open-chat";
+const OPEN_EVENT = OPEN_CHAT_EVENT;
 const STORAGE_KEY = "navdeep-chat-v1";
 // Keep in sync with MAX_MESSAGES / MAX_MESSAGE_CHARS in app/api/chat/route.ts —
 // the server discards anything beyond these anyway.
@@ -253,15 +254,16 @@ export function ChatWidget() {
     setHydrated(true);
   }, []);
 
-  // Persist history whenever it changes (after hydration).
+  // Persist history whenever it changes (after hydration) — but not on the
+  // per-frame updates while a reply streams; once when it settles.
   useEffect(() => {
-    if (!hydrated) return;
+    if (!hydrated || streamingId !== null) return;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
     } catch {
       /* storage full / unavailable — non-fatal */
     }
-  }, [messages, hydrated]);
+  }, [messages, hydrated, streamingId]);
 
   // Allow other components (navbar, palette, terminal) to open the chat —
   // optionally with a question to submit on arrival (CustomEvent detail).

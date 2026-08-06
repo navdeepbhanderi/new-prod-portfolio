@@ -22,7 +22,7 @@ import { DUR, EASE_OUT, SPRING_SNAPPY, STAGGER, staggerContainer } from "@/lib/m
 import { holdScroll } from "@/lib/scroll-lock";
 import { useActiveSection } from "@/hooks/use-active-section";
 import { useLenis } from "@/components/layout/SmoothScroll";
-import { OPEN_PALETTE_EVENT } from "@/components/layout/CommandPalette";
+import { OPEN_CHAT_EVENT, OPEN_PALETTE_EVENT } from "@/lib/events";
 
 const sheetItem = {
   hidden: { opacity: 0, y: 12 },
@@ -34,7 +34,7 @@ const sheetItem = {
 };
 
 function openChat() {
-  window.dispatchEvent(new Event("navdeep:open-chat"));
+  window.dispatchEvent(new Event(OPEN_CHAT_EVENT));
 }
 
 function openPalette() {

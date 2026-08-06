@@ -35,9 +35,8 @@ import { BRAND_ICONS } from "@/components/icons";
 import { useLenis } from "@/components/layout/SmoothScroll";
 import { holdScroll } from "@/lib/scroll-lock";
 import { EASE_OUT, DUR } from "@/lib/motion";
+import { OPEN_CHAT_EVENT, OPEN_PALETTE_EVENT } from "@/lib/events";
 import { cn } from "@/lib/utils";
-
-export const OPEN_PALETTE_EVENT = "navdeep:open-palette";
 
 type Group = "Navigate" | "Projects" | "Expertise" | "Actions" | "Connect";
 
@@ -122,7 +121,7 @@ export function CommandPalette() {
   }, []);
 
   const askAi = useCallback(() => {
-    window.dispatchEvent(new Event("navdeep:open-chat"));
+    window.dispatchEvent(new Event(OPEN_CHAT_EVENT));
   }, []);
 
   const commands = useMemo<Command[]>(() => {

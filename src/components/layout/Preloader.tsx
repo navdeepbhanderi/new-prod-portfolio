@@ -88,16 +88,23 @@ export function Preloader() {
       mark("fonts");
     });
 
-    // "Scene" is the hero portrait — the LCP element.
-    const portrait = new Image();
+    // "Scene" is the hero portrait — the LCP element. Watch the <img> the
+    // page actually renders: fetching the asset separately would download the
+    // full-size original alongside next/image's optimized variant.
     const settleScene = () => {
       sceneReady = true;
       mark("scene");
     };
-    portrait.onload = settleScene;
-    portrait.onerror = settleScene;
-    portrait.src = "/navdeep.webp";
-    if (portrait.decode) portrait.decode().then(settleScene).catch(settleScene);
+    const sceneImg = document.querySelector<HTMLImageElement>("#hero img");
+    if (!sceneImg) {
+      // No portrait on this route — nothing to wait for.
+      settleScene();
+    } else if (sceneImg.complete && sceneImg.naturalWidth > 0) {
+      settleScene();
+    } else {
+      sceneImg.addEventListener("load", settleScene, { once: true });
+      sceneImg.addEventListener("error", settleScene, { once: true });
+    }
 
     // ---- skip --------------------------------------------------------------
     let skipped = false;
@@ -254,6 +261,8 @@ export function Preloader() {
       cancelAnimationFrame(raf);
       window.removeEventListener("keydown", skip);
       window.removeEventListener("pointerdown", skip);
+      sceneImg?.removeEventListener("load", settleScene);
+      sceneImg?.removeEventListener("error", settleScene);
       ctx.revert();
     };
   }, []);

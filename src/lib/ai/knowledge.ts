@@ -165,7 +165,7 @@ export const INTENTS: Intent[] = [
       "available",
       "availability",
     ],
-    answer: `The fastest way to reach Navdeep is email: ${PROFILE.email}. You can also connect on LinkedIn (in/navdeepbhanderi), GitHub (@navdeepbhanderi), or X (@navdeepbhanderi). He's open to full-time opportunities, freelance projects, startup collaborations, and product engineering roles.`,
+    answer: `The fastest way to reach Navdeep is email: ${PROFILE.email}. You can also connect on LinkedIn (in/navdeepbhanderi), GitHub (@navdeepbhanderi), or X (@NavdeepBhanderi). He's open to full-time opportunities, freelance projects, startup collaborations, and product engineering roles.`,
     related: ["Why should I hire him?", "What does he specialize in?"],
     actions: ["email", "linkedin"],
   },
