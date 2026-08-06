@@ -20,10 +20,19 @@ import { usePrefersReducedMotion } from "@/hooks/use-media-query";
 /** Portrait scrims — the fade axis differs per layout (top band vs column). */
 const SCRIM_BAND =
   "bg-[linear-gradient(to_bottom,hsl(var(--background)/0.72)_0%,hsl(var(--background)/0.12)_30%,hsl(var(--background)/0.55)_68%,hsl(var(--background))_100%)]";
-// Fully opaque through the first 7% — the pointer parallax shifts the image
-// ±11px, and the hold keeps its left edge from ever surfacing as a seam.
+// The layer overshoots the column by 32px (md:-left-8) so the portrait's left
+// edge is always covered. That overshoot used to start fully opaque, which cut
+// a vertical line through the accent glow behind it — invisible at the top of
+// the hero, ~12 luminance units by the floor, where the glow is brightest.
+//
+// It now fades in across the overshoot instead, and holds opaque from 24px to
+// 44px so the portrait edge (32px in, and fixed relative to this layer — both
+// sit inside the same parallax wrapper) still never surfaces. Those two stops
+// are px, not %, because the column is 38vw / 34vw / max 36rem depending on
+// width: as a percentage the hold would reorder against the 15% stop on
+// narrow screens and collapse into a hard step.
 const SCRIM_COLUMN =
-  "md:bg-[linear-gradient(to_right,hsl(var(--background))_0%,hsl(var(--background))_7%,hsl(var(--background)/0.88)_15%,hsl(var(--background)/0.34)_30%,hsl(var(--background)/0.04)_50%,hsl(var(--background)/0.06)_78%,hsl(var(--background)/0.3)_100%)]";
+  "md:bg-[linear-gradient(to_right,transparent_0px,hsl(var(--background))_24px,hsl(var(--background))_44px,hsl(var(--background)/0.88)_15%,hsl(var(--background)/0.34)_30%,hsl(var(--background)/0.04)_50%,hsl(var(--background)/0.06)_78%,hsl(var(--background)/0.3)_100%)]";
 const SCRIM_FLOOR =
   "md:bg-[linear-gradient(to_top,hsl(var(--background))_0%,transparent_34%)]";
 
