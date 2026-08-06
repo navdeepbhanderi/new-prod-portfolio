@@ -165,12 +165,9 @@ export function Navbar() {
             >
               {/* id: the intro's name flies to this mark as the curtain lifts. */}
               <span id="nav-mark" className="flex items-center">
-                {/* Bare mark on phones. */}
-                <NMark
-                  size={scrolled ? 26 : 30}
-                  framed={!scrolled}
-                  frameClassName="max-sm:hidden"
-                />
+                {/* Bare at every width — 4b and 4c draw the nav mark as a
+                    plain glyph with no container, in both nav states. */}
+                <NMark size={scrolled ? 26 : 30} />
               </span>
               {/* No width animation on collapsing labels — the nav's `layout`
                   closes the gap. */}

@@ -15,16 +15,10 @@ function strokeFor(size: number): number {
 
 export function NMark({
   size = 30,
-  framed = false,
-  frameClassName,
   strokeWidth,
   className,
 }: {
   size?: number;
-  /** Draws the rounded container hairline (the standalone / lockup form). */
-  framed?: boolean;
-  /** Classes for the frame alone — lets a caller drop it at one breakpoint. */
-  frameClassName?: string;
   strokeWidth?: number;
   className?: string;
 }) {
@@ -37,16 +31,6 @@ export function NMark({
       aria-hidden
       className={cn("shrink-0", className)}
     >
-      {framed && (
-        <rect
-          x="1"
-          y="1"
-          width="46"
-          height="46"
-          rx="14"
-          className={cn("stroke-border", frameClassName)}
-        />
-      )}
       <path
         d="M15 34V14l14 20V14"
         stroke="currentColor"
@@ -65,13 +49,11 @@ export function NMark({
  */
 export function Lockup({
   size = 30,
-  framed = false,
   role = false,
   nameClassName,
   className,
 }: {
   size?: number;
-  framed?: boolean;
   /** Adds the mono role line under the name. */
   role?: boolean;
   nameClassName?: string;
@@ -79,7 +61,7 @@ export function Lockup({
 }) {
   return (
     <span className={cn("flex items-center gap-2.5", className)}>
-      <NMark size={size} framed={framed} />
+      <NMark size={size} />
       <span className="flex flex-col gap-0.5">
         <span
           className={cn(
