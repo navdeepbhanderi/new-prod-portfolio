@@ -184,6 +184,17 @@
     mask-image: linear-gradient(to bottom, black 70%, transparent);
   }
 
+  /* Hero grid: fade toward the bottom AND before the portrait column, so no
+     grid line ever hard-stops against the image edge as a stray vertical rule. */
+  .mask-hero-grid {
+    -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent),
+      linear-gradient(to right, black 45%, transparent 78%);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(to bottom, black 70%, transparent),
+      linear-gradient(to right, black 45%, transparent 78%);
+    mask-composite: intersect;
+  }
+
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }

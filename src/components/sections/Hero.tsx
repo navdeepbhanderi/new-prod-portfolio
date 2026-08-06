@@ -20,8 +20,10 @@ import { usePrefersReducedMotion } from "@/hooks/use-media-query";
 /** Portrait scrims — the fade axis differs per layout (top band vs column). */
 const SCRIM_BAND =
   "bg-[linear-gradient(to_bottom,hsl(var(--background)/0.72)_0%,hsl(var(--background)/0.12)_30%,hsl(var(--background)/0.55)_68%,hsl(var(--background))_100%)]";
+// Fully opaque through the first 7% — the pointer parallax shifts the image
+// ±11px, and the hold keeps its left edge from ever surfacing as a seam.
 const SCRIM_COLUMN =
-  "md:bg-[linear-gradient(to_right,hsl(var(--background))_0%,hsl(var(--background)/0.86)_9%,hsl(var(--background)/0.34)_24%,hsl(var(--background)/0.04)_46%,hsl(var(--background)/0.06)_78%,hsl(var(--background)/0.3)_100%)]";
+  "md:bg-[linear-gradient(to_right,hsl(var(--background))_0%,hsl(var(--background))_7%,hsl(var(--background)/0.88)_15%,hsl(var(--background)/0.34)_30%,hsl(var(--background)/0.04)_50%,hsl(var(--background)/0.06)_78%,hsl(var(--background)/0.3)_100%)]";
 const SCRIM_FLOOR =
   "md:bg-[linear-gradient(to_top,hsl(var(--background))_0%,transparent_34%)]";
 
@@ -81,7 +83,7 @@ export function Hero() {
         style={reduced ? undefined : { x: bgX, y: bgY }}
         className="absolute -inset-10 -z-10"
       >
-        <div className="absolute inset-0 bg-grid-lines mask-b opacity-60" />
+        <div className="absolute inset-0 bg-grid-lines mask-hero-grid opacity-60" />
         {/* Static — the pointer parallax on this layer supplies the movement. */}
         <div className="absolute -left-20 top-1/3 h-72 w-72 rounded-full bg-foreground/[0.04] blur-3xl" />
         <div className="absolute bottom-0 left-1/2 h-[520px] w-[1100px] -translate-x-1/2 translate-y-1/3 rounded-full bg-[radial-gradient(ellipse_at_center,hsl(var(--accent)/0.16),transparent_65%)] blur-3xl" />

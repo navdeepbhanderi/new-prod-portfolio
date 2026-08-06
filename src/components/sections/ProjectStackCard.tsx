@@ -13,7 +13,7 @@ import type { Project } from "@/types";
 import { ProductMock } from "@/components/ui/ProductMock";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { usePrefersReducedMotion } from "@/hooks/use-media-query";
+import { useMediaQuery, usePrefersReducedMotion } from "@/hooks/use-media-query";
 
 /** The visual bleeds to the card's edge and clips at the bottom. */
 function ProjectVisual({ project }: { project: Project }) {
@@ -98,6 +98,12 @@ type StackCardProps = {
  */
 export function StackCard({ index, total, progress, children, className }: StackCardProps) {
   const reduced = usePrefersReducedMotion();
+  // Below lg every card pins at the same top, so a taller card's bottom (its
+  // CTA row) pokes out beneath the shorter card covering it. Fade covered
+  // cards out entirely there and drop their hit-testing; on lg the peeking
+  // edges are the deck's depth cue and stay at a partial dim.
+  const compact = useMediaQuery("(max-width: 1023px)");
+  const isLast = index === total - 1;
 
   // Card i settles at a slightly smaller scale the deeper it sits in the deck.
   const targetScale = 1 - (total - 1 - index) * 0.04;
@@ -105,7 +111,16 @@ export function StackCard({ index, total, progress, children, className }: Stack
   const dim = useTransform(
     progress,
     [index / total, 1],
-    [0, index === total - 1 ? 0 : 0.5]
+    [0, isLast || compact ? 0 : 0.5]
+  );
+  // The next card fully covers this one at progress (index + 1) / total.
+  const cardOpacity = useTransform(
+    progress,
+    [(index + 0.7) / total, (index + 1) / total],
+    [1, isLast || !compact ? 1 : 0]
+  );
+  const pointerEvents = useTransform(progress, (p) =>
+    compact && !isLast && p >= (index + 0.98) / total ? "none" : "auto"
   );
 
   // Sticky stacking + scale/dim scrub is the deck's signature on every screen.
@@ -132,7 +147,13 @@ export function StackCard({ index, total, progress, children, className }: Stack
         // every frame instead of compositing.
         style={
           scrub
-            ? { scale, transformOrigin: "center top", willChange: "transform" }
+            ? {
+                scale,
+                opacity: cardOpacity,
+                pointerEvents,
+                transformOrigin: "center top",
+                willChange: "transform",
+              }
             : undefined
         }
         className="relative overflow-hidden rounded-[1.75rem] border border-border bg-[hsl(240_6%_5%)] sm:rounded-[2rem]"
