@@ -6,15 +6,9 @@ import { NMark } from "@/components/brand/Logo";
 import { cn } from "@/lib/utils";
 
 /**
- * Renders Navdeep's portrait from /navdeep.webp via next/image (AVIF/WebP,
- * responsive sizes, preloaded when priority — the hero portrait is an LCP
- * candidate). If the file is missing, it gracefully falls back to the N-mark
- * so the layout never breaks.
- *
- * `objectPosition` exists because the hero uses one asset in three very
- * different frames (floor-to-ceiling column, narrow tablet column, mobile top
- * band) and each needs its own crop. `tone` applies the editorial grade — a
- * touch of grayscale so the portrait sits behind the type instead of competing.
+ * Portrait via next/image; falls back to the N-mark if the file is missing.
+ * `objectPosition` sets the crop per layout; `tone` applies a slight
+ * grayscale grade.
  */
 export function ProfileImage({
   className,

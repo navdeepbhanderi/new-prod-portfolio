@@ -15,10 +15,9 @@ const SECTIONS = [
 const SECTION_IDS = SECTIONS.map((s) => s.id);
 
 /**
- * Reading rail for case studies: a fixed dot-per-section indicator on the
- * right edge (xl and up). The active dot stretches into a bar with its label;
- * clicking jumps to the section. Motion in service of scanning — a recruiter
- * sees the shape of the case study and can jump straight to Outcome.
+ * Reading rail for case studies: a fixed dot-per-section indicator (xl+).
+ * The active dot stretches into a bar with its label; clicking jumps to the
+ * section.
  */
 export function ReadingRail() {
   const active = useActiveSection(SECTION_IDS);

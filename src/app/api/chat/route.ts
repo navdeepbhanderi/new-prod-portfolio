@@ -11,12 +11,11 @@ type ChatMessage = { role: "user" | "assistant"; content: string };
 
 const MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
 
-// Keep the payload — and therefore Gemini spend — bounded.
+// Bound the payload sent upstream.
 const MAX_MESSAGES = 12;
 const MAX_MESSAGE_CHARS = 1000;
 const UPSTREAM_TIMEOUT_MS = 25_000;
 
-// 30 messages/hour/IP is generous for a human conversation.
 const rateLimited = createRateLimiter({ windowMs: 60 * 60 * 1000, max: 30 });
 
 function localReply(messages: ChatMessage[]): {
@@ -40,10 +39,10 @@ function localReply(messages: ChatMessage[]): {
   };
 }
 
-// The widget reads the body as a plain-text stream; `x-chat-source` says
-// which brain answered (gemini | local | local-fallback), `x-chat-related`
-// carries follow-up question chips and `x-chat-actions` tappable action
-// buttons for local answers (Gemini emits actions as trailing tokens).
+// The widget reads the body as a plain-text stream. `x-chat-source` names the
+// answer source (gemini | local | local-fallback); `x-chat-related` and
+// `x-chat-actions` carry follow-up chips and action buttons for local answers
+// (Gemini emits actions as trailing tokens).
 function textResponse(
   text: string,
   source: string,
@@ -148,7 +147,7 @@ export async function POST(req: Request) {
 
   const apiKey = process.env.GEMINI_API_KEY;
 
-  // No key configured → use the built-in knowledge base so the widget still works.
+  // No key configured — fall back to the built-in knowledge base.
   if (!apiKey) {
     const { answer, related, actions } = localReply(trimmed);
     return textResponse(answer, "local", related, actions);
@@ -164,8 +163,7 @@ export async function POST(req: Request) {
       temperature: 0.6,
       maxOutputTokens: 600,
       topP: 0.95,
-      // Disable extended "thinking" — this is a simple Q&A bot, so keep
-      // responses fast and token-cheap. (Supported on Gemini 2.5 models.)
+      // Disable extended thinking (supported on Gemini 2.5 models).
       thinkingConfig: { thinkingBudget: 0 },
     },
   });
@@ -173,8 +171,7 @@ export async function POST(req: Request) {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:streamGenerateContent?alt=sse`;
 
   try {
-    // One timeout covers connection + the whole stream; 600 output tokens
-    // finish well inside it. Retry a couple of times on transient
+    // One timeout covers connection + the whole stream. Retry transient
     // overload/rate errors before falling back.
     const signal = AbortSignal.timeout(UPSTREAM_TIMEOUT_MS);
     let res: Response | null = null;
@@ -183,7 +180,6 @@ export async function POST(req: Request) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // Header, not `?key=` — query strings leak into logs and traces.
           "x-goog-api-key": apiKey,
         },
         body: payload,

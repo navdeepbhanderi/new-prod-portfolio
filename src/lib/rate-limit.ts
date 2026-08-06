@@ -1,8 +1,7 @@
 /**
- * Best-effort in-memory sliding-window rate limiter. Per serverless
- * instance — it resets on cold starts and isn't shared across instances,
- * so treat it as a blunt instrument against casual abuse. If real spam
- * ever shows up, swap for a shared store (e.g. @upstash/ratelimit).
+ * Best-effort in-memory sliding-window rate limiter. Per serverless instance
+ * (resets on cold start, not shared across instances). Swap for a shared
+ * store (e.g. @upstash/ratelimit) if real abuse shows up.
  */
 export function createRateLimiter({
   windowMs,
@@ -21,9 +20,8 @@ export function createRateLimiter({
     const limited = recent.length >= max;
     if (!limited) recent.push(now);
 
-    // Delete-then-set so Map insertion order tracks recency; the memory
-    // backstop below can then evict the least-recently-seen keys instead
-    // of wiping everyone (including active abusers) at once.
+    // Delete-then-set keeps Map insertion order tracking recency, so the
+    // eviction below drops the least-recently-seen keys first.
     hits.delete(key);
     hits.set(key, recent);
     for (const k of hits.keys()) {

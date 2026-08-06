@@ -5,8 +5,7 @@ import { GeistMono } from "geist/font/mono";
 import { Instrument_Serif } from "next/font/google";
 import "./globals.css";
 
-// Display serif used ONLY for the italic emphasis word in section headings —
-// the editorial counterpoint to Geist's grotesque. See DESIGN.md §3.
+// Display serif used only for the italic emphasis word in section headings.
 const displaySerif = Instrument_Serif({
   subsets: ["latin"],
   weight: "400",

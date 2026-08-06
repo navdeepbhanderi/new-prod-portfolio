@@ -2,12 +2,9 @@ import { cn } from "@/lib/utils";
 import { PROFILE } from "@/lib/profile";
 
 /**
- * The N-mark: one continuous stroke that draws an N — a path from start to
- * finish — with the dot as the release. Stroke is `currentColor`, so the mark
- * inherits whatever foreground it sits on (nav, footer, inverted chips).
- *
- * The stroke thickens as the mark shrinks so it stays legible at favicon
- * sizes; pass `strokeWidth` to override.
+ * The N-mark. Stroke is currentColor so it inherits the surrounding
+ * foreground; it thickens as the mark shrinks so it stays legible at small
+ * sizes (pass `strokeWidth` to override).
  */
 function strokeFor(size: number): number {
   if (size <= 18) return 3.4;

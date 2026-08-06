@@ -222,7 +222,7 @@ export function ContactForm() {
               />
             </Field>
 
-            {/* Honeypot — invisible to humans, irresistible to bots. */}
+            {/* Honeypot field. */}
             <div aria-hidden className="absolute -left-[9999px] top-auto h-px w-px overflow-hidden">
               <label htmlFor="cf-company">Company</label>
               <input id="cf-company" name="company" type="text" tabIndex={-1} autoComplete="off" />

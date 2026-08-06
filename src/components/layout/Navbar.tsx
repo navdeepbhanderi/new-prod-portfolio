@@ -67,8 +67,7 @@ export function Navbar() {
   // open sheet can't unlock the page underneath it.
   useEffect(() => (open ? holdScroll(lenis) : undefined), [open, lenis]);
 
-  // The chat launcher floats above the sheet (z-90 vs z-76) and would sit on
-  // top of the sheet's footer row; flag the document so CSS can retire it.
+  // Flag the document so CSS can hide the chat launcher under the open sheet.
   useEffect(() => {
     const root = document.documentElement;
     if (open) root.dataset.navOpen = "true";
@@ -143,14 +142,9 @@ export function Navbar() {
         // Keyboard users must never lose the nav while tabbing.
         onFocusCapture={() => setHidden(false)}
       >
-        {/* No scrim here. The transparent state is the design (§6), and a strip
-            dark enough to carry muted text stacked with the hero band's own 0.72
-            top scrim to ~0.96 — a visible black bar across the portrait, with a
-            hard edge where it ended. The controls carry their own contrast
-            instead, which is what actually needed fixing. */}
         <motion.nav
-          // `layout` is what makes the wide bar collapse into the condensed
-          // pill as one continuous move instead of two states swapping.
+          // `layout` makes the wide bar collapse into the condensed pill as
+          // one continuous move.
           layout
           initial={{ y: -24, opacity: 0 }}
           animate={{ y: hidden ? "-130%" : 0, opacity: 1 }}
@@ -171,17 +165,15 @@ export function Navbar() {
             >
               {/* id: the intro's name flies to this mark as the curtain lifts. */}
               <span id="nav-mark" className="flex items-center">
-                {/* Bare mark on phones — 4b/4c draw the nav mark as a plain
-                    glyph with no container at any width. */}
+                {/* Bare mark on phones. */}
                 <NMark
                   size={scrolled ? 26 : 30}
                   framed={!scrolled}
                   frameClassName="max-sm:hidden"
                 />
               </span>
-              {/* No width animation on any of the collapsing labels: the nav's
-                  own `layout` closes the gap, and animating to width:auto
-                  overlaps the content mid-flight. */}
+              {/* No width animation on collapsing labels — the nav's `layout`
+                  closes the gap. */}
               <AnimatePresence initial={false} mode="popLayout">
                 {!scrolled && (
                   <motion.span
@@ -246,9 +238,7 @@ export function Navbar() {
               aria-keyshortcuts={isMac ? "Meta+K" : "Control+K"}
               className={cn(
                 "hidden items-center gap-2 rounded-full border border-border text-sm transition-colors hover:border-foreground/25 hover:text-foreground lg:flex",
-                // Scrolled, the nav's own glass supplies the contrast. Unscrolled
-                // the control has to carry its own, or it reads as a ghost over
-                // anything light.
+                // Unscrolled, the control carries its own contrast.
                 scrolled
                   ? "h-9 w-9 justify-center bg-foreground/5 text-muted-foreground"
                   : "h-9 bg-background/80 px-3.5 text-foreground/70"

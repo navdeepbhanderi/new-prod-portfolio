@@ -36,9 +36,8 @@ export function Starfield({
   className?: string;
   density?: number;
   /**
-   * The footer's starfield sits under an opaque <main> for the whole page, so
-   * IntersectionObserver always reports it visible and the loop would repaint
-   * ~250 stars a frame at nobody. Owners pass `false` until it's uncovered.
+   * The footer's canvas sits under an opaque <main>, so IntersectionObserver
+   * always reports it visible; owners pass `false` until it's uncovered.
    */
   active?: boolean;
 }) {
@@ -71,8 +70,7 @@ export function Starfield({
       }));
     };
 
-    // Shooting stars: rare, thin, gone in ~a second. Spawned on a randomised
-    // clock so they read as chance sightings, never a pattern.
+    // Shooting stars, spawned on a randomised clock.
     let meteors: Meteor[] = [];
     let nextMeteor = 3000 + Math.random() * 6000;
     let lastT = 0;

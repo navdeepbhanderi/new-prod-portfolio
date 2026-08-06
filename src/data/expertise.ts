@@ -2,10 +2,8 @@ import { Boxes, Braces, Database, Layers, Sparkles, Wrench } from "lucide-react"
 import type { ExpertiseCategory } from "@/types";
 
 /**
- * `weight` drives the layout, not the order: one `primary` domain becomes the
- * tall hero panel, `utility` becomes the strip along the bottom, and the rest
- * are compact cards. Six equal cards said every domain mattered equally —
- * this says frontend is the specialty and the rest is range.
+ * `weight` drives the layout: the `primary` domain becomes the tall hero
+ * panel, `utility` the strip along the bottom, the rest compact cards.
  */
 export const EXPERTISE: ExpertiseCategory[] = [
   {
@@ -59,7 +57,7 @@ export const EXPERTISE: ExpertiseCategory[] = [
   },
 ];
 
-/** Totals for the section's meta line — derived, never hand-counted. */
+/** Totals for the section's meta line. */
 export const EXPERTISE_TOTALS = {
   domains: EXPERTISE.length,
   technologies: new Set(EXPERTISE.flatMap((c) => c.technologies)).size,

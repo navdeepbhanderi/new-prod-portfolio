@@ -4,10 +4,8 @@ import type { Project } from "@/types";
 import { cn } from "@/lib/utils";
 
 /**
- * Stylised, per-project product mocks — placeholders until real screenshots
- * land in public/projects/. Each variant sketches the actual product's shape
- * (an itinerary planner, a live attendance roster) so the two projects read
- * as different apps, not the same skeleton twice. Monochrome tokens only.
+ * Stylised product mocks — placeholders until real screenshots land in
+ * public/projects/. Monochrome tokens only.
  */
 
 function ChromeBar({ id, lg }: { id: string; lg?: boolean }) {
@@ -21,8 +19,7 @@ function ChromeBar({ id, lg }: { id: string; lg?: boolean }) {
   );
 }
 
-/** NDA-friendly visual: a layered architecture flow + honest metric tiles.
-    Reveals system thinking without exposing any client UI. */
+/** NDA-friendly visual: a layered architecture flow plus metric tiles. */
 function ArchitectureBody({
   diagram,
   lg,
@@ -32,8 +29,7 @@ function ArchitectureBody({
   lg?: boolean;
   metrics?: boolean;
 }) {
-  // Owned layers render solid; the consumed external system renders dashed and
-  // dimmed so the boundary of what was actually built is unmistakable.
+  // Owned layers render solid; the consumed external system renders dashed.
   const nodes = [
     ...diagram.flow.map((label) => ({ label, external: false })),
     ...(diagram.consumes ? [{ label: diagram.consumes, external: true }] : []),
@@ -53,9 +49,7 @@ function ArchitectureBody({
         </span>
       )}
 
-      {/* Layered flow: owned layers → consumed backend boundary. On phones the
-          arrows would be a pixel wide, so the layers stack into a grid and the
-          arrows drop out — the boundary still reads from the dashed node. */}
+      {/* On phones the layers stack into a grid and the arrows drop out. */}
       <div
         className={cn(
           "grid grid-cols-2 items-stretch sm:flex",
@@ -154,9 +148,8 @@ export function ProductMock({
     <div
       aria-hidden
       className={cn(
-        // Deliberately NOT .glass-strong: the mock always sits on an opaque
-        // gradient, so the backdrop blur bought nothing visually and cost a
-        // full re-raster every frame the deck card scaled under it.
+        // Opaque background — backdrop blur here cost a full re-raster every
+        // frame the deck card scaled under it.
         "w-full border border-white/[0.08] bg-[hsl(240_6%_8%/0.92)] shadow-2xl shadow-black/40",
         lg ? "max-w-2xl rounded-2xl p-4" : "max-w-md rounded-xl p-3",
         className

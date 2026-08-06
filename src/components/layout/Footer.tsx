@@ -20,7 +20,7 @@ import { useLenis } from "@/components/layout/SmoothScroll";
 
 const NAME = PROFILE.firstName.toUpperCase();
 
-// Everything but Home — the giant name below already goes there.
+// Home is omitted — the giant name below goes there.
 const SECTION_LINKS = SECTIONS.filter((s) => s.id !== "hero");
 
 function LocalTime() {
@@ -97,9 +97,8 @@ export function Footer() {
     }
   };
 
-  // Finale choreography, scrubbed over the last stretch of scroll: the earth
-  // rim rises into place, the content settles, and the giant name brightens
-  // last — the sunrise happens because the visitor scrolled.
+  // Scroll-scrubbed finale: the horizon rises, the content settles, the name
+  // brightens last.
   useEffect(() => {
     const root = footerRef.current;
     const inner = innerRef.current;
@@ -163,7 +162,7 @@ export function Footer() {
         ref={innerRef}
         className="container-px relative flex h-full flex-col justify-between gap-12 pb-8 pt-16 md:gap-6 md:pt-20"
       >
-        {/* ---------- the ask, and the map ---------- */}
+        {/* ---------- contact + sitemap ---------- */}
         <div className="grid gap-10 md:grid-cols-[minmax(0,1fr)_repeat(3,minmax(0,10.5rem))] md:gap-12">
           <div className="flex flex-col items-start">
             <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-muted-foreground">

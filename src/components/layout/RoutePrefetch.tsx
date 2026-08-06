@@ -6,17 +6,10 @@ import { PROJECTS } from "@/data/projects";
 import { useIntroDone } from "@/lib/intro";
 
 /**
- * Warms the case-study routes once the page itself is done.
- *
- * Next already prefetches a `<Link>` when it scrolls into view, but that means
- * the deck has to be on screen before a project route is warm — so opening one
- * from the command palette, the footer, or a fast click near the top still paid
- * for the fetch. Since the whole navigation happens inside
- * `document.startViewTransition`, that wait is a *frozen* page rather than a
- * spinner, which reads far worse than it measures.
- *
- * Two routes of static HTML, fetched on idle after the intro has handed over,
- * and skipped entirely when the visitor has asked us to save data.
+ * Prefetch the case-study routes on idle once the intro has handed over.
+ * In-view <Link> prefetch doesn't cover navigations from the palette or
+ * footer, and the view transition freezes the page while it waits. Skipped
+ * on save-data / 2G connections.
  */
 export function RoutePrefetch() {
   const router = useRouter();

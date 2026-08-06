@@ -5,10 +5,7 @@ export const EASE_OUT = [0.22, 1, 0.36, 1] as const;
 export const EASE_OUT_EXPO = [0.16, 1, 0.3, 1] as const;
 export const EASE_IN_OUT = [0.65, 0, 0.35, 1] as const;
 
-/**
- * GSAP twins for timelines that live outside Framer.
- * (EASE_OUT's CSS twin is the Tailwind `ease-out-quart` token — same curve.)
- */
+/** GSAP equivalents for timelines outside Framer (ease-out-quart in CSS). */
 export const GSAP_EASE = "power4.out";
 export const GSAP_EASE_IN_OUT = "power4.inOut";
 
@@ -22,7 +19,7 @@ export const DUR = {
   slow: 1.1,
 } as const;
 
-/** Stagger rhythm — one place, so the values in DESIGN.md §4 stop being retyped. */
+/** Shared stagger rhythm. */
 export const STAGGER = {
   chip: 0.04,
   char: 0.025,

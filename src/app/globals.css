@@ -33,11 +33,8 @@
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     scroll-behavior: smooth;
-    /* Always reserve scrollbar space so locking scroll (mobile menu / palette /
-       chat) never shifts fixed, right-anchored elements. Declared on `body`
-       too: `overflow-x: hidden` below makes body the element the UA propagates
-       overflow — and with it scrollbar-gutter — from to the viewport, so this
-       declaration on `html` alone is ignored. */
+    /* Reserve scrollbar space so locking scroll never shifts fixed elements.
+       Also declared on body, which is the overflow propagation source here. */
     scrollbar-gutter: stable;
   }
 
@@ -49,12 +46,9 @@
   .lenis.lenis-smooth {
     scroll-behavior: auto !important;
   }
-  /* `hidden`, not `clip`. `clip` is not a scroll container, and
-     `scrollbar-gutter` only applies to scroll containers — so the instant an
-     overlay called `lenis.stop()` the reserved gutter collapsed and the whole
-     page, navbar included, jumped right by the scrollbar's width. `hidden`
-     still blocks user scrolling but keeps the scroll container, and the gutter
-     with it. */
+  /* hidden, not clip: clip is not a scroll container, and scrollbar-gutter
+     only applies to scroll containers — clip would collapse the reserved
+     gutter whenever Lenis stops. */
   .lenis.lenis-stopped {
     overflow: hidden;
   }
@@ -141,10 +135,9 @@
     color: transparent;
   }
 
-  /* Classy tinted name gradient — solid white holding through most of the
-     glyph, easing into a soft cool silver only at the baseline so the name
-     reads bright, not washed out. Apply per-character when chars are
-     transformed (background-clip breaks across transformed children). */
+  /* Name gradient: white easing into a cool silver at the baseline. Apply
+     per-character when chars are transformed (background-clip breaks across
+     transformed children). */
   .text-name-gradient {
     background: linear-gradient(
       180deg,
@@ -157,8 +150,7 @@
     color: transparent;
   }
 
-  /* Editorial italic emphasis inside section headings — the serif counterpoint
-     to Geist. Reserved for ONE phrase per section title (see DESIGN.md §3).
+  /* Italic serif emphasis inside section headings — one phrase per title.
      Slight right padding so the italic overhang isn't clipped by the
      word-reveal's overflow box. */
   .text-accent-italic {
@@ -209,9 +201,8 @@
     color: transparent;
     -webkit-text-stroke: 1px hsl(var(--foreground) / 0.45);
   }
-  /* The intro's unfilled name. 3c strokes it at 0.3, not the 0.45 the MORE card
-     uses — the outline has to read as the *empty* half of a filling meter, so
-     it sits a step back from the lit half. */
+  /* The intro's unfilled name — lighter than text-stroke-strong so it reads
+     as the empty half of a filling meter. */
   .text-stroke-intro {
     color: transparent;
     -webkit-text-stroke: 1px hsl(var(--foreground) / 0.3);
@@ -232,10 +223,7 @@
     -webkit-text-stroke-color: hsl(var(--foreground) / 0.85);
   }
 
-  /* Outlined display type lit from below — pairs with the horizon glow. */
-  /* The footer wordmark: a solid fill lit from below by the horizon — dim at
-     the crown, full white where it meets the light. No stroke; an outlined
-     name read as hollow next to the design's solid one. */
+  /* Footer wordmark: solid fill lit from below by the horizon. */
   .text-horizon-lit {
     color: transparent;
     background: linear-gradient(
@@ -301,9 +289,8 @@ html[data-nav-open="true"] .chat-launcher {
   display: none;
 }
 
-/* Film grain overlay. It covers the whole viewport and never changes, so it
-   must live on its own compositing layer — left unpromoted it was repainting
-   with the content scrolling beneath it. */
+/* Film grain overlay on its own compositing layer so it never repaints with
+   the content scrolling beneath it. */
 .grain::after {
   content: "";
   position: fixed;

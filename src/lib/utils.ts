@@ -1,13 +1,8 @@
 import { clsx, type ClassValue } from "clsx";
 import { extendTailwindMerge } from "tailwind-merge";
 
-/**
- * tailwind-merge only knows Tailwind's built-in font-size scale, so it filed
- * the custom `text-fluid-*` sizes under *text colour* — which meant a trailing
- * `text-foreground` in the same class string silently deleted the size and
- * every SectionHeading rendered at the inherited 16px instead of its clamp.
- * Teaching the merger about the scale in tailwind.config.ts fixes it globally.
- */
+// Teach tailwind-merge the custom text-fluid-* font sizes so a text color in
+// the same class string doesn't merge them away.
 const twMerge = extendTailwindMerge({
   extend: {
     classGroups: {

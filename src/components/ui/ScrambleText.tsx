@@ -7,11 +7,9 @@ import { usePrefersReducedMotion } from "@/hooks/use-media-query";
 const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#<>/*+-";
 
 /**
- * Terminal-style decode: characters cycle through random glyphs and settle
- * left-to-right into the real text when scrolled into view. Made for the
- * mono eyebrow/meta layer — keep it off body copy. Renders the real text
- * on the server and under reduced motion; `aria-label` keeps AT stable
- * while the visible glyphs churn.
+ * Characters cycle through random glyphs and settle left-to-right into the
+ * real text when scrolled into view. Renders the real text on the server and
+ * under reduced motion; aria-label keeps AT stable.
  */
 export function ScrambleText({
   text,

@@ -18,14 +18,12 @@ const RESCUE = SECTIONS.filter((s) => s.id !== "hero");
 export default function NotFound() {
   return (
     <section className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden py-32">
-      {/* Lost in space — stars only; the global footer right below this
-          section already carries the horizon, so a second earth here would
-          stack two rims on screen. */}
+      {/* Stars only — the footer below already carries the horizon. */}
       <div aria-hidden className="absolute inset-0 -z-10">
         <Starfield density={0.0001} className="opacity-80" />
       </div>
 
-      {/* Registration marks, as in the intro — this is still the same frame. */}
+      {/* Corner registration marks, as in the intro. */}
       {[
         "left-5 top-5 border-l border-t sm:left-10 sm:top-10",
         "right-5 top-5 border-r border-t sm:right-10 sm:top-10",
@@ -79,7 +77,6 @@ export default function NotFound() {
           </Magnetic>
         </div>
 
-        {/* Somebody who landed here wanted something — give them the map. */}
         <div className="mt-14 grid w-full gap-8 border-t border-border pt-7 sm:grid-cols-[6.5rem_minmax(0,1fr)] sm:gap-5">
           <span className="font-mono text-[9.5px] uppercase tracking-[0.26em] text-muted-foreground">
             Jump to

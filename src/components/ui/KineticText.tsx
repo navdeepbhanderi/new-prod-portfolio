@@ -23,10 +23,9 @@ function Word({
 }
 
 /**
- * Kinetic manifesto: each word brightens from near-invisible to full
- * strength, scrubbed to scroll position — the paragraph reads itself as it
- * travels up the viewport. Opacity-only (scrub-safe), real text for AT via
- * aria-label, plain paragraph under reduced motion.
+ * Each word brightens from near-invisible to full strength, scrubbed to
+ * scroll position. Opacity-only, aria-label for AT, plain paragraph under
+ * reduced motion.
  */
 export function KineticText({
   text,
@@ -39,8 +38,7 @@ export function KineticText({
   const reduced = usePrefersReducedMotion();
   const { scrollYProgress } = useScroll({
     target: ref,
-    // Starts lighting up as the paragraph enters the lower viewport and is
-    // fully lit well before it reaches the top — no dead scroll at either end.
+    // Lights up through the lower half of the viewport.
     offset: ["start 0.9", "start 0.38"],
   });
 

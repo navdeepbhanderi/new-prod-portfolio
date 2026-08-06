@@ -12,11 +12,7 @@ const FACTS = [
   { icon: BadgeCheck, label: "Status", value: "Open to opportunities" },
 ] as const;
 
-/**
- * Manifesto strip: the one place the written bio actually appears on the
- * page. Deliberately unnumbered — it reads as a statement between the hero
- * and the numbered chapters.
- */
+/** Manifesto strip — the one place the written bio appears on the page. */
 export function About() {
   return (
     <section id="about" className="relative scroll-mt-24 py-24 sm:py-28">

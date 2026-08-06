@@ -17,11 +17,7 @@ import { useIntroDone } from "@/lib/intro";
 import { useMouseParallax } from "@/hooks/use-mouse-parallax";
 import { usePrefersReducedMotion } from "@/hooks/use-media-query";
 
-/**
- * Portrait scrims. The portrait is a full-bleed column (md+) or a top band
- * (below md), and in both cases it has to hand over to the canvas without a
- * visible edge — so the fade runs along a different axis per layout.
- */
+/** Portrait scrims — the fade axis differs per layout (top band vs column). */
 const SCRIM_BAND =
   "bg-[linear-gradient(to_bottom,hsl(var(--background)/0.72)_0%,hsl(var(--background)/0.12)_30%,hsl(var(--background)/0.55)_68%,hsl(var(--background))_100%)]";
 const SCRIM_COLUMN =
@@ -47,16 +43,13 @@ export function Hero() {
   const state = done ? "visible" : "hidden";
   const reduced = usePrefersReducedMotion();
 
-  /**
-   * MotionConfig strips transforms under reduced motion but keeps delays, which
-   * would leave those visitors watching an empty hero for a second while the
-   * staggered entrance "plays" invisibly. Collapse the choreography instead.
-   */
+  // MotionConfig strips transforms under reduced motion but keeps delays —
+  // collapse them so the hero isn't blank while an invisible stagger plays.
   const at = (delay: number) => (reduced ? 0 : delay);
 
   const pointer = useMouseParallax();
-  // Three depths: background drifts opposite the cursor, copy barely,
-  // portrait the most — parallax reads as depth, not decoration.
+  // Three parallax depths: background drifts opposite the cursor, copy
+  // barely, portrait the most.
   const bgX = useTransform(pointer.x, (v) => v * -36);
   const bgY = useTransform(pointer.y, (v) => v * -26);
   const copyX = useTransform(pointer.x, (v) => v * 12);
@@ -64,9 +57,8 @@ export function Hero() {
   const portraitX = useTransform(pointer.x, (v) => v * 22);
   const portraitY = useTransform(pointer.y, (v) => v * 16);
 
-  // Exit choreography: as the hero scrolls out, copy and portrait drift up at
-  // different rates while fading — the inverse of the intro hand-off, so
-  // hero → About reads as one continuous camera move.
+  // Exit: as the hero scrolls out, copy and portrait drift up at different
+  // rates while fading.
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -90,9 +82,7 @@ export function Hero() {
         className="absolute -inset-10 -z-10"
       >
         <div className="absolute inset-0 bg-grid-lines mask-b opacity-60" />
-        {/* Static, not a perpetual drift: a 288px blur-3xl element animating on
-            a loop repainted forever — including long after the hero had scrolled
-            away. The pointer parallax on this whole layer supplies the movement. */}
+        {/* Static — the pointer parallax on this layer supplies the movement. */}
         <div className="absolute -left-20 top-1/3 h-72 w-72 rounded-full bg-foreground/[0.04] blur-3xl" />
         <div className="absolute bottom-0 left-1/2 h-[520px] w-[1100px] -translate-x-1/2 translate-y-1/3 rounded-full bg-[radial-gradient(ellipse_at_center,hsl(var(--accent)/0.16),transparent_65%)] blur-3xl" />
       </motion.div>
@@ -100,10 +90,6 @@ export function Hero() {
       {/* ---------- portrait: top band below md, full-bleed column at md+ ---------- */}
       <motion.div
         style={reduced ? undefined : { y: portraitExitY, opacity: portraitExitOpacity }}
-        // Below md the band is 45svh — 4c's 380/844. It used to clamp at 18rem,
-        // which capped it at ~32svh on a tall phone: the portrait read as a
-        // letterbox, and the scrim's 0.72→0.12 ramp got squeezed into so short a
-        // run that the navbar sat on the bright part of it.
         className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(15rem,45svh,25rem)] md:inset-y-0 md:left-auto md:right-0 md:h-auto md:w-[38vw] xl:w-[34vw]"
       >
         <motion.div
@@ -123,9 +109,8 @@ export function Hero() {
       </motion.div>
 
       {/* ---------- content ---------- */}
-      {/* pt tracks the band: 4c starts the copy at 300/844 = 35.5svh, i.e. it
-          overlaps the band's last ~80px so the eyebrow sits in the scrim's
-          dark floor rather than below it. */}
+      {/* pt overlaps the portrait band so the copy starts in the scrim's dark
+          floor. */}
       <div className="container-px relative z-10 flex min-h-[100svh] flex-col pb-8 pt-[clamp(11.5rem,35.5svh,19.5rem)] md:pb-12 md:pt-28 lg:pb-14">
         <motion.div
           style={reduced ? undefined : { y: copyExitY, opacity: copyExitOpacity }}
@@ -135,9 +120,6 @@ export function Hero() {
             style={reduced ? undefined : { x: copyX, y: copyY }}
             className="flex flex-col items-start md:max-w-[56%] lg:max-w-[52%] xl:max-w-[46rem]"
           >
-            {/* No eyebrow. 3b opened on "Portfolio — {year}", but a dateline
-                above the claim is the weakest thing on the screen — it says the
-                page exists, which the visitor already knows. The claim leads. */}
             <div data-cursor="invert">
               <TextReveal
                 as="h1"
@@ -176,11 +158,6 @@ export function Hero() {
                   </Link>
                 </Button>
               </Magnetic>
-              {/* The résumé, not a second route to contact. Contact is already
-                  reachable from the navbar, the mobile sheet, its own section
-                  and the footer — while the one document a recruiter opens
-                  first sat at the bottom of the page, below the fold twice
-                  over. */}
               <Magnetic className="w-full sm:w-auto">
                 <Button asChild size="lg" variant="outline" className="w-full sm:w-auto">
                   <a href={PROFILE.resume} target="_blank" rel="noopener noreferrer">

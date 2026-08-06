@@ -3,13 +3,9 @@
 import type Lenis from "lenis";
 
 /**
- * Ref-counted scroll lock shared by every overlay (mobile menu, command
- * palette, chat).
- *
- * Each overlay used to own `document.body.style.overflow` outright, so closing
- * one while another was still open unlocked the page underneath it — open the
- * mobile menu, hit ⌘K, close the palette, and the page scrolled behind the
- * menu. Counting holders means the lock only lifts when the last one leaves.
+ * Ref-counted scroll lock shared by the overlays (mobile menu, command
+ * palette). Counting holders means closing one overlay while another is
+ * still open doesn't unlock the page underneath it.
  */
 let holders = 0;
 let previousOverflow = "";
@@ -20,8 +16,7 @@ export function lockScroll(lenis: Lenis | null): void {
     document.body.style.overflow = "hidden";
   }
   holders += 1;
-  // Lenis is mounted asynchronously, so an overlay may lock before it exists;
-  // whoever holds the lock when it appears re-stops it on their next effect run.
+  // Lenis mounts asynchronously; an overlay may lock before it exists.
   lenis?.stop();
 }
 

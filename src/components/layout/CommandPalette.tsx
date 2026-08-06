@@ -221,7 +221,7 @@ export function CommandPalette() {
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    // The technology index is long; it earns its place only once you search.
+    // The long technology index only shows once you search.
     if (!q) return commands.filter((c) => c.group !== "Expertise");
     return commands.filter((c) =>
       `${c.label} ${c.keywords}`.toLowerCase().includes(q)

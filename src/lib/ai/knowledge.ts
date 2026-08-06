@@ -2,9 +2,8 @@ import type { Intent } from "@/types";
 import { PROFILE } from "@/lib/profile";
 
 /**
- * Local knowledge base for "Nova", the portfolio's AI assistant.
- * Each intent is matched by keyword/synonym overlap in engine.ts — no API, no cost,
- * deterministic answers grounded in Navdeep's real profile.
+ * Local knowledge base for the portfolio assistant. Intents are matched by
+ * keyword overlap in engine.ts — no API cost, deterministic answers.
  */
 export const INTENTS: Intent[] = [
   {
@@ -215,14 +214,8 @@ export const SUGGESTED_QUESTIONS: string[] = [
 ];
 
 /**
- * One label for the assistant, everywhere it is named — the launcher, the
- * navbar, the panel header, the command palette. It used to be three different
- * things on one screen: "Ask AI" in the nav, "Ask Nova" on the launcher, and
- * "Ask about my work" inside the panel, which reads like three features.
- *
- * The persona name went with them. On a personal portfolio a named bot puts a
- * character between the visitor and the work; unnamed, it is plainly what it
- * is — a way to ask about Navdeep.
+ * One label for the assistant everywhere it is named — the launcher, the
+ * navbar, the panel header, the command palette.
  */
 export const ASSISTANT_LABEL = "Ask AI";
 

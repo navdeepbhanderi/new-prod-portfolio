@@ -21,10 +21,7 @@ const GITHUB = SOCIALS.find((s) => s.icon === "github")?.href ?? "#";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
-/**
- * Deck position indicator: where you are in the stack, without a scrollbar.
- * Driven straight off the deck's scroll progress — no React state per frame.
- */
+/** Deck position indicator, driven off the deck's scroll progress. */
 function DeckRail({
   progress,
   total,

@@ -50,7 +50,6 @@ function Block({
   );
 }
 
-/** Facts that a recruiter scans before reading a word of the narrative. */
 function FactsRail({ project }: { project: Project }) {
   const hasLinks = Boolean(project.links?.live || project.links?.repo);
   return (
@@ -270,8 +269,6 @@ export function CaseStudy({
 
           <Block id="cs-outcome" eyebrow="The outcome">
             <BlurReveal delay={0.05}>
-              {/* The one place the display serif carries body copy: the closing
-                  claim is a quote about the work, not a heading. */}
               <blockquote className="max-w-3xl rounded-3xl border border-foreground/[0.09] bg-gradient-to-br from-foreground/[0.05] to-foreground/[0.015] p-6 sm:p-8">
                 <p className="font-display text-[clamp(1.3rem,2.3vw,1.7rem)] leading-[1.42] text-foreground/95">
                   {caseStudy.outcome}

@@ -56,7 +56,6 @@ function Chips({
   );
 }
 
-/** The specialty: a tall panel that carries visual weight the others don't. */
 function PrimaryPanel({ className }: { className?: string }) {
   return (
     <GlassCard
@@ -101,7 +100,6 @@ function CompactCard({ category }: { category: ExpertiseCategory }) {
   );
 }
 
-/** Tools earn a strip, not a card — they support the work rather than being it. */
 function ToolsStrip({ className }: { className?: string }) {
   return (
     <div
@@ -124,10 +122,7 @@ function ToolsStrip({ className }: { className?: string }) {
   );
 }
 
-/**
- * Below md the weighted grid can't hold — six panels stacked is a wall. The
- * specialty keeps its panel and the rest collapse to a ledger you can open.
- */
+/** Below md the grid collapses to an accordion ledger. */
 function AccordionRow({
   category,
   defaultOpen = false,

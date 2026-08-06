@@ -12,10 +12,7 @@ import { cn } from "@/lib/utils";
 import { EASE_OUT } from "@/lib/motion";
 import { usePrefersReducedMotion } from "@/hooks/use-media-query";
 
-/**
- * Newest first. A recruiter reads the current role and stops — making them
- * scroll past three educational entries to reach it buries the lede.
- */
+// Newest first.
 const ENTRIES = [...TIMELINE].reverse();
 
 /**
@@ -59,7 +56,6 @@ function Stage({ item, className }: { item: TimelineItem; className?: string }) 
   );
 }
 
-/** The current role carries the weight — everything else is the path to it. */
 function PresentEntry({ item }: { item: TimelineItem }) {
   return (
     <div className="glass grid gap-7 rounded-3xl p-6 sm:p-8 lg:grid-cols-[minmax(0,1fr)_17rem] lg:gap-11">

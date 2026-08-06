@@ -1,7 +1,6 @@
 /**
- * The page's sections, in document order — one source for the navbar, the
- * footer sitemap, the command palette and the 404's rescue links. They used to
- * be four hand-maintained copies of the same list.
+ * The page's sections in document order — one source for the navbar, footer
+ * sitemap, command palette, and 404 links.
  */
 export const SECTIONS = [
   { id: "hero", label: "Home", hash: "#hero" },

@@ -17,10 +17,8 @@ type TextRevealProps = {
 };
 
 /**
- * Word-by-word reveal with a subtle blur + rise. Each word animates in sequence.
- *
- * The hero uses `trigger="manual"` so its claim waits for the intro's hand-off
- * instead of firing behind the curtain, where nobody would see it.
+ * Word-by-word reveal with a subtle blur + rise. The hero uses
+ * `trigger="manual"` so its claim waits for the intro's hand-off.
  */
 export function TextReveal({
   text,
@@ -32,13 +30,9 @@ export function TextReveal({
   trigger = "inView",
   play = false,
 }: TextRevealProps) {
-  // Words wrapped in *asterisks* render in the display serif italic — one
-  // editorial emphasis phrase per heading. Asterisks are stripped everywhere
-  // (including the aria-label) so AT reads clean prose.
-  //
-  // The closing marker can sit before punctuation ("*product*,"), so the end of
-  // the span is "this token has an asterisk somewhere after the first
-  // character" rather than "this token ends with one".
+  // Words wrapped in *asterisks* render in the display serif italic; the
+  // asterisks are stripped everywhere, including the aria-label. The closing
+  // marker can sit before punctuation ("*product*,").
   let active = false;
   const words = text.split(" ").map((token) => {
     const opens = token.startsWith("*");

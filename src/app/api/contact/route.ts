@@ -97,9 +97,8 @@ export async function POST(req: Request) {
   const timestamp = Date.now();
 
   try {
-    // The notification to Navdeep must succeed; it carries the lead.
-    // No custom Message-ID / priority headers — Gmail's own Message-ID keeps
-    // the mail aligned with the authenticated sender (spam-filter safe).
+    // The owner notification must succeed. No custom Message-ID or priority
+    // headers — Gmail's own Message-ID stays aligned with the sender.
     await transporter.sendMail({
       from: { name: `${PROFILE.name} — Portfolio`, address: user },
       to,
@@ -133,8 +132,7 @@ export async function POST(req: Request) {
       html: autoReply.html,
       text: autoReply.text,
       headers: {
-        // RFC 3834 loop prevention — marks this as an automated response
-        // without the bulk-mail signals that Precedence/Importance carry.
+        // RFC 3834 loop prevention for automated responses.
         "X-Auto-Response-Suppress": "OOF, DR, RN, NRN, AutoReply",
         "Auto-Submitted": "auto-replied",
         "X-Entity-Ref-ID": `portfolio-reply-${timestamp}`,

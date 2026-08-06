@@ -9,7 +9,6 @@ export type ExpertiseCategory = {
   /**
    * Drives the weighted grid: `primary` renders as the tall hero panel,
    * `utility` as the full-width strip at the bottom, the rest as compact cards.
-   * Layout follows the data — never the array index.
    */
   weight: "primary" | "standard" | "utility";
 };
@@ -27,10 +26,7 @@ export type Project = {
   accent: string; // gradient classes for the visual
   /** Real product screenshot; when set it replaces the stylised mock. */
   image?: { src: string; alt: string; width: number; height: number };
-  /**
-   * NDA-friendly alternative to a screenshot: a layered architecture flow plus
-   * a few honest metrics. Takes precedence over `visual`, below `image`.
-   */
+  /** NDA-friendly alternative to a screenshot: an architecture flow + metrics. */
   diagram?: {
     /** Eyebrow label naming the scope you owned, e.g. "Frontend I built". */
     scope?: string;
@@ -58,12 +54,9 @@ export type TimelineItem = {
   subtitle: string;
   description: string;
   status: "past" | "present" | "future";
-  /**
-   * Rail label. Dates are deliberately omitted from the timeline, so the rail
-   * carries the phase of the journey instead of a year.
-   */
+  /** Rail label — the phase of the journey rather than a year. */
   stage: "Start" | "Education" | "Industry" | "Present";
-  /** Right-hand meta column — the one thing that entry changed. */
+  /** Right-hand meta column. */
   aside?: { label: string; value: string };
   /** "Working in" chips — the present role's panel only. */
   stack?: string[];

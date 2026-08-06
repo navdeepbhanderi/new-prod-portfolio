@@ -63,9 +63,8 @@ export function VelocityMarquee({
       tween.timeScale(speed);
       gsap.set(row, { skewX: skew });
     };
-    // The ticker wrote a transform to both rows every frame for the life of the
-    // page, on-screen or not, and the skew forced the whole row to re-raster.
-    // Run it only while the row is actually visible.
+    // Run the ticker only while the row is visible — the skew forces a
+    // re-raster every frame.
     let running = false;
     const start = () => {
       if (running) return;

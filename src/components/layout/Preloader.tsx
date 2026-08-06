@@ -11,15 +11,11 @@ import { PROFILE } from "@/lib/profile";
 import { DUR, GSAP_EASE, GSAP_EASE_IN_OUT, INTRO, STAGGER } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
-/**
- * Never finish faster than this — under it the light sweep across the name is
- * a flicker rather than a moment.
- */
+/** Never finish faster than this. */
 const MIN_MS = 900;
-/** …and never hold the visitor longer than this, however slow the network is. */
+/** Never hold the visitor longer than this, however slow the network is. */
 const MAX_MS = 2000;
 
-/** 6b runs the log at one word per line — the desktop phrasing wraps at 390. */
 const STEPS = [
   { id: "fonts", label: "Typefaces loaded", short: "Typefaces" },
   { id: "scene", label: "Scene compiled", short: "Scene" },
@@ -34,17 +30,11 @@ const CORNERS = [
 ];
 
 /**
- * Once-per-session intro, composed as a loading manifest rather than a centred
- * word: registration marks, the name filling with light, a boot log, and the
- * counter as the largest number on screen.
- *
- * The counter is the **real** progress value — fonts and the hero portrait
- * report in as they land, and the name's light sweep is clipped to that same
- * number. Everything warm? it eases to 100 and leaves early. Network stalled?
- * it leaves at MAX_MS regardless. Any key or tap skips it outright.
- *
- * Server-rendered opaque so a fresh session never flashes the page; a pre-paint
- * <head> script hides it entirely on repeat visits (see layout.tsx / globals.css).
+ * Once-per-session intro. The counter tracks real asset progress (fonts +
+ * hero portrait), leaves early when everything is warm, and leaves at MAX_MS
+ * regardless. Any key or tap skips it. Server-rendered opaque so a fresh
+ * session never flashes the page; a pre-paint <head> script hides it on
+ * repeat visits (see layout.tsx / globals.css).
  */
 export function Preloader() {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -57,7 +47,7 @@ export function Preloader() {
 
   const lenis = useLenis();
 
-  // Belt-and-braces scroll lock while the intro plays (keyboard/space too).
+  // Lock scroll while the intro plays (keyboard/space too).
   useEffect(() => {
     if (gone) return;
     const html = document.documentElement;
@@ -98,8 +88,7 @@ export function Preloader() {
       mark("fonts");
     });
 
-    // "Scene" is the hero portrait — the LCP element. Once it has decoded there
-    // is a real page underneath worth revealing.
+    // "Scene" is the hero portrait — the LCP element.
     const portrait = new Image();
     const settleScene = () => {
       sceneReady = true;
@@ -148,10 +137,8 @@ export function Preloader() {
       let exiting = false;
       const start = performance.now();
 
-      // 3c fills the one-line name left→right; 6b stacks it to two lines and
-      // fills top→bottom instead, because a horizontal wipe across a stacked
-      // block reads as two unrelated wipes. Held as a MediaQueryList so `paint`
-      // stays a property read rather than a re-evaluated query each frame.
+      // Mobile stacks the name to two lines and fills top→bottom instead of
+      // left→right. Held as a MediaQueryList so `paint` stays a property read.
       const stacked = window.matchMedia("(max-width: 639px)");
 
       const paint = (p: number) => {
@@ -189,8 +176,8 @@ export function Preloader() {
           0
         );
 
-        // The name leans toward the navbar mark as it dissolves — direction says
-        // "hand-off", but the travel is capped so it never darts to a corner.
+        // The name drifts toward the navbar mark as it dissolves; travel is
+        // clamped so it never darts to a corner.
         tl.add(() => {
           const nameEl = rootRef.current?.querySelector<HTMLElement>(".pl-name");
           const target = document.getElementById("nav-mark");
@@ -290,7 +277,7 @@ export function Preloader() {
           <HorizonGlow variant="intro" className="opacity-90" />
         </div>
 
-        {/* Registration marks — the frame the sequence is composed inside. */}
+        {/* Corner registration marks. */}
         {CORNERS.map((pos) => (
           <span
             key={pos}
@@ -300,9 +287,6 @@ export function Preloader() {
         ))}
 
         <div className="pl-meta relative flex flex-col gap-2 px-[2.125rem] pt-11 font-mono text-[9px] uppercase tracking-[0.3em] text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:px-[4.5rem] sm:pt-16 sm:text-[11px]">
-          {/* The name takes the slot the dateline used to hold — it's the one
-              thing worth reading on a loading screen, and 6b only has room for
-              two items. */}
           <span className="pl-meta-item" style={{ opacity: 0, transform: "translateY(8px)" }}>
             {PROFILE.name}
           </span>
@@ -311,14 +295,8 @@ export function Preloader() {
           </span>
         </div>
 
-        {/* Anchored to the frame, not centred in the leftover flex space.
-            3c places this block at top:50% translateY(-54%), which is what
-            drops the hairline row *below* the horizon apex — the apex (54.8%)
-            falls inside the 30px gap between the name (ends 53.8%) and the
-            role row (starts 57.3%). Centring it between the meta row and the
-            much taller boot-log footer pushed the whole block up ~3%, putting
-            the role line above the horizon instead of under it.
-            6b uses top:47% translateY(-50%) for the stacked mobile name. */}
+        {/* Anchored to the frame so the horizon apex lands in the gap between
+            the name and the role row. */}
         <div className="pointer-events-none absolute inset-x-0 top-[47%] -translate-y-1/2 px-[2.125rem] sm:top-1/2 sm:-translate-y-[62%] sm:px-[4.5rem]">
           <div
             className="pl-name relative select-none text-[clamp(3.25rem,8.6vw,7.5rem)] font-semibold leading-[0.94] tracking-tight"
@@ -329,9 +307,7 @@ export function Preloader() {
               NAVDEEP <br className="sm:hidden" />
               BHANDERI
             </span>
-            {/* Fill layer — clipped to the real progress value. 3c and 6b are
-                both a plain clip against a static gradient; there is no light
-                bar riding the edge, and adding one turned a wipe into a scan. */}
+            {/* Fill layer — clipped to the real progress value. */}
             <span
               ref={fillRef}
               className="pl-fill text-name-gradient absolute inset-0 block"
@@ -343,12 +319,6 @@ export function Preloader() {
           </div>
 
           <div
-            // The horizon apex lands inside this gap, so it has to be wide
-            // enough for the line to clear the name's baseline above it and the
-            // hairline row below it — 3c leaves ~24px on each side. 30px (the
-            // design's literal margin) measured from the name's *box*, which
-            // sits well above its baseline at leading 0.94; the visible gap was
-            // a third of that and the line cut through the letterforms.
             className="pl-role mt-12 flex items-center gap-4 sm:mt-[3.9375rem] sm:gap-5"
             style={{ opacity: 0 }}
           >
@@ -363,7 +333,6 @@ export function Preloader() {
         </div>
 
         <div
-          // mt-auto, because the name block above is out of flow now.
           className="pl-foot relative mt-auto flex items-end justify-between gap-6 px-[2.125rem] pb-[3.25rem] sm:px-[4.5rem] sm:pb-24"
           style={{ opacity: 0 }}
         >
@@ -395,8 +364,7 @@ export function Preloader() {
           </div>
         </div>
 
-        {/* Floor rule: an unlit track the progress line is drawn along, so the
-            bar reads as filling a meter rather than growing out of nothing. */}
+        {/* Progress hairline drawn along an unlit track. */}
         <div aria-hidden className="absolute inset-x-0 bottom-0 h-px bg-foreground/[0.07]">
           <div
             ref={hairlineRef}

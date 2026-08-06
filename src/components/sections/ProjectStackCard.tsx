@@ -15,11 +15,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { usePrefersReducedMotion } from "@/hooks/use-media-query";
 
-/**
- * The visual bleeds to the card's edge — no inner card, no padding. The mock
- * is deliberately clipped at the bottom so it reads as a window onto a real
- * product rather than a framed thumbnail.
- */
+/** The visual bleeds to the card's edge and clips at the bottom. */
 function ProjectVisual({ project }: { project: Project }) {
   const ref = useRef<HTMLAnchorElement>(null);
   const reduced = usePrefersReducedMotion();
@@ -59,8 +55,7 @@ function ProjectVisual({ project }: { project: Project }) {
       >
         <ProductMock
           project={project}
-          // The card states the metrics on its own hairline strip — repeating
-          // them inside the mock says the same thing twice.
+          // The card already states the metrics on its own strip.
           metrics={false}
           className="max-w-none transition-transform duration-700 ease-out-quart group-hover:scale-[1.02]"
         />
@@ -69,7 +64,6 @@ function ProjectVisual({ project }: { project: Project }) {
   );
 }
 
-/** Honest numbers, on hairlines — the card's proof layer. */
 function Metrics({ project }: { project: Project }) {
   const metrics = project.diagram?.metrics;
   if (!metrics?.length) return null;
@@ -120,11 +114,8 @@ export function StackCard({ index, total, progress, children, className }: Stack
 
   return (
     <div
-      // The 1.75rem-per-card offset is a depth cue for the wide deck, where
-      // there is room to spare. On a phone it only pushes each successive card
-      // further down a viewport the card already fills — card 3's CTA ended up
-      // 56px lower than card 1's, and off-screen. Below lg every card pins at
-      // the same 9svh.
+      // The per-card offset is a depth cue for the wide deck; below lg every
+      // card pins at the same 9svh so the CTA stays on screen.
       className={cn(
         scrub ? "sticky top-[9svh] lg:top-[var(--stack-top)]" : "relative",
         className
@@ -136,10 +127,9 @@ export function StackCard({ index, total, progress, children, className }: Stack
       }
     >
       <motion.div
-        // `will-change` is normally framer's job, but it only sets it for
-        // running animations — a scroll-linked motion value doesn't qualify, so
-        // the card re-rasterised its whole surface every frame instead of
-        // compositing. This one hint took p95 from 133ms to 50ms.
+        // Framer only sets will-change for running animations, not
+        // scroll-linked values — without the hint the card re-rasterises
+        // every frame instead of compositing.
         style={
           scrub
             ? { scale, transformOrigin: "center top", willChange: "transform" }
@@ -180,9 +170,7 @@ export function ProjectCardContent({ project }: { project: Project }) {
           {project.tagline}
         </p>
 
-        {/* Overview only — the full story lives in the case study. Three lines
-            on a phone, not four: 7a's card has to fit under the pin with its
-            CTA still on screen, and the fourth line is the cheapest 26px. */}
+        {/* Overview only — the full story lives in the case study. */}
         <p className="mt-4 line-clamp-3 text-[15px] leading-relaxed text-muted-foreground sm:mt-5 sm:line-clamp-4 sm:text-base">
           {project.description}
         </p>

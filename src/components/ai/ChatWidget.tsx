@@ -225,10 +225,8 @@ export function ChatWidget() {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
-        // Validate before trusting it. A single malformed entry would throw
-        // inside render (content.replace) and, with no error boundary above
-        // this widget, take the whole route down on every load until the
-        // visitor happens to clear their storage.
+        // Validate before trusting it — a malformed entry would throw inside
+        // render on every load until the visitor clears storage.
         const parsed: unknown = JSON.parse(raw);
         const saved = (Array.isArray(parsed) ? parsed : []).filter(
           (m): m is Message =>
@@ -415,11 +413,8 @@ export function ChatWidget() {
           const visible = stripActionTokens(acc);
           const backlog = visible.length - shown;
           if (backlog > 0) {
-            // Deliberate, time-based pace (~50 chars/sec baseline, hard-capped
-            // boost for long backlogs) revealed at WORD granularity — each new
-            // word mounts with a fade-in (see MessageContent), which is what
-            // makes professional chatbots feel like flowing ink instead of a
-            // fast typewriter. A typical reply reads out over ~3 seconds.
+            // Time-based pace (~50 chars/sec baseline, capped boost for long
+            // backlogs), revealed at word granularity with a fade-in per word.
             const rate = 50 + Math.min(250, backlog * 0.3);
             shown = Math.min(visible.length, shown + rate * dt);
             // Snap forward to the end of the current word — whole words only.
@@ -608,8 +603,6 @@ export function ChatWidget() {
                   </span>
                   <div className="flex flex-col gap-0.5">
                     <span className="text-sm font-medium">{ASSISTANT_LABEL}</span>
-                    {/* Setting the expectation up front is the honest move —
-                        and it's what stops the "can you write my essay" turn. */}
                     <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-muted-foreground">
                       Answers from this site only
                     </span>
