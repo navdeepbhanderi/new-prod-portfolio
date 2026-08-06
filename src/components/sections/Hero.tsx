@@ -101,12 +101,17 @@ export function Hero() {
           style={reduced ? undefined : { x: portraitX, y: portraitY }}
           className="relative h-full w-full"
         >
+          {/* One crop for both layouts. There used to be a
+              `md:[object-position:50%_20%]` here, but ProfileImage sets
+              object-position as an inline style, which always beats a class —
+              so md never applied and both the band and the column have always
+              rendered at 16%. The portrait-aspect source frames well there, so
+              the dead override is gone rather than made to work. */}
           <ProfileImage
             priority
             tone
             objectPosition="50% 16%"
             sizes="(min-width: 1695px) 576px, (min-width: 1280px) 34vw, (min-width: 768px) 38vw, 100vw"
-            className="md:[object-position:50%_20%]"
           />
           {/* md:-left-8 overshoots the column boundary so the compositing
               layer's own edge is painted over — no hairline seam at any
