@@ -32,7 +32,7 @@ function ProjectVisual({ project }: { project: Project }) {
       ref={ref}
       href={`/projects/${project.id}`}
       aria-label={`${project.title} — read the case study`}
-      className="group relative z-20 block min-h-[10rem] overflow-hidden sm:min-h-[17rem] lg:min-h-[28.5rem]"
+      className="group relative z-20 block min-h-[10rem] overflow-hidden sm:min-h-[17rem] lg:min-h-[22rem]"
       data-cursor="view"
       data-cursor-label="Open"
       // Shared element: morphs into the case-study banner on navigation.
@@ -49,9 +49,14 @@ function ProjectVisual({ project }: { project: Project }) {
       >
         {project.index}
       </motion.span>
+      {/* Centred, not top-anchored. The two mocks have very different intrinsic
+          heights — 01 is a short architecture diagram, 02 a tall screenshot —
+          and pinning both to the ceiling of a card sized for the taller one
+          left 01 floating over a void. Centring shares one axis with the text
+          column beside it, so the halves read as a pair at any card height. */}
       <motion.div
         style={reduced ? undefined : { y }}
-        className="absolute inset-x-4 top-5 sm:inset-x-9 sm:top-10 lg:left-[3.25rem] lg:right-12 lg:top-[3.25rem]"
+        className="absolute inset-x-4 inset-y-0 flex flex-col justify-center sm:inset-x-9 lg:left-10 lg:right-10"
       >
         <ProductMock
           project={project}
@@ -61,25 +66,6 @@ function ProjectVisual({ project }: { project: Project }) {
         />
       </motion.div>
     </Link>
-  );
-}
-
-function Metrics({ project }: { project: Project }) {
-  const metrics = project.diagram?.metrics;
-  if (!metrics?.length) return null;
-  return (
-    <div className="mt-3.5 grid grid-cols-3 gap-4 border-y border-border py-3 sm:mt-6 sm:gap-5 sm:py-5">
-      {metrics.map((metric) => (
-        <div key={metric.label} className="flex flex-col gap-1.5">
-          <span className="text-[17px] font-semibold tracking-tight sm:text-[1.375rem]">
-            {metric.value}
-          </span>
-          <span className="font-mono text-[8.5px] uppercase leading-tight tracking-[0.18em] text-muted-foreground sm:text-[9.5px] sm:tracking-[0.2em]">
-            {metric.label}
-          </span>
-        </div>
-      ))}
-    </div>
   );
 }
 
@@ -174,20 +160,23 @@ export function ProjectCardContent({ project }: { project: Project }) {
   return (
     // Uniform height below lg. Every card pins at the same 9svh there, so a
     // taller card's bottom — its CTA row — pokes out beneath the shorter card
-    // covering it: measured at 412px the cards come out 457 / 364 / 482, and
-    // card 01 hung 74px below card 02. Equal heights remove the overlap by
-    // construction rather than by fading the covered card, which depends on a
-    // media query and a progress threshold both being right. 68svh clears the
-    // tallest natural card with room to spare, and `mt-auto` on the CTA row
-    // keeps it pinned to the floor of the padded area.
-    <div className="grid min-h-[68svh] lg:min-h-[45rem] lg:grid-cols-[1.05fr_1fr]">
+    // covering it — so equal heights are the only robust fix. But the height
+    // also has to keep that CTA on screen: a card pins at 9svh, plus up to
+    // 3.5rem of stagger at lg, so anything past ~85svh pushes the button off
+    // the bottom. One viewport-relative value satisfies both at every size;
+    // per-breakpoint pixel heights (68svh / 45rem) satisfied them at exactly
+    // the two sizes they were measured on and broke tablets in between.
+    //
+    // 82svh binds everywhere because the content now fits under it — which is
+    // what dropping the metrics strip bought.
+    <div className="grid min-h-[min(80svh,46rem)] lg:grid-cols-[1.05fr_1fr]">
       <ProjectVisual project={project} />
 
       {/* Compact below sm: the card pins under the deck's sticky top, so on a
           phone everything above the CTA has to fit inside one short viewport.
           The description and stack chips only render from sm up — the tagline
           carries the hook and the stack lives in the case study. */}
-      <div className="relative z-20 flex flex-col p-4 sm:p-8 lg:p-[3.25rem]">
+      <div className="relative z-20 flex flex-col justify-center p-4 sm:p-8 lg:p-10">
         <div className="flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground sm:text-[11px]">
           <span className="text-foreground/85">{project.index}</span>
           <span aria-hidden className="h-px w-5 bg-border" />
@@ -204,11 +193,10 @@ export function ProjectCardContent({ project }: { project: Project }) {
         </p>
 
         {/* Overview only — the full story lives in the case study. */}
-        <p className="hidden text-base leading-relaxed text-muted-foreground sm:mt-5 sm:line-clamp-4 sm:block">
+        <p className="hidden text-base leading-relaxed text-muted-foreground sm:mt-5 sm:line-clamp-3 sm:block">
           {project.description}
         </p>
 
-        <Metrics project={project} />
 
         <div className="hidden flex-wrap gap-2 sm:mt-5 sm:flex">
           {project.stack.map((tech) => (
@@ -223,7 +211,7 @@ export function ProjectCardContent({ project }: { project: Project }) {
 
         {/* Explicit z: interactive elements must win hit-testing inside the
             scaled card shell (its transform reorders paint layers). */}
-        <div className="relative z-20 mt-auto flex items-center gap-2.5 pt-4 sm:pt-7">
+        <div className="relative z-20 flex items-center gap-2.5 pt-6 sm:pt-8">
           <Button asChild size="lg" className="h-12 flex-1 sm:h-14 sm:flex-none">
             <Link href={`/projects/${project.id}`}>
               Read case study
