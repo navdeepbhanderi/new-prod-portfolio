@@ -59,7 +59,8 @@ function DeckRail({
 
 function ArchiveCardContent({ index }: { index: string }) {
   return (
-    <div className="relative flex min-h-[60svh] flex-col items-center justify-center gap-8 p-6 text-center sm:p-10 lg:p-14">
+    // Matches the project cards' 68svh so the whole deck is one height below lg.
+    <div className="relative flex min-h-[68svh] flex-col items-center justify-center gap-8 p-6 text-center sm:p-10 lg:min-h-[60svh] lg:p-14">
       <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
         {index} — The archive
       </span>

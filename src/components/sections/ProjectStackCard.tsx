@@ -172,7 +172,15 @@ export function StackCard({ index, total, progress, children, className }: Stack
 /** The full project card — visual bleeding left, the case for it on the right. */
 export function ProjectCardContent({ project }: { project: Project }) {
   return (
-    <div className="grid lg:grid-cols-[1.05fr_1fr]">
+    // Uniform height below lg. Every card pins at the same 9svh there, so a
+    // taller card's bottom — its CTA row — pokes out beneath the shorter card
+    // covering it: measured at 412px the cards come out 457 / 364 / 482, and
+    // card 01 hung 74px below card 02. Equal heights remove the overlap by
+    // construction rather than by fading the covered card, which depends on a
+    // media query and a progress threshold both being right. 68svh clears the
+    // tallest natural card with room to spare, and `mt-auto` on the CTA row
+    // keeps it pinned to the floor of the padded area.
+    <div className="grid min-h-[68svh] lg:min-h-0 lg:grid-cols-[1.05fr_1fr]">
       <ProjectVisual project={project} />
 
       {/* Compact below sm: the card pins under the deck's sticky top, so on a
