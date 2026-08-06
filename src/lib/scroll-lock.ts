@@ -4,8 +4,8 @@ import type Lenis from "lenis";
 
 /**
  * Ref-counted scroll lock shared by the overlays (mobile menu, command
- * palette). Counting holders means closing one overlay while another is
- * still open doesn't unlock the page underneath it.
+ * palette, mobile chat). Counting holders means closing one overlay while
+ * another is still open doesn't unlock the page underneath it.
  */
 let holders = 0;
 let previousOverflow = "";

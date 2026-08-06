@@ -46,6 +46,81 @@ function validate(body: Record<string, unknown>): {
 // 5 messages / hour / IP.
 const rateLimited = createRateLimiter({ windowMs: 60 * 60 * 1000, max: 5 });
 
+type Mail = {
+  from: string; // "Name <address>"
+  to: string;
+  replyTo?: string;
+  subject: string;
+  html: string;
+  text: string;
+  headers?: Record<string, string>;
+};
+
+/**
+ * Delivery backends, preferred first:
+ * - Resend (RESEND_API_KEY + MAIL_FROM): sends from the custom domain with
+ *   SPF/DKIM alignment — the reliable way to stay out of spam.
+ * - Gmail SMTP (GMAIL_USER + GMAIL_APP_PASSWORD): works out of the box but a
+ *   personal address has weaker sender reputation.
+ */
+function getTransport():
+  | { kind: "resend"; apiKey: string; from: string }
+  | { kind: "gmail"; user: string; pass: string }
+  | null {
+  const resendKey = process.env.RESEND_API_KEY;
+  const mailFrom = process.env.MAIL_FROM;
+  if (resendKey && mailFrom) return { kind: "resend", apiKey: resendKey, from: mailFrom };
+
+  const user = process.env.GMAIL_USER;
+  const pass = process.env.GMAIL_APP_PASSWORD;
+  if (user && pass) return { kind: "gmail", user, pass };
+
+  return null;
+}
+
+async function deliver(
+  transport: NonNullable<ReturnType<typeof getTransport>>,
+  mail: Mail
+): Promise<void> {
+  if (transport.kind === "resend") {
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${transport.apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: mail.from,
+        to: [mail.to],
+        reply_to: mail.replyTo,
+        subject: mail.subject,
+        html: mail.html,
+        text: mail.text,
+        headers: mail.headers,
+      }),
+      signal: AbortSignal.timeout(15_000),
+    });
+    if (!res.ok) {
+      throw new Error(`Resend API ${res.status}: ${await res.text()}`);
+    }
+    return;
+  }
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: { user: transport.user, pass: transport.pass },
+  });
+  await transporter.sendMail({
+    from: mail.from,
+    to: mail.to,
+    replyTo: mail.replyTo,
+    subject: mail.subject,
+    html: mail.html,
+    text: mail.text,
+    headers: mail.headers,
+  });
+}
+
 export async function POST(req: Request) {
   let body: Record<string, unknown>;
   try {
@@ -71,12 +146,13 @@ export async function POST(req: Request) {
     );
   }
 
-  const user = process.env.GMAIL_USER;
-  const pass = process.env.GMAIL_APP_PASSWORD;
+  const transport = getTransport();
   const to = process.env.CONTACT_TO ?? PROFILE.email;
 
-  if (!user || !pass) {
-    console.error("Contact form: GMAIL_USER / GMAIL_APP_PASSWORD not configured.");
+  if (!transport) {
+    console.error(
+      "Contact form: no mail transport configured (RESEND_API_KEY+MAIL_FROM or GMAIL_USER+GMAIL_APP_PASSWORD)."
+    );
     return NextResponse.json(
       {
         ok: false,
@@ -86,10 +162,9 @@ export async function POST(req: Request) {
     );
   }
 
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: { user, pass },
-  });
+  // Gmail must send from the authenticated address; Resend from the domain.
+  const fromAddress =
+    transport.kind === "resend" ? transport.from : `${PROFILE.name} <${transport.user}>`;
 
   const notification = ownerNotificationEmail(data);
   const autoReply = autoReplyEmail(data);
@@ -98,11 +173,11 @@ export async function POST(req: Request) {
 
   try {
     // The owner notification must succeed. No custom Message-ID or priority
-    // headers — Gmail's own Message-ID stays aligned with the sender.
-    await transporter.sendMail({
-      from: { name: `${PROFILE.name} — Portfolio`, address: user },
+    // headers — the provider's own Message-ID stays aligned with the sender.
+    await deliver(transport, {
+      from: fromAddress,
       to,
-      replyTo: { name: data.name, address: data.email },
+      replyTo: `${data.name} <${data.email}>`,
       subject: notification.subject,
       html: notification.html,
       text: notification.text,
@@ -124,10 +199,10 @@ export async function POST(req: Request) {
 
   try {
     // Auto-reply is best-effort — the lead is already delivered.
-    await transporter.sendMail({
-      from: { name: PROFILE.name, address: user },
+    await deliver(transport, {
+      from: fromAddress,
       to: data.email,
-      replyTo: { name: PROFILE.name, address: to },
+      replyTo: `${PROFILE.name} <${to}>`,
       subject: autoReply.subject,
       html: autoReply.html,
       text: autoReply.text,

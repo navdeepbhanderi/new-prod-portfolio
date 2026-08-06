@@ -62,3 +62,13 @@ export const EXPERTISE_TOTALS = {
   domains: EXPERTISE.length,
   technologies: new Set(EXPERTISE.flatMap((c) => c.technologies)).size,
 };
+
+// The Expertise section renders exactly one primary panel and one utility
+// strip; fail loudly at module load if the data drifts.
+const primaryCount = EXPERTISE.filter((c) => c.weight === "primary").length;
+const utilityCount = EXPERTISE.filter((c) => c.weight === "utility").length;
+if (primaryCount !== 1 || utilityCount !== 1) {
+  throw new Error(
+    `EXPERTISE needs exactly one primary and one utility category (got ${primaryCount}/${utilityCount}).`
+  );
+}

@@ -20,11 +20,13 @@ export function ChatWidgetLazy() {
     let idleId: number | undefined;
     let timeoutId: number | undefined;
 
-    const onOpenRequest = () => {
+    const onOpenRequest = (e: Event) => {
       setReady(true);
-      // The widget wasn't mounted to hear this event — replay it for them.
+      // The widget wasn't mounted to hear this event — replay it (with any
+      // handed-over question in `detail`) once it is.
+      const detail = (e as CustomEvent).detail;
       window.setTimeout(
-        () => window.dispatchEvent(new Event("navdeep:open-chat")),
+        () => window.dispatchEvent(new CustomEvent("navdeep:open-chat", { detail })),
         350
       );
     };

@@ -11,6 +11,8 @@ import {
   type ChatAction,
 } from "@/lib/ai/actions";
 import { useLenis } from "@/components/layout/SmoothScroll";
+import { holdScroll } from "@/lib/scroll-lock";
+import { useMediaQuery } from "@/hooks/use-media-query";
 import { EMAIL } from "@/data/socials";
 import { cn } from "@/lib/utils";
 
@@ -46,6 +48,10 @@ function parseActionTokens(text: string): ChatAction[] {
 
 const OPEN_EVENT = "navdeep:open-chat";
 const STORAGE_KEY = "navdeep-chat-v1";
+// Keep in sync with MAX_MESSAGES / MAX_MESSAGE_CHARS in app/api/chat/route.ts —
+// the server discards anything beyond these anyway.
+const MAX_SENT_MESSAGES = 12;
+const MAX_INPUT_CHARS = 1000;
 const GREETING: Message = { id: 0, role: "assistant", content: GREETING_MESSAGE };
 
 const LINK_RE = /(https?:\/\/[^\s)]+|[\w.+-]+@[\w-]+\.[\w.-]+\w)/g;
@@ -269,12 +275,25 @@ export function ChatWidget() {
     return () => window.removeEventListener(OPEN_EVENT, handler);
   }, []);
 
-  // Close on Escape.
+  // Close on Escape — unless a stacked overlay (palette, nav sheet) is open
+  // and owns the key.
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      const flags = document.documentElement.dataset;
+      if (flags.paletteOpen || flags.navOpen) return;
+      setOpen(false);
+    };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
+
+  // Below sm the panel covers the screen — lock the page behind it.
+  const isFullScreen = useMediaQuery("(max-width: 639px)");
+  useEffect(
+    () => (open && isFullScreen ? holdScroll(lenis) : undefined),
+    [open, isFullScreen, lenis]
+  );
 
   // Return focus to the launcher when the dialog closes.
   useEffect(() => {
@@ -349,7 +368,9 @@ export function ChatWidget() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          messages: history.map(({ role, content }) => ({ role, content })),
+          messages: history
+            .slice(-MAX_SENT_MESSAGES)
+            .map(({ role, content }) => ({ role, content })),
         }),
       });
 
@@ -782,6 +803,7 @@ export function ChatWidget() {
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Ask about Navdeep…"
                   autoComplete="off"
+                  maxLength={MAX_INPUT_CHARS}
                   className="h-10 w-full rounded-full border border-border bg-background/60 px-4 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-foreground/30"
                 />
                 <button

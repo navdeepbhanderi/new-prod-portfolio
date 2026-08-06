@@ -8,6 +8,7 @@ import {
   useState,
 } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useTransitionRouter } from "next-view-transitions";
 import {
   ArrowUp,
   Check,
@@ -83,17 +84,6 @@ const TECHNOLOGIES = Array.from(
   }, new Map<string, (typeof EXPERTISE)[number]>())
 );
 
-function scrollToSection(lenis: ReturnType<typeof useLenis>, id: string) {
-  const el = document.getElementById(id);
-  // On sub-pages (case studies) the section doesn't exist — route home to it.
-  if (!el) {
-    window.location.href = `/#${id}`;
-    return;
-  }
-  if (lenis) lenis.scrollTo(el, { offset: -88 });
-  else el.scrollIntoView({ behavior: "smooth", block: "start" });
-}
-
 export function CommandPalette() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -103,6 +93,21 @@ export function CommandPalette() {
   const listRef = useRef<HTMLDivElement>(null);
   const restoreFocusRef = useRef<HTMLElement | null>(null);
   const lenis = useLenis();
+  const router = useTransitionRouter();
+
+  const scrollToSection = useCallback(
+    (id: string) => {
+      const el = document.getElementById(id);
+      // On sub-pages (case studies) the section doesn't exist — route home.
+      if (!el) {
+        router.push(`/#${id}`);
+        return;
+      }
+      if (lenis) lenis.scrollTo(el, { offset: -88 });
+      else el.scrollIntoView({ behavior: "smooth", block: "start" });
+    },
+    [lenis, router]
+  );
 
   const close = useCallback(() => {
     setOpen(false);
@@ -129,7 +134,7 @@ export function CommandPalette() {
         hint: "Jump to section",
         keywords: `${label} section go jump ${id}`,
         icon: SECTION_ICONS[id],
-        perform: () => scrollToSection(lenis, id),
+        perform: () => scrollToSection(id),
       })),
 
       ...PROJECTS.map<Command>((project) => ({
@@ -139,9 +144,9 @@ export function CommandPalette() {
         badge: project.index,
         tag: project.stack[0],
         keywords: `${project.title} ${project.tagline} ${project.role} ${project.year} ${project.stack.join(" ")} case study project`,
-        perform: () => {
-          window.location.href = `/projects/${project.id}`;
-        },
+        // Client-side navigation keeps the view transition and the prefetch
+        // warmed by RoutePrefetch.
+        perform: () => router.push(`/projects/${project.id}`),
       })),
 
       ...TECHNOLOGIES.map<Command>(([tech, category]) => ({
@@ -151,7 +156,7 @@ export function CommandPalette() {
         hint: `${category.label}, ${category.technologies.length} technologies`,
         keywords: `${tech} ${category.label} technology stack skill`,
         icon: Code2,
-        perform: () => scrollToSection(lenis, "expertise"),
+        perform: () => scrollToSection("expertise"),
       })),
 
       {
@@ -202,7 +207,7 @@ export function CommandPalette() {
         label: "Back to top",
         keywords: "back to top scroll up start beginning",
         icon: ArrowUp,
-        perform: () => scrollToSection(lenis, "hero"),
+        perform: () => scrollToSection("hero"),
       },
 
       ...SOCIALS.map<Command>((s) => ({
@@ -217,7 +222,7 @@ export function CommandPalette() {
         },
       })),
     ];
-  }, [lenis, copied, copyEmail, askAi]);
+  }, [router, scrollToSection, copied, copyEmail, askAi]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -262,6 +267,16 @@ export function CommandPalette() {
       window.removeEventListener(OPEN_PALETTE_EVENT, onOpenEvent);
     };
   }, [open, close]);
+
+  // Flag the document while open so stacked overlays (chat) leave Escape to us.
+  useEffect(() => {
+    const root = document.documentElement;
+    if (open) root.dataset.paletteOpen = "true";
+    else delete root.dataset.paletteOpen;
+    return () => {
+      delete root.dataset.paletteOpen;
+    };
+  }, [open]);
 
   // Reset + focus while open; scroll lock is ref-counted (see scroll-lock.ts).
   useEffect(() => {

@@ -1,5 +1,6 @@
 import type { Intent } from "@/types";
 import { PROFILE } from "@/lib/profile";
+import { CHAT_ACTIONS } from "@/lib/ai/actions";
 
 /**
  * Local knowledge base for the portfolio assistant. Intents are matched by
@@ -201,6 +202,16 @@ export const INTENTS: Intent[] = [
     related: ["Who is Navdeep?", "What technologies does he specialize in?"],
   },
 ];
+
+// Intent action keys must exist in the catalog (they encode project ids, e.g.
+// "case-travel-commerce-platform"); fail loudly at module load if they drift.
+for (const intent of INTENTS) {
+  for (const key of intent.actions ?? []) {
+    if (!CHAT_ACTIONS[key]) {
+      throw new Error(`Unknown chat action key "${key}" in intent "${intent.id}".`);
+    }
+  }
+}
 
 export const FALLBACK_ANSWER =
   "I'm focused on Navdeep — his skills, projects, AI experience, education, and contact details. Try asking something like “What technologies does he specialize in?”, “Tell me about his AI experience,” or “Why should I hire him?”";
