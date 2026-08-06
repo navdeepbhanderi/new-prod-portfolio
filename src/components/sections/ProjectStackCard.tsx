@@ -180,7 +180,7 @@ export function ProjectCardContent({ project }: { project: Project }) {
     // media query and a progress threshold both being right. 68svh clears the
     // tallest natural card with room to spare, and `mt-auto` on the CTA row
     // keeps it pinned to the floor of the padded area.
-    <div className="grid min-h-[68svh] lg:min-h-0 lg:grid-cols-[1.05fr_1fr]">
+    <div className="grid min-h-[68svh] lg:min-h-[45rem] lg:grid-cols-[1.05fr_1fr]">
       <ProjectVisual project={project} />
 
       {/* Compact below sm: the card pins under the deck's sticky top, so on a
