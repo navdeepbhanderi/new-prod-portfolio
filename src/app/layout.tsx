@@ -81,6 +81,10 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   themeColor: "#0a0a0b",
   colorScheme: "dark",
+  // Resize the layout viewport when the on-screen keyboard opens
+  // (Android/Chrome) so fixed inputs — the chat panel's — stay visible.
+  // iOS ignores this; the chat handles it with visualViewport.
+  interactiveWidget: "resizes-content",
 };
 
 export default function RootLayout({

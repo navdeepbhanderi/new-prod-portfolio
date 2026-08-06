@@ -62,7 +62,8 @@ function Field({
 
 const inputClasses = (invalid: boolean) =>
   cn(
-    "w-full rounded-2xl border bg-background/50 px-4 text-[15px] text-foreground outline-none transition-colors",
+    // text-base below sm: fonts under 16px make iOS Safari zoom in on focus.
+    "w-full rounded-2xl border bg-background/50 px-4 text-base text-foreground outline-none transition-colors sm:text-[15px]",
     "placeholder:text-muted-foreground/70",
     invalid
       ? "border-red-400/40 focus:border-red-400/70"

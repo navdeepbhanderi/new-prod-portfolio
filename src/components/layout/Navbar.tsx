@@ -409,7 +409,8 @@ export function Navbar() {
               </div>
               <div className="flex items-center justify-between border-t border-border/60 pt-4 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
                 <span>{PROFILE.locationShort}</span>
-                <span className="flex items-center gap-4">
+                {/* 44px tap targets; negative margins keep the visual row height. */}
+                <span className="-my-3.5 -mr-3.5 flex items-center">
                   {SOCIALS.map((social) => {
                     const Icon = BRAND_ICONS[social.icon];
                     return (
@@ -419,7 +420,7 @@ export function Navbar() {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={social.label}
-                        className="transition-colors hover:text-foreground"
+                        className="grid h-11 w-11 place-items-center transition-colors hover:text-foreground"
                       >
                         <Icon className="h-4 w-4" />
                       </a>

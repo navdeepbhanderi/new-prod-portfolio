@@ -386,7 +386,8 @@ export function CommandPalette() {
                   aria-controls="palette-list"
                   aria-activedescendant={activeId}
                   autoComplete="off"
-                  className="w-full bg-transparent py-4 text-[15px] text-foreground outline-none placeholder:text-muted-foreground"
+                  // text-base below sm — sub-16px fonts make iOS zoom on focus.
+                  className="w-full bg-transparent py-4 text-base text-foreground outline-none placeholder:text-muted-foreground sm:text-[15px]"
                 />
                 <span className="hidden shrink-0 font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground sm:block">
                   esc to close

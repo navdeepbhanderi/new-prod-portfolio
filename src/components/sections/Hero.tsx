@@ -90,7 +90,10 @@ export function Hero() {
       {/* ---------- portrait: top band below md, full-bleed column at md+ ---------- */}
       <motion.div
         style={reduced ? undefined : { y: portraitExitY, opacity: portraitExitOpacity }}
-        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(15rem,45svh,25rem)] md:inset-y-0 md:left-auto md:right-0 md:h-auto md:w-[38vw] xl:w-[34vw]"
+        // short: landscape phones have no room for the portrait at all.
+        // xl:max-w caps the column so the 1024px source isn't stretched on
+        // ultrawide screens.
+        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(15rem,45svh,25rem)] short:hidden md:inset-y-0 md:left-auto md:right-0 md:h-auto md:w-[38vw] xl:w-[34vw] xl:max-w-[36rem]"
       >
         <motion.div
           style={reduced ? undefined : { x: portraitX, y: portraitY }}
@@ -100,7 +103,7 @@ export function Hero() {
             priority
             tone
             objectPosition="50% 16%"
-            sizes="(min-width: 1280px) 34vw, (min-width: 768px) 38vw, 100vw"
+            sizes="(min-width: 1695px) 576px, (min-width: 1280px) 34vw, (min-width: 768px) 38vw, 100vw"
             className="md:[object-position:50%_20%]"
           />
           <div aria-hidden className={`absolute inset-0 ${SCRIM_BAND} ${SCRIM_COLUMN}`} />
@@ -111,7 +114,7 @@ export function Hero() {
       {/* ---------- content ---------- */}
       {/* pt overlaps the portrait band so the copy starts in the scrim's dark
           floor. */}
-      <div className="container-px relative z-10 flex min-h-[100svh] flex-col pb-8 pt-[clamp(11.5rem,35.5svh,19.5rem)] md:pb-12 md:pt-28 lg:pb-14">
+      <div className="container-px relative z-10 flex min-h-[100svh] flex-col pb-8 pt-[clamp(11.5rem,35.5svh,19.5rem)] short:pb-6 short:pt-24 md:pb-12 md:pt-28 lg:pb-14">
         <motion.div
           style={reduced ? undefined : { y: copyExitY, opacity: copyExitOpacity }}
           className="flex flex-1 flex-col justify-center"

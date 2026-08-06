@@ -18,6 +18,10 @@ const config: Config = {
       },
     },
     extend: {
+      screens: {
+        // Landscape phones — barely any vertical room.
+        short: { raw: "(orientation: landscape) and (max-height: 500px)" },
+      },
       colors: {
         background: "hsl(var(--background) / <alpha-value>)",
         foreground: "hsl(var(--foreground) / <alpha-value>)",

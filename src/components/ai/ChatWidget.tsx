@@ -297,6 +297,26 @@ export function ChatWidget() {
     [open, isFullScreen, lenis]
   );
 
+  // iOS doesn't resize the layout viewport for the on-screen keyboard (the
+  // viewport meta's resizes-content covers Android) — track the visual
+  // viewport and lift the panel above the keyboard.
+  const [kbInset, setKbInset] = useState(0);
+  useEffect(() => {
+    if (!open || !isFullScreen) return;
+    const vv = window.visualViewport;
+    if (!vv) return;
+    const update = () =>
+      setKbInset(Math.max(0, window.innerHeight - vv.height - vv.offsetTop));
+    update();
+    vv.addEventListener("resize", update);
+    vv.addEventListener("scroll", update);
+    return () => {
+      vv.removeEventListener("resize", update);
+      vv.removeEventListener("scroll", update);
+      setKbInset(0);
+    };
+  }, [open, isFullScreen]);
+
   // Return focus to the launcher when the dialog closes.
   useEffect(() => {
     if (wasOpen.current && !open) launcherRef.current?.focus();
@@ -343,7 +363,7 @@ export function ChatWidget() {
   // viewport rubber-band.
   useEffect(() => {
     if (open) scrollToBottom(streamingId === null);
-  }, [open, messages, loading, streamingId]);
+  }, [open, messages, loading, streamingId, kbInset]);
 
   const resetChat = () => {
     setMessages([GREETING]);
@@ -611,7 +631,10 @@ export function ChatWidget() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 24, scale: 0.96 }}
               transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-              style={{ transformOrigin: "bottom right" }}
+              style={{
+                transformOrigin: "bottom right",
+                ...(isFullScreen && kbInset > 0 ? { bottom: kbInset + 12 } : null),
+              }}
               className={cn(
                 "glass-strong fixed z-[89] flex flex-col overflow-hidden rounded-3xl border border-border shadow-2xl shadow-black/50",
                 "inset-x-3 bottom-24 top-20 sm:inset-x-auto sm:top-auto",
@@ -806,7 +829,8 @@ export function ChatWidget() {
                   placeholder="Ask about Navdeep…"
                   autoComplete="off"
                   maxLength={MAX_INPUT_CHARS}
-                  className="h-10 w-full rounded-full border border-border bg-background/60 px-4 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-foreground/30"
+                  // text-base below sm — sub-16px fonts make iOS zoom on focus.
+                  className="h-10 w-full rounded-full border border-border bg-background/60 px-4 text-base outline-none transition-colors placeholder:text-muted-foreground focus:border-foreground/30 sm:text-sm"
                 />
                 <button
                   type="submit"
