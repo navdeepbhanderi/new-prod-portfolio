@@ -45,6 +45,7 @@ export function ProfileImage({
       fill
       sizes={sizes}
       priority={priority}
+      quality={90}
       onError={() => setFailed(true)}
       style={{ objectPosition }}
       className={cn(

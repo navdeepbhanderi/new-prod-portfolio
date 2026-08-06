@@ -21,6 +21,9 @@ const nextConfig: NextConfig = {
   allowedDevOrigins: ["192.168.1.*"],
   images: {
     formats: ["image/avif", "image/webp"],
+    // The hero portrait is the LCP element and a face — q75 (the default)
+    // shows on skin tones. Next 15 requires every quality used to be declared.
+    qualities: [75, 90],
   },
   compiler: {
     removeConsole: process.env.NODE_ENV === "production" ? { exclude: ["error"] } : false,
