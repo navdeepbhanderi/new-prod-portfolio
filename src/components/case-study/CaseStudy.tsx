@@ -273,7 +273,12 @@ export function CaseStudy({
           <Block id="cs-outcome" eyebrow="The outcome">
             <BlurReveal delay={0.05}>
               <blockquote className="max-w-3xl rounded-3xl border border-foreground/[0.09] bg-gradient-to-br from-foreground/[0.05] to-foreground/[0.015] p-6 sm:p-8">
-                <p className="font-display text-[clamp(1.3rem,2.3vw,1.7rem)] leading-[1.42] text-foreground/95">
+                {/* Geist Sans, not the display serif. Instrument Serif is a
+                    headline face — at ~27px over four lines of real copy its
+                    strokes go thin and the rhythm breaks up, which is the one
+                    place on the site the serif was asked to carry a paragraph
+                    rather than a phrase. */}
+                <p className="text-[clamp(1.375rem,2.4vw,1.875rem)] font-normal leading-[1.5] tracking-[-0.015em] text-balance text-foreground/95">
                   {caseStudy.outcome}
                 </p>
               </blockquote>

@@ -41,10 +41,13 @@ never invent new surface styles. Film grain overlay (`.grain`) sits at z-60 over
   with `*asterisks*` (e.g. `Projects built *like products*`); `TextReveal` strips them
   (aria-label included) and renders the word(s) with `.text-accent-italic`. The closing
   marker may sit before punctuation — `*product*,` is parsed correctly.
-  Allowed in exactly three places, one phrase each: a **section heading**
-  (`SectionHeading`), the **hero claim** (`PROFILE.claim`), and the **case-study
-  outcome pull-quote** (upright `font-display`, not italic — it's a quote, not an accent).
+  Allowed in exactly two places, one phrase each: a **section heading**
+  (`SectionHeading`) and the **hero claim** (`PROFILE.claim`).
   Never in body/UI, never more than one phrase per heading.
+  It used to also set the case-study outcome pull-quote upright. That is the one
+  place it was asked to carry a *paragraph* rather than a phrase, and it doesn't:
+  a headline face at ~27px over four lines goes thin and loses its rhythm. That
+  quote is Geist Sans now. Keep the serif to phrases.
 - Display sizes are fluid clamps: hero claim `clamp(2.375rem,6.4vw,5.75rem)`, intro name
   `clamp(3.25rem,8.6vw,7.5rem)` (the floor is 6b's 52px at 390 — 2.4rem left the stacked
   name looking incidental), footer name `clamp(3.5rem,16.5vw,15rem)`, section
