@@ -28,6 +28,20 @@ const nextConfig: NextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === "production" ? { exclude: ["error"] } : false,
   },
+  // www → apex, permanent. Google had the www variant indexed via a
+  // temporary (307) platform redirect, which never consolidates signals onto
+  // the real domain. The host-level redirect should also be set to 308 —
+  // this covers the case where www is routed to the app directly.
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.navdeepbhanderi.dev" }],
+        destination: "https://navdeepbhanderi.dev/:path*",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

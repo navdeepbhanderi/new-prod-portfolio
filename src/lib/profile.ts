@@ -49,7 +49,11 @@ export const SITE_JSON_LD = {
       "@type": "Person",
       "@id": `${SITE_URL}/#person`,
       name: PROFILE.name,
+      // The handle he goes by on GitHub/LinkedIn/X — ties the profiles to
+      // this entity.
+      alternateName: "navdeepbhanderi",
       givenName: PROFILE.firstName,
+      familyName: PROFILE.surname,
       jobTitle: "Senior Frontend Engineer",
       description: PROFILE.summary,
       email: `mailto:${PROFILE.email}`,

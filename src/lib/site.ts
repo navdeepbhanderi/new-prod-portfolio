@@ -4,6 +4,14 @@
  * is inlined into both server and client bundles. Set NEXT_PUBLIC_SITE_URL
  * when deploying anywhere other than the custom domain.
  */
-export const SITE_URL = (
+const raw = (
   process.env.NEXT_PUBLIC_SITE_URL || "https://navdeepbhanderi.dev"
 ).replace(/\/+$/, "");
+
+// Force https on public origins: an http:// value here poisons every
+// canonical tag, sitemap entry, OG url, and JSON-LD id — search engines then
+// see the https pages declaring a different (http) canonical and refuse to
+// consolidate. Local/LAN dev origins keep their scheme.
+export const SITE_URL = /^http:\/\/(localhost|127\.|192\.168\.|10\.)/.test(raw)
+  ? raw
+  : raw.replace(/^http:\/\//, "https://");
